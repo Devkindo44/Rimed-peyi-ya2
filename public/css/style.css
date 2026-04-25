@@ -1,0 +1,56 @@
+
+
+
+
+:root {
+    --main-green: #1a5d1a; /* Le vert de ton header/footer */
+    --bg-cream: #f4f4e4;   /* Le fond crème de ta maquette */
+    --t-brown: #6D4C41;
+}
+
+/* Structure pour bloquer le footer en bas */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body { 
+    background-color: var(--bg-cream); 
+    font-family: 'Georgia', serif; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Le contenu principal pousse le footer */
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+/* Classes utilitaires */
+.bg-custom-green { 
+    background-color: var(--main-green); 
+}
+
+H1.bg-custom-brown{
+    color: #6D4C41;
+}
+
+.nav-link, .footer-link { 
+    color: white !important; 
+}
+
+.hero-image { 
+    border-radius: 20px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    max-height: 500px;
+    object-fit: cover;
+}
+
+h1{
+    color: #6D4C41;
+    background-color: red;
+}
