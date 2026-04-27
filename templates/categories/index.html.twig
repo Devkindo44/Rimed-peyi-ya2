@@ -1,7 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block stylesheets %}{% endblock %}
+
+{% block title %}Categories{% endblock %}
+    
+
+    
+
+
+
 
 {% block body %}
 
+    {# Banniere page categories #}
+
+    <div class="position-relative w-100 m-0 p-0">
+        <img src="{{ asset('images/page image Categorie.jpg') }}" 
+             class="img-fluid w-100" 
+             style="height: 251px; object-fit: cover;" 
+             alt="Bannière Catégories">
+    
+        </div>
+        <div class="container my-5">
+
+            <h2 class="text-center">Nos categories</h2>
+
+            {#   <div class=" container my-5 d-flex gap-5">  = container flex avec espacement entre les cartes#}
+            
+            <div class=" container my-5 d-flex gap-5">
+
+                
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('images/Infusions1.jpg') }}" 
+                        class="img-fluid " 
+                        style="height: 187PX; object-fit: cover;" 
+                        alt="infusions">
+                    <div class="card-body">
+                        <h5 class="card-title">Infusions</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="{{path('app_categories/infusions')}}" class="btn btn-custom-brown">Infusions</a>
+                    </div>
+                </div>
+
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('images/sirops-artisanaux-scaled.webp') }}" 
+                        class="img-fluid " 
+                        style="height: 187PX; object-fit: cover;" 
+                        alt="Bannière Catégories">
+                    <div class="card-body">
+                        <h5 class="card-title">Sirops</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="{{path('app_categories/infusions')}}" class="btn btn-custom-brown">Sirops</a>
+                    </div>
+                </div>
+
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('images/Infusions1.jpg') }}" 
+                        class="img-fluid " 
+                        style="height: 187PX; object-fit: cover;" 
+                        alt="infusions">
+                    <div class="card-body">
+                        <h5 class="card-title">Plantes</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="{{path('app_categories/infusions')}}" class="btn btn-custom-brown">Plantes</a>
+                    </div>
+                </div>
+
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ asset('images/Infusions1.jpg') }}" 
+                        class="img-fluid " 
+                        style="height: 187PX; object-fit: cover;" 
+                        alt="infusions">
+                    <div class="card-body">
+                        <h5 class="card-title">Recettes</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="{{path('app_categories/recettes')}}" class="btn btn-custom-brown">Recettes</a>
+                    </div>
+                </div>
+               
+
+            
+            </div>
+        </div>
+    
+    </div>
+    
+   
+    
+    {# 2. Le reste du contenu dans un container #}
+        
+   
 {% endblock %}

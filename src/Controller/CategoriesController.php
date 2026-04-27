@@ -30,4 +30,20 @@ final class CategoriesController extends AbstractController
     {
         return $this->render('Categories/sirops.html.twig');
     }
+
+    #[Route('/plantes', name:'app_categories/plantes')]
+    public function plantes(): Response
+
+    {
+        return $this->render('Categories/plantes.html.twig');
+    }
+    
+
+    #[Route('/recettes', name:'app_categories/recettes')]
+    public function recettes(): Response
+
+    {
+        return $this->render('Categories/recettes.html.twig');
+    }
+       
 }

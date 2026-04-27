@@ -45,12 +45,30 @@ H1.bg-custom-brown{
 
 .hero-image { 
     border-radius: 20px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(163, 98, 1, 0.2);
     max-height: 500px;
     object-fit: cover;
 }
 
 h1{
     color: #6D4C41;
-    background-color: red;
+   
+}
+
+.img-fluid{
+height: 251px;
+}
+
+.btn-custom-brown{
+background-color: #6D4C41;
+border-color: #5d4037;
+color: #f4f4e4;
+
+}
+
+.btn-custom-green{
+background-color: #1a5d1a;
+color: #f4f4e4;
+border: #6D4C41 solid 8px;
+
 }
