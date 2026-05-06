@@ -72,3 +72,10 @@ color: #f4f4e4;
 border: #6D4C41 solid 8px;
 
 }
+
+.form-bg-image{
+background-image: url('images/plantes-jardin-creole.webp');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
