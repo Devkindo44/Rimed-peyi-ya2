@@ -1,24 +1,35 @@
 
 <footer>
 
-<footer class="bg-custom-green text-white mt-5 py-4">
+<div class=" container-fluid bg-custom-green text-white mt-5 py-4">
             <div class="container">
                 <div class="row text-center text-md-start">
                     <div class="col-md-4">
-                        <h6>Mentions légales</h6>
+                        <h6></h6>
                         <ul class="list-unstyled small">
-                            <li>CGV</li>
-                            <li>CGU</li>
+                            <li>
+                                <a href="{{path('footer/app_legal_notices')}}" class="nav-link text-white">Mentions légales</a>
+                            </li>
+                            <li>
+                             <a href="{{path('footer/app_cgv')}}" class="nav-link text-white">CGV</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-md-4 text-center">
-                        <p class="small">©  2026 Rimed Péyi ya by SEMAR Joseph</p>
+                        
+
+
+                        <section class="row justify-content-center">
+                    <a class="navbar-brand " href="{{path('app_home')}}">
+                    <img src="{{ asset('/images/logo_Projet.png') }}"class="shadow rounded " alt="Logo" width="100"></a>
+                    <span class="text-white "> 🌿©  2026 RIMED PEYI YA by SEMA🌿</span>
+                </section>
                     </div>
                     <div class="col-md-4 text-end">
                         <h6>Nos réseaux sociaux</h6>
                         <div class="d-flex justify-content-end gap-2">
                       
-                            <span class="button bg-warning text-dark">Snap</span>
+                            <span class="button bg-warning text-dark"> Snap</span>
                             <span class="button bg-dark">TikTok</span>
                             <span class="button bg-danger">Insta</span>
                             <span class="button bg-primary">Facebook</span>
@@ -27,7 +38,7 @@
                     
                 </div>
             </div>
-        </footer>
+        </div>
 
 
 

@@ -1,11 +1,23 @@
+/*Fichier css*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 
-
+*{
+    font-family:"poppins",sans serif;
+}
 
 :root {
-    --main-green: #1a5d1a; /* Le vert de ton header/footer */
-    --bg-cream: #f4f4e4;   /* Le fond crème de ta maquette */
-    --t-brown: #6D4C41;
+    --main-green: #1a5d1a; /* Le vert de du header et du footer */
+    
+    
+    --bg-cream: #f4f4e4;   /* Le fond crème de la maquette */
+    --bg-cream1:#f5f5dc;/*secondaire*/
+    --t-brown: #6D4C41;/*marron terre*/
+    --bg-white:#ffffff;
 }
 
 /* Structure pour bloquer le footer en bas */
@@ -26,8 +38,24 @@ main {
     flex: 1 0 auto;
 }
 
+
+
+/* Nav*/
+
+
 footer {
     flex-shrink: 0;
+}
+
+/*Menu Nav*/
+
+.dropdown-menu {
+border-radius: 0;
+color: #6D4C41;;
+}
+
+.dropdown-menu:hover{
+    color: #f4f4e4;
 }
 
 /* Classes utilitaires */
@@ -36,7 +64,7 @@ footer {
 }
 
 H1.bg-custom-brown{
-    color: #6D4C41;
+    color: #2e7d32; /*#6D4C41;*/
 }
 
 .nav-link, .footer-link { 
@@ -46,6 +74,7 @@ H1.bg-custom-brown{
 .hero-image { 
     border-radius: 20px; 
     box-shadow: 0 4px 15px rgba(163, 98, 1, 0.2);
+    width: 500px;
     max-height: 500px;
     object-fit: cover;
 }
@@ -55,7 +84,7 @@ h1{
    
 }
 
-.img-fluid{
+img-fluid{
 height: 251px;
 }
 
@@ -69,9 +98,31 @@ color: #f4f4e4;
 .btn-custom-green{
 background-color: #1a5d1a;
 color: #f4f4e4;
-border: #6D4C41 solid 8px;
+border: #6D4C41 solid 2px;
 
 }
+.bg-success-custom-brown{
+background-color: #1a5d1a;
+color: #f4f4e4;
+border: #6D4C41 solid 8px;
+}
+
+.bg-success-custom-green{
+
+color: #6D4C41;
+border: #1a5d1a solid 2px;
+}
+
+.bg-success-custom-marroneffect{
+box-shadow: #6D4C41;
+color: #6D4C41;
+border: #1a5d1a solid 2px;
+}
+
+/*.card-container{
+background-color: yellow !important
+
+}*/
 
 .form-bg-image{
 background-image: url('images/plantes-jardin-creole.webp');

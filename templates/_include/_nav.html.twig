@@ -1,79 +1,100 @@
-<header>
-    <nav class="navbar navbar-expand-lg bg-custom-green py-3 aria-label="breadcrumb">
-        <div class="container">
-            <a class="navbar-brand text-white" href="{{ path('app_home') }}">
-                <img src="{{ asset('/images/logo_Projet.png') }}" alt="Logo" width="80">
-            </a>
+<nav class="navbar navbar-expand-lg bg-custom-green p-0" id="nav">
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_boutique') }}">Boutique</a>
-                    </li>
-                   
+    
+    <div class="container-fluid">
+        
+        {#logo associé au nom du projet#}
 
-                    {# MENU DÉROULANT UNIQUE POUR LES CATÉGORIES 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Nos catégories
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_categories/infusions') }}">Infusions</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_categories') }}">Voir tout</a>
-                            </li>
-                        </ul>
-                    </li>
-                    #}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_categories') }}">Categories</a>
+        <div class="col-2 -md-4 border border-warning ">
+            <div class="row ">
+               
+                <section class="row justify-content-start">
+                    <a class="navbar-brand " href="{{path('app_home')}}">
+                    <img src="{{ asset('/images/logo_Projet.png') }}"class="shadow rounded " alt="Logo" width="100"></a>
+                    <span class="text-white "> 🌿RIMED PEYI YA🌿</span>
+                </section>
+            </div>
+            
+            
+            
+                
+        </div>
+           
+            <div class="col-10 md-4 flex-fill border border-danger ">
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav w-100">
+
                     
-                    
+            
                     <li class="nav-item dropdown">
-                       
-                        <a class="nav-link dropdown-toggle" href="{{path('app_categories')}}" role="button" data-bs-toggle="dropdown"  aria-expanded="false">
-                           
-                        </a>
-                        
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ path('app_categories/infusions') }}">Infusions</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
+                        <div class="d-flex align-items-center">
+                            <a class="nav-link text-white" href="{{ path('app_home') }}"> 🌿Accueil</a>
                             
-                            <li><a class="dropdown-item" href="{{ path('app_categories') }}">Toutes les catégories</a></li>
-                        </ul>
+                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
+                                <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
+                            </ul>
+                        </div>
                     </li>
-                  
-                <!-- UL de scond niveau -->
-                        {#
-                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_categories') }}">Categories</a>
-                        <ul>
-                             <li class="nav-item">
-                                <a href="{{ path('app_categories/infusions') }}">Infusions</a>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_categories/sirops') }}">Sirops</a>
-                        </ul>
+
+                    <li class="nav-item dropdown">
+                        <div class="d-flex align-items-center">
+                            <a class="nav-link text-white" href="{{ path('app_boutique') }}">Boutique</a>
+                            
+                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
+                                <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
+                            </ul>
+                        </div>
                     </li>
-                    #}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_contact') }}">Contactez-Nous</a>
+                    <li class="nav-item dropdown">
+                        <div class="d-flex align-items-center">
+                                <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
+                                
+                                <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('app_categories/infusions') }}">Infusions</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
+                            </ul>
+                        </div>
+                    </li>  
+                    <li><a class="nav-link" href="{{ path('app_contact') }}">Contactez-nous</a></li>
+
+                            {#<ul class="navbar-nav w-100"> et li espace client en ms-auto pour l'alignement despace client à droite #}
+                    <li class="nav-item dropdown ms-auto ">
+                        <div class="d-flex align-items-center ">
+                            <a class="nav-link text-white " href="{{ path('app_login') }}">Espace client</a>
+                            
+                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
+                                <li><a class="dropdown-item" href="{{path('app_register')}}">Inscription</a></li>
+                                <li><hr class="dropdown-divider"</li>
+                                <li class="dropdown-item"href="#">Deconnexion</li>
+                            </ul>
+                             <span class="ms">test</span>
+                        </div>
                     </li>
                 </ul>
-                
-
-                <div class="d-flex gap-3">
-                    <a href="{{path('app_login')}}" class="nav-link text-white">Connexion</a>
-                    <a href="{{path('app_register')}}" class="nav-link text-white border border-white rounded px-2">Inscription</a>
-                </div>
             </div>
         </div>
-    </nav>
-</header>
+
+    </div>
+    
+</nav>
