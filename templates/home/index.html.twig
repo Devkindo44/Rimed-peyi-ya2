@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}{% endblock %}
+
+{# bloc pour les metadonnées seo#}
+
+{% block title %}{{parent()}} | page d'accuei{% endblock %}
+{% block description %}{{parent()}} |  page d'accuei{% endblock %}
+{% block keywords %}{{parent()}} |  page d'accuei{% endblock %}
+{% block h1 %}Rimed Péyi ya{% endblock %}
+
 
 {% block body %}
 <main class="container text-center py-5">
-    <h1 class="display-4 mb-4" >Rimed Péyi ya</h1>
+    
     <div class="container">
         <div class="row">
             <div class=" row justify-content-center">

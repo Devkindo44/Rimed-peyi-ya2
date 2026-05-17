@@ -51,11 +51,19 @@ footer {
 
 .dropdown-menu {
 border-radius: 0;
-color: #6D4C41;;
+color: #6D4C41;
+}
+.dropdown-item{
+    color: #2e7d32;
 }
 
 .dropdown-menu:hover{
-    color: #f4f4e4;
+    background-color:   #f4f4e4;
+    
+}
+
+.dropdown-menu-end{
+    color: #2e7d32;
 }
 
 /* Classes utilitaires */
@@ -69,6 +77,11 @@ H1.bg-custom-brown{
 
 .nav-link, .footer-link { 
     color: white !important; 
+}
+
+.logo-p{
+    
+
 }
 
 .hero-image { 
@@ -119,6 +132,11 @@ color: #6D4C41;
 border: #1a5d1a solid 2px;
 }
 
+.bg-success-custom-beigeffect{
+    background-color: #f4f4e4;
+    color: #1a5d1a;
+}
+
 /*.card-container{
 background-color: yellow !important
 
@@ -129,4 +147,10 @@ background-image: url('images/plantes-jardin-creole.webp');
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
+}
+
+@media screen and (max-width:768px){
+    .firstPosition{
+        order:-1;
+    }
 }

@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CGV{% endblock %}
+{# bloc pour les metadonnées seo#}
+
+{% block title %}{{parent()}} | CGV{% endblock %}
+{% block description %}{{parent()}} |  CGV{% endblock %}
+{% block keywords %}{{parent()}} |  CGV{% endblock %}
+{% block h1 %}CGV{% endblock %}
+
 
 {% block stylesheets %}{% endblock %}
 
-{% block h1 %}CGV{% endblock %}
+
 
 
 

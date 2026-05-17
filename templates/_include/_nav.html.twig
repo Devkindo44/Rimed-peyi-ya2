@@ -1,100 +1,90 @@
 <nav class="navbar navbar-expand-lg bg-custom-green p-0" id="nav">
-
-    
     <div class="container-fluid">
         
-        {#logo associé au nom du projet#}
-
-        <div class="col-2 -md-4 border border-warning ">
-            <div class="row ">
-               
-                <section class="row justify-content-start">
-                    <a class="navbar-brand " href="{{path('app_home')}}">
-                    <img src="{{ asset('/images/logo_Projet.png') }}"class="shadow rounded " alt="Logo" width="100"></a>
-                    <span class="text-white "> 🌿RIMED PEYI YA🌿</span>
-                </section>
-            </div>
-            
-            
-            
-                
+        {# Logo associé au nom du projet #}
+        <div class="d-flex align-items-center border border-warning">
+            <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
+                <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
+                <span class="text-white">🌿RIMED PEYI YA🌿</span>
+            </a>
         </div>
-           
-            <div class="col-10 md-4 flex-fill border border-danger ">
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav w-100">
 
-                    
+        {#BOUTON BURGER (Ajouté pour le responsive sur mobile) #}
+        <button class="navbar-toggler bg-success-custom-beigeffect" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"> </span>
+        </button>
             
-                    <li class="nav-item dropdown">
-                        <div class="d-flex align-items-center">
-                            <a class="nav-link text-white" href="{{ path('app_home') }}"> 🌿Accueil</a>
-                            
-                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </a>
+        {# Le menu qui se replie #}
+        <div class="collapse navbar-collapse border border-danger" id="navbarNavDropdown">
+            <ul class="navbar-nav w-100">
 
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
-                                <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
-                            </ul>
-                        </div>
-                    </li>
+                {# Accueil #}
+                <li class="nav-item dropdown">
+                    <div class="d-flex align-items-center">
+                        <a class="nav-link text-white" href="{{ path('app_home') }}">🌿Accueil</a>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
+                            <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-                    <li class="nav-item dropdown">
-                        <div class="d-flex align-items-center">
-                            <a class="nav-link text-white" href="{{ path('app_boutique') }}">Boutique</a>
-                            
-                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </a>
+                {# Boutique #}
+                <li class="nav-item dropdown">
+                    <div class="d-flex align-items-center">
+                        <a class="nav-link text-white" href="{{ path('app_catalogue') }}">Catalogue</a>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
+                            <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
-                                <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <div class="d-flex align-items-center">
-                                <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
-                                
-                                <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                </a>
+                {# Catégories #}
+                <li class="nav-item dropdown">
+                    <div class="d-flex align-items-center">
+                        <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
+                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item " href="{{ path('app_categories/infusions') }}">Infusions</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
+                        </ul>
+                    </div>
+                </li>  
 
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ path('app_categories/infusions') }}">Infusions</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
-                            </ul>
-                        </div>
-                    </li>  
-                    <li><a class="nav-link" href="{{ path('app_contact') }}">Contactez-nous</a></li>
+                {# Contact #}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_contact') }}">Contactez-nous</a>
+                </li>
 
-                            {#<ul class="navbar-nav w-100"> et li espace client en ms-auto pour l'alignement despace client à droite #}
-                    <li class="nav-item dropdown ms-auto ">
-                        <div class="d-flex align-items-center ">
-                            <a class="nav-link text-white " href="{{ path('app_login') }}">Espace client</a>
-                            
-                            <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                            </a>
+                {# Espace client (poussé à droite grâce à ms-auto) #}
+                <li class="nav-item dropdown ms-auto">
+                    <div class="d-flex align-items-center">
+                      
+                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually">Espace client</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item " href="{{ path('app_login') }}">Connexion</a></li>
+                            <li><a class="dropdown-item " href="{{ path('app_register') }}">Inscription</a></li>
+                            <li><hr class="dropdown-divider "></li>
+                            <li><a class="dropdown-item " href="#">Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </li>
 
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
-                                <li><a class="dropdown-item" href="{{path('app_register')}}">Inscription</a></li>
-                                <li><hr class="dropdown-divider"</li>
-                                <li class="dropdown-item"href="#">Deconnexion</li>
-                            </ul>
-                             <span class="ms">test</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            </ul>
         </div>
 
     </div>
-    
 </nav>

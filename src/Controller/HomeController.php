@@ -9,24 +9,24 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
     public function index(): Response
     {
         return $this->render('home/index.html.twig');
     }
 
 
-    #[Route('/contact', name:'app_contact')]
+    #[Route('/contact', name:'app_contact', methods: ['GET', 'POST'])]
     public function contact(): Response
     {
         return $this->render('home/contact.html.twig');
     }
 
         
-    #[Route('/boutique', name:'app_boutique')]
+    #[Route('/catalogue', name:'app_catalogue', methods: ['GET', 'POST'])]
     public function boutique(): Response
     {
-        return $this->render('home/boutique.html.twig');
+        return $this->render('home/catalogue.html.twig');
     }
 
         

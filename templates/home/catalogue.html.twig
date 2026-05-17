@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Boutique{% endblock %}
-{% block h1 %}Nos produits{% endblock %}
+
+{# bloc pour les metadonnées seo#}
+
+{% block title %}{{parent()}} | Catalogue{% endblock %}
+{% block description %}{{parent()}} |  Catalogue{% endblock %}
+{% block keywords %}{{parent()}} |  Catalogue{% endblock %}
+{% block h1 %}Catalogue{% endblock %}
+
+
+
 
 
 
