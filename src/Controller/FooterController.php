@@ -22,10 +22,10 @@ final class FooterController extends AbstractController
         return $this->render('footer/cgv.html.twig', []);
     }
 
-    #[Route('/nous-rejoindre', name: 'app_nous_rejoindre', methods: ['GET', 'POST'])]
+    #[Route('/nous-rejoindre', name: 'footer/app-rejoindre', methods: ['GET', 'POST'])]
     public function rejoindre(): Response
     {
-        return $this->render('footer/index.html.twig', []);
+        return $this->render('footer/nous-rejoindre.html.twig', []);
     }
 
    

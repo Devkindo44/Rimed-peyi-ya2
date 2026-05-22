@@ -1,7 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+
+{% block title %}{{parent()}} | Gestion des produits{% endblock %}
+{% block description %}{{parent()}} | Gestion des produits{% endblock %}
+{% block keywords %}{{parent()}} |  Gestion des produits{% endblock %}
+{% block h1 %}Gestion des produits{% endblock %}
 
 {% block body %}
+
+<a class="btn btn-custom-green"href="{{path('app_product_new')}}">Gestion des produits</a>
+
+<pre>
+{{dump(products)}};
+</pre>
+
+{% if products %}
+    {# Tableau en html#}
+    <h4> mi sa ki la</h4>
+{% else %}
+    <h4> pa ni ayin </h4>
+{% endif %}
 
 {% endblock %}

@@ -2,7 +2,8 @@
     <div class="container-fluid">
         
         {# Logo associé au nom du projet #}
-        <div class="d-flex align-items-center border border-warning">
+       
+        <div class=" d-flex col-md-2  align-items-center border border-warning">
             <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
                 <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
                 <span class="text-white">🌿RIMED PEYI YA🌿</span>
@@ -16,6 +17,7 @@
             
         {# Le menu qui se replie #}
         <div class="collapse navbar-collapse border border-danger" id="navbarNavDropdown">
+        
             <ul class="navbar-nav w-100">
 
                 {# Accueil #}
@@ -62,24 +64,33 @@
                     </div>
                 </li>  
 
-                {# Contact #}
+               
+                {# Gestion des produits #}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ path('app_contact') }}">Contactez-nous</a>
+                    <a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
                 </li>
-
-                {# Espace client (poussé à droite grâce à ms-auto) #}
+                    
+                {# Espace client (Decalage à droite avec à ms-auto) #}
                 <li class="nav-item dropdown ms-auto">
                     <div class="d-flex align-items-center">
                       
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually">Espace client</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item " href="{{ path('app_login') }}">Connexion</a></li>
-                            <li><a class="dropdown-item " href="{{ path('app_register') }}">Inscription</a></li>
-                            <li><hr class="dropdown-divider "></li>
-                            <li><a class="dropdown-item " href="#">Déconnexion</a></li>
-                        </ul>
+                        </a>           
+                        
+                       
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                    {% if app.user %}
+                                        {# <li><span class="dropdown-item-text text-muted">Bonjour {{ app.user.userIdentifier }}</span></li> #}
+                                        
+                                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                                    {% else %}
+                                        <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
+                                       
+                                    {% endif %}
+                            </ul>
+                        
                     </div>
                 </li>
 

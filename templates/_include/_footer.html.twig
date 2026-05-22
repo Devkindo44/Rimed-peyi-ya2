@@ -1,39 +1,77 @@
-
 <footer>
 
-<div class=" container-fluid bg-custom-green text-white mt-5 py-4">
-            <div class="container">
+<div class=" container-fluid bg-custom-green text-white mt-5 p-0 ">
+            <div class="container border border-warning">
                 <div class="row text-center text-md-start">
                     <div class="col-md-4">
-                        <h6></h6>
-                        <ul class="list-unstyled small">
+                        {# <h6>tere</h6> #}
+                        <ul class="list-unstyled ">
+
+                             <li>
+                             <a href="{{path('footer/app-rejoindre')}}" class="nav-link text-white">Nous rejoindre</a>
+                            </li>
                             <li>
                                 <a href="{{path('footer/app_legal_notices')}}" class="nav-link text-white">Mentions légales</a>
                             </li>
                             <li>
                              <a href="{{path('footer/app_cgv')}}" class="nav-link text-white">CGV</a>
                             </li>
+                            <li>
+                             <a href="{{path('footer/app_cgv')}}" class="nav-link text-white">A propos de nous</a>
+                            </li>
                         </ul>
                     </div>
-                    <div class="col-md-4 text-center firstPosition">
-                        <section class="row justify-content-center >
-                            <a class="navbar-brand " href="{{path('app_home')}}">
-                            <img src="{{ asset('/images/logo_Projet.png') }}"class="shadow rounded " alt="Logo" width=50px></a>
-                            <span class="text-white "> 🌿©  2026 RIMED PEYI YA by SEMA🌿</span>
-                        </section>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <h6>Nos réseaux sociaux</h6>
-                        <div class="d-flex justify-content-end gap-2">
-                      
-                            <span class="button bg-warning text-dark"> Snap</span>
-                            <span class="button bg-dark">TikTok</span>
-                            <span class="button bg-danger">Insta</span>
-                            <span class="button bg-primary">Facebook</span>
+                    <div class="col-md-4 text-center d-flex border border-warning">
+                            <section class="row >
+                                    <div class="text-center">
+                                        <a class="navbar-brand " href="{{path('app_home')}}">
+                                        <img src="{{ asset('/images/logo_Projet.png') }}"class="shadow rounded" alt="Logo" width=80px></a>
+                                        <span class="text-white "> 🌿©  2026 RIMED PEYI YA by SEMA🌿</span>
+                                       <p >Tous droits réservés</p>
+                                    </div>
+                            </section>
+                            <div class="col-md-4  d-flex border border-warning">
+                            <section class="row" >
+                                    <div class=" pt- 4  ms-auto">
+                                        {# <h6>Nous Contactez</h6>  Espace contact #}
+                                         {# Contact #}
+                                        <div class="nav-item">
+                                            <a class="nav-link text-white" href="{{ path('app_contact') }}">Contactez-nous</a>
+                                        </div>
+                                        <div class="container ">
+                                            <div class="row">
+                                           
+                                                <ul class="reseaux  border border-warning">
+                                                    <li class="icon-reseaux">
+                                                        <a class="navbar-brand " href="{{path('app_contact')}}">
+                                                        <span> <img src="{{ asset('/images/snap.png') }}"class="shadow rounded m-2" alt="Logo" width=30px></span></a>
+                                                    </li>
+                                                    <li class="icon-reseaux">
+                                                        <a class="navbar-brand " href="{{path('app_contact')}}">
+                                                        <span> <img src="{{ asset('/images/facebook_.webp') }}"class="shadow rounded m-2" alt="Logo" width=30px></span></a>
+                                                    </li>
+                                                    <li class="icon-reseaux">
+                                                        <a class="navbar-brand " href="{{path('app_contact')}}">
+                                                        <span> <img src="{{ asset('/images/instagram_icon.webp') }}"class="shadow rounded m-2" alt="Logo" width=30px></span></a>
+                                                    </li>
+                                                    <li class="icon-reseaux">
+                                                        <a class="navbar-brand " href="{{path('app_contact')}}">
+                                                        <span> <img src="{{ asset('/images/whatsap_icon.webp') }}"class="shadow rounded m-2" alt="Logo" width=30px></span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                     
+                                     
+                                     
+                                    
+                                    </div>
+                            </section>
+                            
+                        </div>
                         </div>
                     </div>
-                    
-                </div>
             </div>
         </div>
 
