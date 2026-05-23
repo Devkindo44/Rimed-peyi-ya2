@@ -16,7 +16,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+   #[ORM\Column(type: 'text', nullable: true)]
     private ?string $Description = null;
 
     #[ORM\Column(nullable: true)]
