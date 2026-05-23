@@ -4,9 +4,9 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,50 +26,39 @@ class ProductType extends AbstractType
                ],
                'attr' =>[
                     'placeholder'=> 'Saisir un titre',
-                    'class'=>'form-control  shadow'
+                    'class'=>'form-control bg-success-custom-brown-f  shadow'
                ],
-               'help'=>'Nombre de caractères maximal : <span class="text-success">40</span>',
+               'help'=>'Nombre de caractères maximal : <span class="text-custom-brown">40 charactères max.</span>',
                'help_html'=>true,
                'help_attr'=> [
                 'class'=> 'text-success'
                ],
                'row_attr' => [
-               'class'=>'shadow rounded p-4 m-4'
+               'class'=>'shadow rounded bg-success-custom-brown-f  p-4 m-4'
                ],
                'required'=> false
 
             ])
-            ->add('Description', ChoiceType::class,[
+            ->add('Description',TextareaType::class, [
                 'label' => 'Description<span class="text-danger">*</span>',
-                'label_html' => true,
+               'label_html' => true,
                'label_attr'=>[
                 'class'=>'text-success',
                ],
-               'row_attr' => [
-               'class'=>'shadow rounded p-4 m-4'
-               
+               'attr' =>[
+                    'placeholder'=> 'Ajouter une description',
+                    'rows'=>8,
+                    'class'=>'form-control   bg-success-custom-brown-f shadow'
                ],
-                  
-                 
-                'choices'=>[
-                
-                    'plante medicinale'=>'pla--',
-                    'infusion'=>'inf-',
-                    'sirop'=>'sir-',
-                    'liqueur'=>'liq-',
-                    'recette'=>'rec-',
-                    'graines'=>'gra-',
-                    'huile'=>'hui-',
-
-                ],
-                'attr'=>[
-                'class'=>'form-control  shadow'
-                ],
-                 'help'=>'Selection du type deproduit : <span class="text-success"> ajouter un texte pertinent</span>',
+               'help'=>'Ajouter une description  pertinente du produit : <span class="text-custom-brown">200 charactères max. </span>',
                'help_html'=>true,
                'help_attr'=> [
                 'class'=> 'text-success'
                ],
+               'row_attr' => [
+               'class'=>'shadow rounded bg-success-custom-brown-f  p-4 m-4'
+               ],
+               'required'=> false
                 
                 
             ])
@@ -82,9 +71,9 @@ class ProductType extends AbstractType
                 'class'=>'text-success',
                ],
                'row_attr' => [
-               'class'=>'shadow rounded p-4 m-4'
+               'class'=>'shadow rounded p-4 m-4 bg-success-custom-brown-f '
                ],
-                'help'=>'Veuillez uploader une image valide (jpg,png,webp)de 2MO maximum : <span class="text-success"> concernant le produit</span>',
+                'help'=>'Veuillez uploader une image valide : <span class="text-custom-brown"> (jpg,png,webp)de 2MO max. </span>',
                 'help_html'=>true,
                 'help_attr'=> [
                 'class'=> 'text-success'
@@ -111,7 +100,7 @@ class ProductType extends AbstractType
             ])
                 ],
                  'attr'=>[
-                        'class'=>'form-control  shadow',
+                        'class'=>'form-control bg-success-custom-brown-f  shadow',
                 ],
             ])
                  //classe MoneyType pour le prix et currency pour la devise
@@ -122,25 +111,28 @@ class ProductType extends AbstractType
             // framework:
             // default_locale: en_US # Mettre 'en' ou changer la locale adapte les devises par défaut
     
-                    'label' => 'Titre<span class="text-danger">*</span>',
+                    'label' => 'Prix<span class="text-danger">*</span>',
                 'label_html' => true,
                 'label_attr'=>[
                     'class'=>'text-success',
                 ],
                 'attr' =>[
                         'placeholder'=> 'Ajouter un prix',
-                        'class'=>'form-control  shadow '
+                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '
+                        
                 ],
-                'help'=>'Le prix du produit: <span class="text-success">TTC</span>',
+                'help'=>'Le prix du produit : <span class="text-custom-brown">TTC.</span>',
                 'help_html'=>true,
                 'help_attr'=> [
                     'class'=> 'text-success'
                 ],
                 'row_attr' => [
-                    'class'=>'shadow rounded p-4 m-4'
+                    'class'=>'shadow rounded bg-success-custom-brown-f p-4 m-4'
                 ],
                 'required'=> false
         ])
+
+                // ->add('Ajouter',SubmitType::class) //creation bouton formulaire
         ;
     }
 

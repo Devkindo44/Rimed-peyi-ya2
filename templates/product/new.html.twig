@@ -10,7 +10,44 @@
 
 <a class="btn btn-custom-green"href="{{path('app_product_index')}}">Gestion des produits</a>
 {# {{ dump(formProduct) }} #}
-{{form(formProduct)}}
+{# {{form(formProduct)}} #}
+{#
+ 2manière d'afficher un formulaire Symfony
+   
+    soit la fonction twig form(): elle appelle integralement la balise form ouvrante à la balise fermante
+     {{form(formProduct)}} = avantage 1 ligne, 1 fonction sans pouvoir faire des manipulations dessus.
+    ->add('Ajouter',SubmitType::class)dans le ProductType
+    soit :
+    form_row() regroupe
+    syntaxe twig : parent.enfant
+        form.element
+#}
+<div class="w-75 mx-auto">
+        {{form_start(formProduct)}} {#Ouverture de la balise form#}
+
+<div class="row">
+    <div class="col">
+        {{form_row(formProduct.title)}} 
+    </div>
+    <div class="col">
+        {{form_row(formProduct.price)}} 
+    </div>
+    
+</div>
+<div class="col">
+        {{form_row(formProduct.illustration)}} 
+</div>
+<div class="col">
+        {{form_row(formProduct.Description)}} 
+</div>
+    {# affiche dans l'ordre demandé ex: prix sera avant tous les autres #}
+    {#{{form_rest(formProduct)}}   affiche le reste des elements non appelés #}
 
 
+<input type="submit" value="Ajouter le produit" class="btn btn-custom-brown w-100 mt-3">
+{{form_end(formProduct)}} {#Fermeture de la balise form#}
+</div>
 {% endblock %}
+
+
+

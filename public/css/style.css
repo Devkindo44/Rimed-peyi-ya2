@@ -9,11 +9,10 @@
 *{
     font-family:"poppins",sans serif;
 }
-
+/*Palette de couleur du site*/
 :root {
     --main-green: #1a5d1a; /* Le vert de du header et du footer */
-    
-    
+    --main-green2:#2e7d32;/* vert intermediaire*/
     --bg-cream: #f4f4e4;   /* Le fond crème de la maquette */
     --bg-cream1:#f5f5dc;/*secondaire*/
     --t-brown: #6D4C41;/*marron terre*/
@@ -38,6 +37,14 @@ main {
     flex: 1 0 auto;
 }
 
+/*Couleur ecriture*/
+.text-custom-brown{
+    color: #6D4C41;
+}
+
+.text-custom-green-l{
+    color:#1a5d1a;
+}
 
 
 /* Nav*/
@@ -117,13 +124,19 @@ border: #1a5d1a solid 2px;
 .bg-success-custom-brown{
 background-color: #1a5d1a;
 color: #f4f4e4;
-border: #6D4C41 solid 8px;
+border: #6D4C41 solid 2px;
 }
 
 .bg-success-custom-green{
 
 color: #6D4C41;
 border: #1a5d1a solid 2px;
+}
+
+.bg-success-custom-brown-f{
+
+color: #f4f4e4 ;
+border: #6D4C41 solid 2px;
 }
 
 .bg-success-custom-marroneffect{
