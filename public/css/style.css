@@ -135,7 +135,7 @@ border: #1a5d1a solid 2px;
 
 .bg-success-custom-brown-f{
 
-color: #f4f4e4 ;
+color: #6D4C41  ;
 border: #6D4C41 solid 2px;
 }
 
@@ -148,6 +148,12 @@ border: #1a5d1a solid 2px;
 .bg-success-custom-beigeffect{
     background-color: #f4f4e4;
     color: #1a5d1a;
+}
+
+.border-brown{
+
+border: #6D4C41 solid 2px;
+border-radius: 10px;
 }
 
 /*.card-container{
@@ -188,6 +194,15 @@ height:100vh;
     /* display: flex;
     width: 2px;
     height: 2px; */
+}
+.icon25{
+    width: 25px;
+    height: 25px;
+}
+
+.icon20{
+    width: 25px;
+    height: 25px;
 }
 
 @media screen and (max-width:768px){

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}{{parent()}} | Fiche{% endblock %}
+{% block description %}{{parent()}} | Fiche{% endblock %}
+{% block keywords %}{{parent()}} |  Fiche{% endblock %}
+{% block h1 %}Fiche "{{product.title|capitalize}}"{% endblock %}
+
+{% block body %}
+
+<a class="btn btn-custom-green"href="{{path('app_product_index')}}">Gestion des produits</a>
+
+ <table class="table table-striped table-bordered table-hover text-center mt-3">
+    <tr>
+        <th>ID</th>
+        <td>{{product.id}}</td>
+    </tr>
+    <tr>
+        <th>Titre</th>
+        <td>{{product.title|capitalize}}</td>
+    </tr>
+    <tr>
+        <th>Illustration</th>
+        <td>{{product.illustration}}</td>
+     </tr>
+     <tr>
+        <th>Prix(€)</th>
+        <td>{{product.price}}</td>
+     </tr>
+      <tr>
+         <th>Description</th>
+          <td>
+
+            {% if product.Description %}
+                      {{ product.Description|nl2br }}
+            {% else %}
+
+                {{ux_icon('lucide:circle-off',{class:'text-danger icon20'})}}
+                {% endif %}
+            </td>
+        <tr>
+
+    </tr>
+
+</table>
+
+{% endblock %}

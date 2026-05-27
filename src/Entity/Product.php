@@ -22,7 +22,7 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: true)]
     private ?string $illustration = null;
 
     public function getId(): ?int

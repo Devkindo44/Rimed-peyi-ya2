@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class ProductType extends AbstractType
 {
@@ -28,15 +31,26 @@ class ProductType extends AbstractType
                     'placeholder'=> 'Saisir un titre',
                     'class'=>'form-control bg-success-custom-brown-f  shadow'
                ],
-               'help'=>'Nombre de caractères maximal : <span class="text-custom-brown">40 charactères max.</span>',
+               'help'=>'Nombre de caractères maximal : <span class="text-custom-brown">30 charactères max.</span>',
                'help_html'=>true,
                'help_attr'=> [
                 'class'=> 'text-success'
                ],
                'row_attr' => [
-               'class'=>'shadow rounded bg-success-custom-brown-f  p-4 m-4'
+               'class'=>'shadow  bg-success-custom-brown-f  p-4 m-4'
                ],
-               'required'=> false
+               'required'=> false,
+               'constraints'=>[
+                    new NotBlank([
+                        'message'=> 'Veuillez saisir le titre du produit'
+                    ]),
+                    new Length([
+                        'max'=>30,
+                        'maxMessage'=>'Veuillez saisir au maximum 30 caractères'
+
+                    ])
+
+               ]
 
             ])
             ->add('Description',TextareaType::class, [
@@ -56,10 +70,20 @@ class ProductType extends AbstractType
                 'class'=> 'text-success'
                ],
                'row_attr' => [
-               'class'=>'shadow rounded bg-success-custom-brown-f  p-4 m-4'
+               'class'=>'shadow  bg-success-custom-brown-f  p-4 m-4'
                ],
-               'required'=> false
-                
+               'required'=> false,
+               'constraints'=>[
+                 new NotBlank([
+                        'message'=> 'Veuillez saisir la description du produit.'
+                    ]),
+                 new Length([
+                        
+                        'max'=>200,
+                        'maxMessage'=>'Veuillez saisir au maximum 200 caractères'
+
+                    ])
+               ]
                 
             ])
 
@@ -71,7 +95,7 @@ class ProductType extends AbstractType
                 'class'=>'text-success',
                ],
                'row_attr' => [
-               'class'=>'shadow rounded p-4 m-4 bg-success-custom-brown-f '
+               'class'=>'shadow  p-4 m-4 bg-success-custom-brown-f '
                ],
                 'help'=>'Veuillez uploader une image valide : <span class="text-custom-brown"> (jpg,png,webp)de 2MO max. </span>',
                 'help_html'=>true,
@@ -87,6 +111,9 @@ class ProductType extends AbstractType
                 //pour modifier le produit sans re-telecharger l'image
                 'required'=> false,
                 'constraints'=> [
+                     new NotBlank([
+                        'message'=> 'Veuillez uploader une image.'
+                    ]),
                     new File([
                         'maxSize'=>'2M',//format maximale de la photo 2MO
                         'mimeTypes'=> [
@@ -121,15 +148,25 @@ class ProductType extends AbstractType
                         'class'=>'form-control  bg-success-custom-brown-f shadow rounded '
                         
                 ],
-                'help'=>'Le prix du produit : <span class="text-custom-brown">TTC.</span>',
+                'help'=>'Prix du produit à afficher en : <span class="text-custom-brown">prix TTC.</span>',
                 'help_html'=>true,
                 'help_attr'=> [
                     'class'=> 'text-success'
                 ],
                 'row_attr' => [
-                    'class'=>'shadow rounded bg-success-custom-brown-f p-4 m-4'
+                    'class'=>'shadow  bg-success-custom-brown-f p-4 m-4'
                 ],
-                'required'=> false
+                'required'=> false,
+
+                //Contraintes pour securiser les champs pour l'enregistrement en BD
+                'constraints'=> [
+                    new NotBlank([
+                        'message'=> 'Veuillez saisir le prix du produit.'
+                    ]),
+                    new Positive([
+                        'message'=>'Veuillez saisir un prix strictement superieur à 0.'
+                    ])
+                ]
         ])
 
                 // ->add('Ajouter',SubmitType::class) //creation bouton formulaire

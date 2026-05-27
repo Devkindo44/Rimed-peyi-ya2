@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}{{parent()}} | Modifier un produit{% endblock %}
+{% block description %}{{parent()}} | Modifier un produit{% endblock %}
+{% block keywords %}{{parent()}} |  Modifier un produit{% endblock %}
+{% block h1 %}Modifier un produit{% endblock %}
+
+{% block body %} 
+<a class="btn btn-custom-green"href="{{path('app_product_index')}}">Gestion des produits</a>
+
+{% endblock %}
