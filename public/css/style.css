@@ -150,6 +150,12 @@ border: #1a5d1a solid 2px;
     color: #1a5d1a;
 }
 
+.bg-success-custom{
+    background-color: #1a5d1a;
+    color: #f4f4e4;
+}
+
+
 .border-brown{
 
 border: #6D4C41 solid 2px;

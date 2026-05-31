@@ -34,7 +34,7 @@ final class HomeController extends AbstractController
 
         // 3. On injecte le tableau de produits dans le render pour que Twig y ait accès !
         return $this->render('home/catalogue.html.twig', [
-            'products' => $products, // <-- C'est cette ligne exacte qui corrige votre erreur
+            'products' => $products, //ligne pour la variable produits
         ]);
     }
 }

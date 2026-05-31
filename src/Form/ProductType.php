@@ -89,7 +89,7 @@ class ProductType extends AbstractType
 
             //class FileType pour ajouter les images
             ->add('illustration',FileType::class,[
-                'label' => 'illustration<span class="text-danger">*</span>',
+                'label' => 'illustration du produit<span class="text-danger">*</span>',
                 'label_html' => true,
                 'label_attr'=>[
                 'class'=>'text-success',
@@ -103,25 +103,24 @@ class ProductType extends AbstractType
                 'class'=> 'text-success'
                ],
                
-                   
-
-                //pour gerer le fichier manuellement
+                   //pour gerer le fichier manuellement
                 'mapped'=> false,
 
                 //pour modifier le produit sans re-telecharger l'image
-                'required'=> false,
+                'required'=> true,
                 'constraints'=> [
-                     new NotBlank([
-                        'message'=> 'Veuillez uploader une image.'
-                    ]),
+                    //  new NotBlank([
+                    //     'message'=> 'Veuillez uploader une image.'
+                    // ]),
                     new File([
                         'maxSize'=>'2M',//format maximale de la photo 2MO
                         'mimeTypes'=> [
+                            'image/jpg',
                             'image/jpeg',
                             'image/png',
                             'image/webp',
                             ],
-                            'mimeTypesMessage'=> 'Veuillez uploader une image valide (jpg,png,webp).',
+                            'mimeTypesMessage'=> 'Veuillez uploader une image valide au format (jpg,jpeg,png,webp).',
                             
                             
             ])

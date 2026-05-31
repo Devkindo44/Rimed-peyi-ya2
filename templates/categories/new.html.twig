@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block title %}Ajouter une Categories{% endblock %}
+    
+{% block h1 %}Ajouter une Categorie{% endblock %}
+
+
+{% block body %}
+   
+
+   
+    <form method="post" class="col-md-4 mx-auto p-4 m-3 shadow btn-custom-green"> 
+
+    {# <h1 class="h3 mb-2 font-weight-normal">Ajouter une Categories </h1> #}
+    {{ form_start(form) }}
+        {{form_row(form.name,{'attr':{'class': 'form form-control'}})}}
+
+        <button type="submit" class="btn btn-lg btn-custom-brown w-100">Sauvegarder</button>
+
+    {{ form_end(form)}}
+</form>
+    
+   {% endblock %}
