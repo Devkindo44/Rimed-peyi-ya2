@@ -39,7 +39,7 @@ final class ProductController extends AbstractController
             if ($illustration) {
                 $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFileName = $slugger->slug($originalName);
-                // CORRECTION 1 : uniqid() sans le "u" au milieu
+                // ajout d'image
                 $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
 
                 // CORRECTION 2 : Déplacement physique du fichier dans public/images/

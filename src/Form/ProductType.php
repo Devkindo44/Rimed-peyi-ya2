@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Categories;
 use App\Entity\Product;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -168,9 +170,19 @@ class ProductType extends AbstractType
                 ]
         ])
 
+           ->add('categories',EntityType::class,[
+           'class' => Categories ::class,
+           'choice_label'=>'name',
+           'placeholder'=>'choisir une categorie',
+           'required' => true,
+
+           ])
+           
+
                 // ->add('Ajouter',SubmitType::class) //creation bouton formulaire
         ;
     }
+    
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -178,4 +190,5 @@ class ProductType extends AbstractType
             'data_class' => Product::class,
         ]);
     }
+
 }

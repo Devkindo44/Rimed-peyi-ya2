@@ -2,26 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoriesRepository;
+use App\Repository\LigneDeCommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoriesRepository::class)]
-class Categories
+#[ORM\Entity(repositoryClass: LigneDeCommandeRepository::class)]
+class LigneDeCommande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique:true)]
-    private ?string $name = null;
+    #[ORM\Column]
+    private ?float $prix_unitaire = null;
 
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'ligne_de_commande')]
     private Collection $products;
 
     public function __construct()
@@ -34,14 +34,14 @@ class Categories
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getPrixUnitaire(): ?float
     {
-        return $this->name;
+        return $this->prix_unitaire;
     }
 
-    public function setName(string $name): static
+    public function setPrixUnitaire(float $prix_unitaire): static
     {
-        $this->name = $name;
+        $this->prix_unitaire = $prix_unitaire;
 
         return $this;
     }
@@ -58,7 +58,7 @@ class Categories
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->addCategory($this);
+            $product->setLigneDeCommande($this);
         }
 
         return $this;
@@ -67,7 +67,10 @@ class Categories
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            $product->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($product->getLigneDeCommande() === $this) {
+                $product->setLigneDeCommande(null);
+            }
         }
 
         return $this;

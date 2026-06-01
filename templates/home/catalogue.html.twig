@@ -19,21 +19,21 @@
 {% block body %}
 <div class="container-fluid my-5 px-4">
     
-    {# Grille principale Bootstrap #}
-    <div class="row row-cols-1 row-cols-sm-2 shadow rounded row-cols-md-6 row-cols-lg-7 g-3 mb-5">
+    {# class Bootstrap #}
+    <div class="row row-cols-1 row-cols-sm-2 shadow rounded bg-custom-green row-cols-md-6 row-cols-lg-7 g-3 mb-5 ">
         
        {% for product in products %}
             {# Chaque carte est enveloppée dans une colonne de la grille #}
-            <div class="col">
+            <div class="col  1rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                 <div class="card h-100 shadow-sm" style="max-width: 18rem;">
                     
-                    {# 1. LE TITRE (en haut) #}
+                    {# Titre de la carte #}
                     <div class="card-header bg-transparent border-0 pt-3 pb-0">
                         {# Remplacement de product.title par product.name suite à vos modifications #}
                         <h5 class="card-title fw-bold text-truncate mb-0">{{product.title}}</h5>
                     </div>
 
-                    {# 2. L'IMAGE #}
+                    {# IMAGE illustration #}
                     <div class="p-2">
                         <img src="/images/{{ product.illustration }}"
                              class="card-img-top rounded img-fluid" 
@@ -44,21 +44,21 @@
                     {# Corps de la carte pour le prix et la description #}
                     <div class="card-body d-flex flex-column pt-0">
                         
-                        {# 3. LE PRIX #}
-                        {# Adaptez le nom de la variable (ex: product.price) selon votre entité Product #}
+                        {# champs  Prix #}
+                
                         <div class="text-success fw-bold fs-5 mb-2">
                             {{ product.price }} €
                         </div>
                         
-                        {# 4. LA DESCRIPTION #}
-                        {# Adaptez le nom de la variable (ex: product.description) #}
+                        {# champs  DESCRIPTION #}
+                        {# (ex: product.description) #}
                         <p class="card-text text-muted small flex-grow-1">
                             {{ product.description }}
                         </p>
                         
-                        {# LE BOUTON (Optionnel, au bas de la carte) #}
+                        {# BOUTON (voir le produit en bas de la carte) #}
                         <div class="mt-3">
-                            <a href="#" class="btn btn-custom-brown w-100">Voir le produit</a>
+                            <a href="#" class="btn btn-custom-brown w-100">Voir plus</a>
                         </div>
                     </div>
 

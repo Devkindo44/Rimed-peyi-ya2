@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -24,6 +26,27 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $illustration = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $relation = null;
+
+    /**
+     * @var Collection<int, Categories>
+     */
+    #[ORM\ManyToMany(targetEntity: Categories::class,  inversedBy: 'products')]
+    private Collection $categories;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?LigneDeCommande $ligne_de_commande = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Stock $stock = null;
+
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,4 +100,66 @@ class Product
 
         return $this;
     }
+
+    public function getRelation(): ?string
+    {
+        return $this->relation;
+    }
+
+    public function setRelation(string $relation): static
+    {
+        $this->relation = $relation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categories>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getLigneDeCommande(): ?LigneDeCommande
+    {
+        return $this->ligne_de_commande;
+    }
+
+    public function setLigneDeCommande(?LigneDeCommande $ligne_de_commande): static
+    {
+        $this->ligne_de_commande = $ligne_de_commande;
+
+        return $this;
+    }
+
+    public function getStock(): ?Stock
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?Stock $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+   
 }

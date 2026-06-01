@@ -13,8 +13,12 @@
 {% block body %}
 
     {# Banniere page categories #}
-
-    <div class=" position-relative w-100 m-0 p-0 y-0 border border-danger ">
+    {% if categories is defined %}
+        <p>categorie existe</p>
+    {% else %}
+    <p>categorie.name</p>
+    {% endif %}
+        <div class=" position-relative w-100 m-0 p-0 y-0 border border-danger ">
         <img src="{{ asset('images/page image Categorie.jpg') }}" 
              class="img-fluid w-100" 
              style="height: 251px; object-fit: cover;" 
