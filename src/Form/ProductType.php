@@ -168,14 +168,15 @@ class ProductType extends AbstractType
                         'message'=>'Veuillez saisir un prix strictement superieur à 0.'
                     ])
                 ]
-        ])
-
-           ->add('categories',EntityType::class,[
-           'class' => Categories ::class,
-           'choice_label'=>'name',
-           'placeholder'=>'choisir une categorie',
-           'required' => true,
-
+        
+            ])
+            ->add('categories',EntityType::class,[
+                'class' => Categories ::class,
+                'choice_label'=>'name',
+                'multiple'=>true,
+                'attr' =>[
+                        'placeholder'=> 'Ajouter un prix',
+                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '],
            ])
            
 

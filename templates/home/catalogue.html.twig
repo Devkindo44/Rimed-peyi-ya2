@@ -18,8 +18,25 @@
 
 {% block body %}
 <div class="container-fluid my-5 px-4">
+
+    {# BARRE DE FILTRES DES CATÉGORIES #}
+
+    <div class="text-center mb-5">
+        <h4 class="mb-3 text-muted">Rechercher par catégorie :</h4>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success rounded-pill active">
+                🌿 Tout le catalogue
+            </a>
+            
+            {% for categorie in categories %}
+                <a href="{{ path('app_categories_show', {'slug': categorie.slug}) }}" class="btn btn-outline-success rounded-pill text-capitalize">
+                    {{ categorie.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
     
-    {# class Bootstrap #}
+    {# class Bootstrap   GRILLE DES PRODUITS#}
     <div class="row row-cols-1 row-cols-sm-2 shadow rounded bg-custom-green row-cols-md-6 row-cols-lg-7 g-3 mb-5 ">
         
        {% for product in products %}
@@ -28,9 +45,10 @@
                 <div class="card h-100 shadow-sm" style="max-width: 18rem;">
                     
                     {# Titre de la carte #}
-                    <div class="card-header bg-transparent border-0 pt-3 pb-0">
+                    <div class="card-header-50 bg-transparent border-0 pt-3 pb-0">
                         {# Remplacement de product.title par product.name suite à vos modifications #}
                         <h5 class="card-title fw-bold text-truncate mb-0">{{product.title}}</h5>
+                       
                     </div>
 
                     {# IMAGE illustration #}

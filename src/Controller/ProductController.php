@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\CategoriesRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,8 +28,10 @@ final class ProductController extends AbstractController
 
     // Ajout d'un produit
     #[Route('/produit/ajouter', name: 'app_product_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-    {
+    public function new(Request $request, CategoriesRepository $categoriesRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    {   
+
+        $categories = $categoriesRepository->findAll();
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -62,7 +65,9 @@ final class ProductController extends AbstractController
         }
 
         return $this->render('product/new.html.twig', [
-            'formProduct' => $form->createView()
+            'formProduct' => $form->createView(),
+            'categories'=> $categories,
+
         ]);
     }
 

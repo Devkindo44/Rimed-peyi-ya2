@@ -54,15 +54,15 @@
                         <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
-                        </a>
-                        <ul class="dropdown-menu">
+                        </a> 
+                        {# <ul class="dropdown-menu">
                             <li><a class="dropdown-item " href="{{ path('app_categories/infusions') }}">Infusions</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
-                        </ul>
+                        </ul> #}
                     </div>
-                </li>  
+                </li> 
 
                
                 {# Gestion des produits #}
@@ -75,41 +75,41 @@
 
               
                     
-                {# Espace client (Decalage à droite avec à ms-auto) #}
-                {# <li class="nav-item dropdown ms-auto">
+                 {# Espace client (Decalage à droite avec à ms-auto)  #}
+                 <li class="nav-item dropdown ms-auto">
                     <div class="d-flex align-items-center">
                       
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually">Espace client</span>
-                        </a>            #}
+                        </a>            
                         
-{#                        
-                            <ul class="dropdown-menu dropdown-menu-end"> #}
-                                    {# {% if app.user %} #}
-                                        {# <li><span class="dropdown-item-text text-muted">Bonjour {{ app.user.userIdentifier }}</span></li> #}
-{#                                         
-                                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li> #}
-                                    {# {% else %} #}
-                                        {# <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
-                                        <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li> #}
+                        
+                            <ul class="dropdown-menu dropdown-menu-end"> 
+                                     {% if app.user %}
+                                         <li><span class="dropdown-item-text text-muted">Bonjour {{ app.user.userIdentifier }}</span></li>
+                                        
+                                        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                                    {% else %} 
+                                         <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
                                        
-                                    {# {% endif %} #}
-                            {# </ul> #}
+                                     {% endif %}
+                            </ul>
                         
                     {# </div> #}
                 {# </li> #}
-                 <li class="nav-item dropdown dropdown-menu-end">
+                 {# <li class="nav-item dropdown dropdown-menu-end ms-auto">
                     <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('app_categories') }}">Mon espace client</a>
+                        <a class="nav-link text-white" href="{{ path('#') }}">Mon espace client</a>
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item " href="{{ path('app_profile') }}">Mon espace client</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_admin') }}">Back office</a></li>
-                            <li><a class="dropdown-divider"</a></li>
+                            <li><a class="dropdown-divider"></a></li>
                             {# <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Deconnexion</a></li> #}
-                        </ul>
+                        </ul> #}
                     </div>
                 </li>
             </ul>

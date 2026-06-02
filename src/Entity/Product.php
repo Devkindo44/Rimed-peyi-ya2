@@ -19,7 +19,7 @@ class Product
     private ?string $title = null;
 
    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $Description = null;
+    private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
@@ -27,8 +27,7 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $illustration = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $relation = null;
+   
 
     /**
      * @var Collection<int, Categories>
@@ -65,14 +64,14 @@ class Product
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getdescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
     public function setDescription(?string $Description): static
     {
-        $this->Description = $Description;
+        $this->description = $Description;
 
         return $this;
     }
@@ -101,17 +100,7 @@ class Product
         return $this;
     }
 
-    public function getRelation(): ?string
-    {
-        return $this->relation;
-    }
-
-    public function setRelation(string $relation): static
-    {
-        $this->relation = $relation;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection<int, Categories>

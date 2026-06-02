@@ -6,8 +6,11 @@ use App\Repository\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; // <-- Le bon import à utiliser ici
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'Ce nom de catégorie existe déjà.')] // <-- Validation du nom unique
+#[UniqueEntity(fields: ['slug'], message: 'Ce slug existe déjà.')]             // <-- Validation du slug unique
 class Categories
 {
     #[ORM\Id]
@@ -15,7 +18,7 @@ class Categories
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique:true)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $name = null;
 
     /**
@@ -23,6 +26,9 @@ class Categories
      */
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
     private Collection $products;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -58,7 +64,8 @@ class Categories
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->addCategory($this);
+            // Appel de la méthode exacte présente dans l'entité Product
+            $product->addCategory($this); 
         }
 
         return $this;
@@ -67,8 +74,21 @@ class Categories
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
+            // Appel de la méthode exacte présente dans l'entité Product
             $product->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
