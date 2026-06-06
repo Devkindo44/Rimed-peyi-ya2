@@ -94,8 +94,6 @@ H1.bg-custom-brown{
 .hero-image { 
     border-radius: 20px; 
     box-shadow: 0 4px 15px rgba(163, 98, 1, 0.2);
-    width: 500px;
-    max-height: 500px;
     object-fit: cover;
 }
 
@@ -105,7 +103,7 @@ h1{
 }
 
 img-fluid{
-height: 251px;
+height: 500px;
 }
 
 .btn-custom-brown{
