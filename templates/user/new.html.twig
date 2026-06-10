@@ -3,6 +3,7 @@
 {% block title %}New User{% endblock %}
 
 {% block body %}
+ <a class="btn btn-custom-green" href="{{ path('app_user_index') }}">Gestion des membres</a>
     <h1>Create new User</h1>
 
     {{ include('user/_form.html.twig') }}

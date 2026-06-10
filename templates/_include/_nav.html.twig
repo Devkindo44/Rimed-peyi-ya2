@@ -72,8 +72,9 @@
                  <li class="nav-item">
                     <a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des categories</a>
                 </li>
-                <a href="{{ path('app_admin_user_index')}}">Gestion des membres</a>
-              
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Gestion des membres</a>
+                </li>
                     
                  {# Espace client (Decalage à droite avec à ms-auto)  #}
                  <li class="nav-item dropdown ms-auto">
@@ -97,8 +98,8 @@
                                      {% endif %}
                             </ul>
                         
-                    {# </div> #}
-                {# </li> #}
+                    </div>
+                </li> 
                  {# <li class="nav-item dropdown dropdown-menu-end ms-auto">
                     <div class="d-flex align-items-center">
                         <a class="nav-link text-white" href="{{ path('#') }}">Mon espace client</a>
@@ -109,10 +110,10 @@
                             <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon espace client</a></li>
                             <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a></li>
                             
-                            {# Correction ici : Utilisation d'un <hr> ou d'un <li> direct pour le séparateur #}
+                            {# Correction ici : Utilisation d'un <hr> ou d'un <li> direct pour le séparateur
                             <li><hr class="dropdown-divider"></li>
                             
-                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                            {# <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li> #}
                         </ul>
                     </div>
                 </li>

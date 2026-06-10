@@ -109,7 +109,7 @@ class ProductType extends AbstractType
                 'mapped'=> false,
 
                 //pour modifier le produit sans re-telecharger l'image
-                'required'=> true,
+                'required'=> false,
                 'constraints'=> [
                     //  new NotBlank([
                     //     'message'=> 'Veuillez uploader une image.'
@@ -171,11 +171,11 @@ class ProductType extends AbstractType
         
             ])
             ->add('categories',EntityType::class,[
-                'class' => Categories ::class,
+                'class' => Categories::class,
                 'choice_label'=>'name',
                 'multiple'=>true,
                 'attr' =>[
-                        'placeholder'=> 'Ajouter un prix',
+                        'placeholder'=> 'Ajouter une catégorie',
                         'class'=>'form-control  bg-success-custom-brown-f shadow rounded '],
            ])
            

@@ -24,7 +24,9 @@ final class CategoriesController extends AbstractController
         ]);
     }
 
+    // 1. La route statique "/new" est placée AVANT la route dynamique
     #[Route('/new', name: 'app_categories_new', methods: ['GET', 'POST'])]
+    // #[IsGranted('ROLE_ADMIN')] // 🔒 Seuls les admins peuvent entrer ici
     public function addCategories(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
         $category = new Categories();
@@ -48,8 +50,8 @@ final class CategoriesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/update', name: 'app_categories_update', methods: ['GET', 'POST'])]
-    public function update(Categories $category, EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
+    #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
+    public function edit(Categories $category, EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CategoriesType::class, $category);
         $form->handleRequest($request);
@@ -65,28 +67,37 @@ final class CategoriesController extends AbstractController
             return $this->redirectToRoute('app_categories');
         }
 
-        return $this->render('categories/update.html.twig', [
+        return $this->render('categories/edit.html.twig', [
             'form' => $form,
             'category' => $category
         ]);
-    } // <-- CORRIGÉ : L'accolade manquante qui fermait la fonction "update" a été remise ici !
+    }
 
+    #[Route('/{id}/delete', name: 'app_categories_delete', methods: ['POST'])]
+    public function delete(Request $request, Categories $category, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($category);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'La catégorie a été supprimée avec succès !');
+        }
+
+        return $this->redirectToRoute('app_categories', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // 2. La route dynamique avec {slug} est placée tout à la fin
     #[Route('/{slug}', name: 'app_categories_show', methods: ['GET'])]
     public function show(string $slug, CategoriesRepository $categoriesRepository): Response
     {
-        // On cherche la catégorie en BDD grâce au slug de l'URL
         $category = $categoriesRepository->findOneBy(['slug' => $slug]);
 
         if (!$category) {
             throw $this->createNotFoundException("La catégorie n'existe pas.");
         }
 
-        // Renvoie vers un template unique et dynamique
         return $this->render('categories/show.html.twig', [
             'category' => $category,
         ]);
-    } // <-- Ferme proprement la fonction show()
-   
-
-    
-} // <-- Ferme proprement la classe CategoriesController
+    }
+}

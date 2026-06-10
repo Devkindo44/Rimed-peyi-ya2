@@ -5,14 +5,29 @@
 
 {% block body %}
 <div class="row">
-    <div class="list-group col-xl-3 col-lg-4 col-md-6">
-        <a href="{{ path('app_admin_user_index')}}" class="list-group-item list-group-item-action bg-success text-white" aria-current="true">Gestion des membres
-        </a>
-        <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">Afficher</a>
-        <a href="{{path('app_user_new')}}" class="list-group-item list-group-item-action">Ajouter</a>
-         <a href="{{path('app_user_edit',{'id': app.user.id} )}}" class="list-group-item list-group-item-action">Ajouter</a>
-        <a href=" {{ path('app_user_delete', {'id':app.user.id}) }}" class="list-group-item list-group-item-action">Supprimer</a> 
+    {# SECTION GESTION DES MEMBRES #}
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+        <div class="list-group">
+            <div class="list-group-item bg-success text-white font-weight-bold">Gestion des membres</div>
+            <a href="{{ path('app_admin_user_index') }}" class="list-group-item list-group-item-action">Liste des membres</a>
+            <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">Mon profil</a>
+            <a href="{{ path('app_user_new') }}" class="list-group-item list-group-item-action">Ajouter un membre</a>
+            <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">Modifier un MEMBRES</a>
+        </div>
+    </div>
+
+    {# SECTION GESTION DES CATÉGORIES #}
+    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+        <div class="list-group ">
+            <div class="list-group-item bg-success text-white">Gestion des catégories</div>
+            
+            {# Ce lien mène à la liste complète, c'est là que tu mettras tes boutons Modifier/Supprimer #}
+            <a href="{{ path('app_categories') }}" class="list-group-item list-group-item-action">Liste des catégories</a>
+            
+            {# Ce lien mène au formulaire de création #}
+            <a href="{{ path('app_categories_new') }}" class="list-group-item list-group-item-action">Ajouter une catégorie</a>
+            
+        </div>
     </div>
 </div>
-
 {% endblock %}

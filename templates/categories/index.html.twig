@@ -3,13 +3,13 @@
 {% block stylesheets %}{% endblock %}
 
 {% block title %}Categories{% endblock %}
-    
+     
 {% block h1 %}Categories{% endblock %}
 
 {% block body %}
 
     {# 1. Bannière de la page (unique, hors de la boucle) #}
-    <div class="position-relative w-100 m-0 p-0 y-0 border border-danger   ">
+    <div class="position-relative w-100 m-0 p-0 y-0 border border-danger">
         <img src="{{ asset('images/page image Categorie.jpg') }}" 
              class="img-fluid w-100" 
              style="height: 251px; object-fit: cover;" 
@@ -17,43 +17,57 @@
     </div>
 
     {# 2. Conteneur principal #}
-    {# 2. Conteneur principal #}
-<div class="container my-5">
+    <div class="container my-5">
 
-    <h2 class="text-center mb-5">Nos catégories</h2>
-    
-    {# Grille Bootstrap : 1 colonne sur mobile, 2 sur tablette, 4 sur grand écran #}
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 justify-content-center">
+        <h2 class="text-center mb-5">Nos catégories</h2>
+        
+        {# Grille Bootstrap : 1 colonne sur mobile, 2 sur tablette, 4 sur grand écran #}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 justify-content-center">
 
-        {% for categorie in categories %}
-            <div class="col">
-                {# Le h-100 force toutes les cartes à avoir exactement la même hauteur #}
-                <div class="card h-100 ">
-                    
-                    {# Image dynamique #}
-                    <img src="{{ asset('images/' ~ categorie.slug ~ '.jpg') }}" 
-                         class="img-fluid card-img-top" 
-                         style="height: 187px; object-fit: cover;" 
-                         alt="{{ categorie.name }}"
-                         onerror="this.onerror=null; this.src='{{ asset('images/default.png') }}';">
-                         
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            {# Titre dynamique #}
-                            <h5 class="card-title text-capitalize">{{ categorie.name }}</h5>
-                            <p class="card-text text-dark">Découvrez notre sélection exclusive de produits dans la catégorie {{ categorie.name }}.</p>
-                        </div>
+            {% for categorie in categories %}
+                <div class="col">
+                    {# Le h-100 force toutes les cartes à avoir exactement la même hauteur #}
+                    <div class="card h-100">
                         
-                        {# Lien dynamique #}
-                        <a href="{{ path('app_categories_show', {'slug': categorie.slug}) }}" class="btn btn-custom-brown mt-3">
-                            Voir produits de la gamme {{ categorie.name }}
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %} {# La boucle se ferme correctement ici, après la carte #}
+                        {# Image dynamique #}
+                        <img src="{{ asset('images/' ~ categorie.slug ~ '.jpg') }}" 
+                             class="img-fluid card-img-top" 
+                             style="height: 187px; object-fit: cover;" 
+                             alt="{{ categorie.name }}"
+                             onerror="this.onerror=null; this.src='{{ asset('images/default.png') }}';">
+                             
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title text-capitalize">{{ categorie.name }}</h5>
+                                <p class="card-text text-dark">Découvrez notre sélection exclusive de produits dans la catégorie {{ categorie.name }}.</p>
+                            </div>
+                            
+                            <div>
+                                <a href="{{ path('app_categories_show', {'slug': categorie.slug}) }}" class="btn btn-custom-brown w-100 mt-3">
+                                    Voir produits de la gamme {{ categorie.name }}
+                                </a>
 
-        </div>
-    </div>
+                                {# 👇 SECTION ADMIN : Invisible pour les simples utilisateurs #}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="d-flex justify-content-between mt-2 gap-2">
+                                        <a href="{{ path('app_categories_edit', {'id': categorie.id}) }}" class="btn btn-sm btn-outline-warning flex-grow-1">
+                                            ✏️ Modifier
+                                        </a>
+
+                                        <form method="post" action="{{ path('app_categories_delete', {'id': categorie.id}) }}" class="flex-grow-1" onsubmit="return confirm('Supprimer la catégorie {{ categorie.name }} ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
+                                            <button class="btn btn-sm btn-outline-danger w-100">🗑️ Supprimer</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                                {# 👆 FIN DE LA SECTION ADMIN #}
+                            </div>
+                        </div> {# Fermeture de card-body #}
+                    </div> {# Fermeture de card #}
+                </div> {# Fermeture de col #}
+            {% endfor %}
+
+        </div> {# Fermeture de row #}
+    </div> {# Fermeture de container #}
         
 {% endblock %}

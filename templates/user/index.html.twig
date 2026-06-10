@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>User index</h1>
-
+ <a class="btn btn-custom-green"href="{{path('app_admin_user_index')}}">Gestion des membres</a>
     <table class="table">
         <thead>
             <tr>
@@ -14,11 +14,9 @@
                 <th>Password</th>
                 <th>FirstName</th>
                 <th>LastName</th>
-                <th>Firstname</th>
                 <th>IsVerified</th>
-                <th>Adresse_mail</th>
                 <th>Numero_de_telephone</th>
-                <th>actions</th>
+               
             </tr>
         </thead>
         <tbody>
@@ -34,8 +32,9 @@
                 <td>{{ user.eMail }}</td>
                 <td>{{ user.numeroDeTelephone }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <a btn btn-custom-green href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+                    <a class="btn btn-custom-green"href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <a class="btn btn-custom-green" href="{{ path('app_user_delete', {'id': user.id}) }}">delete</a>
                 </td>
             </tr>
         {% else %}
@@ -46,5 +45,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <a class="btn btn-custom-green" href="{{ path('app_user_new') }}">Create new</a>
 {% endblock %}

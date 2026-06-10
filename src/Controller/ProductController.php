@@ -16,7 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class ProductController extends AbstractController
 {
     // Affichage des produits
-    #[Route('/produit/afficher', name: 'app_product_index')]
+    #[Route('/produit/index', name: 'app_product_index')]
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
@@ -45,13 +45,13 @@ final class ProductController extends AbstractController
                 // ajout d'image
                 $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
 
-                // CORRECTION 2 : Déplacement physique du fichier dans public/images/
+                //Déplacement physique du fichier dans public/images/
                 $illustration->move(
                     $this->getParameter('kernel.project_dir') . '/public/images',
                     $newFileName
                 );
 
-                // CORRECTION 3 : Liaison du nom généré à l'objet Product
+              //Liaison du nom généré à l'objet Product
                 $product->setIllustration($newFileName);
             }
 
@@ -60,7 +60,6 @@ final class ProductController extends AbstractController
 
             $this->addFlash('success', 'Le produit a bien été ajouté');
 
-            // CORRECTION 4 : Majuscule à redirectToRoute
             return $this->redirectToRoute('app_product_index');
         }
 
