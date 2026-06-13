@@ -173,10 +173,23 @@ class ProductType extends AbstractType
             ->add('categories',EntityType::class,[
                 'class' => Categories::class,
                 'choice_label'=>'name',
+                'label' => ' <span class="text-success">Catégorie du produit </span> <span class="text-danger">*</span>',
+                'label_html'=>true,
                 'multiple'=>true,
+                'expanded'=>true,
                 'attr' =>[
-                        'placeholder'=> 'Ajouter une catégorie',
-                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '],
+                       'placeholder'=> 'Ajouter la categorie du produit',
+                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '
+                ],
+                        'row_attr' => [
+                    'class'=>'shadow  bg-success-custom-brown-f p-4 m-4'
+                ],
+                'help'=>'Cocher la catégorie du produit : <span class="text-custom-brown">Catégorie</span>',
+                'help_html'=>true,
+                'help_attr'=> [
+                    'class'=> 'text-success'
+                ],
+   
            ])
            
 

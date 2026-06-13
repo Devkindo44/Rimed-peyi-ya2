@@ -11,7 +11,7 @@
         {{ ux_icon('lucide:arrow-left', {class: 'me-1 icon20'}) }} Gestion des produits
     </a>
 
-    <div class="row bg-light p-4 rounded border shadow-sm">
+    <div class="row bg-light p-4 rounded border border-success shadow-sm">
         {# Colonne Gauche : L'image du produit #}
         <div class="col-md-4 text-center mb-3 mb-md-0">
             {% if product.illustration %}
@@ -25,13 +25,18 @@
         </div>
 
         {# Colonne Droite : Les informations détaillées #}
-        <div class="col-md-8">
-            <table class="table table-bordered bg-white">
+        <div class="col-md-7">
+            <table class="table table-bordered bg-white border border-success">
                 <tbody>
+                       
+
                     <tr>
+                     {% if is_granted('ROLE_ADMIN') %}
                         <th class="table-secondary" style="width: 25%;">ID</th>
                         <td>{{ product.id }}</td>
+                     {% endif %}
                     </tr>
+                   
                     <tr>
                         <th class="table-secondary">Titre</th>
                         <td><strong>{{ product.title }}</strong></td>
@@ -49,9 +54,13 @@
 
             {# Boutons d'action en bas de fiche #}
             <div class="d-flex justify-content-end mt-3">
+                {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning me-2">
-                    
                     {{ ux_icon('lucide:edit', {class: 'me-1 icon20'}) }} Modifier ce produit
+                </a>
+                {% endif %}
+                <a class="btn btn-custom-green mb-3" href="{{ path('app_product_index') }}">
+                    {{ ux_icon('lucide:shopping-bag', {class: 'me-2 icon20'}) }} Ajouter au panier
                 </a>
             </div>
         </div>

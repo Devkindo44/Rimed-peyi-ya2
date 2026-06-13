@@ -2,24 +2,29 @@
 
 namespace App\Controller;
 
-use index;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin_user_index')]
-    public function index(): Response
+    // 1. On change l'URL ici pour /admin/users
+    #[Route('/admin/users', name: 'app_admin_user_index')]
+    public function index(UserRepository $userRepository): Response
     {
-        return $this->render('admin/index.html.twig', []);
+        $lesUtilisateurs = $userRepository->findAll();
+
+        return $this->render('admin/index.html.twig', [
+            'users' => $lesUtilisateurs, // Bien au pluriel pour correspondre à ton Twig
+        ]);
     }
 
-    #[Route('/admin', name: 'app_admin_categories_index')]
+    // 2. On change l'URL ici pour /admin/categories
+    #[Route('/admin/categories', name: 'app_admin_categories_index')]
     public function indexCategories(): Response
     {
-        return $this->render('admin/index.html.twig', []);
+        // Attention : On utilise un template différent pour ne pas mélanger les utilisateurs et les catégories !
+        return $this->render('admin/categories_index.html.twig', []);
     }
 }
-
-

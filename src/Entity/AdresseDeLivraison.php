@@ -19,6 +19,10 @@ class AdresseDeLivraison
     #[ORM\Column(length: 255)]
     private ?string $code_postale = null;
 
+    #[ORM\ManyToOne(inversedBy: 'adresseDeLivraisons')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class AdresseDeLivraison
     public function setCodePostale(string $code_postale): static
     {
         $this->code_postale = $code_postale;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

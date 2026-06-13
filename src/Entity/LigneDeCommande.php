@@ -24,6 +24,14 @@ class LigneDeCommande
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'ligne_de_commande')]
     private Collection $products;
 
+    #[ORM\ManyToOne(inversedBy: 'ligneDeCommandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Commande $commande = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -72,6 +80,30 @@ class LigneDeCommande
                 $product->setLigneDeCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): static
+    {
+        $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }
