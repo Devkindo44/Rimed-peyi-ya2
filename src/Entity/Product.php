@@ -18,7 +18,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-   #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
@@ -27,20 +27,20 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $illustration = null;
 
-   
-
     /**
      * @var Collection<int, Categories>
      */
-    #[ORM\ManyToMany(targetEntity: Categories::class,  inversedBy: 'products')]
+  
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'products')]
     private Collection $categories;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?LigneDeCommande $ligne_de_commande = null;
+  
+    // LigneDeCommande qui portera le lien ManyToOne vers Product.
 
+    //Contrainte non-nullable pour le OneToOne strict avec le Stock
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Stock $stock = null;
-
 
     public function __construct()
     {
@@ -64,14 +64,14 @@ class Product
         return $this;
     }
 
-    public function getdescription(): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $Description): static
+    public function setDescription(?string $description): static
     {
-        $this->description = $Description;
+        $this->description = $description;
 
         return $this;
     }
@@ -100,8 +100,6 @@ class Product
         return $this;
     }
 
-    
-
     /**
      * @return Collection<int, Categories>
      */
@@ -126,29 +124,15 @@ class Product
         return $this;
     }
 
-    public function getLigneDeCommande(): ?LigneDeCommande
-    {
-        return $this->ligne_de_commande;
-    }
-
-    public function setLigneDeCommande(?LigneDeCommande $ligne_de_commande): static
-    {
-        $this->ligne_de_commande = $ligne_de_commande;
-
-        return $this;
-    }
-
     public function getStock(): ?Stock
     {
         return $this->stock;
     }
 
-    public function setStock(?Stock $stock): static
+    public function setStock(Stock $stock): static
     {
         $this->stock = $stock;
 
         return $this;
     }
-
-   
 }

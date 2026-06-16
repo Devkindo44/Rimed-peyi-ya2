@@ -7,6 +7,7 @@ use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -109,7 +110,7 @@ class ProductType extends AbstractType
                 'mapped'=> false,
 
                 //pour modifier le produit sans re-telecharger l'image
-                'required'=> true,
+                'required'=> false,
                 'constraints'=> [
                     //  new NotBlank([
                     //     'message'=> 'Veuillez uploader une image.'
@@ -171,17 +172,56 @@ class ProductType extends AbstractType
         
             ])
             ->add('categories',EntityType::class,[
-                'class' => Categories ::class,
+                'class' => Categories::class,
                 'choice_label'=>'name',
+                'label' => ' <span class="text-success">Catégorie du produit </span> <span class="text-danger">*</span>',
+                'label_html'=>true,
                 'multiple'=>true,
+                'expanded'=>true,
                 'attr' =>[
-                        'placeholder'=> 'Ajouter un prix',
-                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '],
+                       'placeholder'=> 'Ajouter la categorie du produit',
+                        'class'=>'form-control  bg-success-custom-brown-f shadow rounded '
+                ],
+                        'row_attr' => [
+                    'class'=>'shadow  bg-success-custom-brown-f p-4 m-4'
+                ],
+                'help'=>'Cocher la catégorie du produit : <span class="text-custom-brown">Catégorie</span>',
+                'help_html'=>true,
+                'help_attr'=> [
+                    'class'=> 'text-success'
+                ],
+   
            ])
+          
+            // BLOC STOCK :
+            ->add('stock', IntegerType::class, [
+                'label' => 'Quantité en stock<span class="text-danger">*</span>',
+                'label_html' => true,
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
+                'attr' => [
+                    'placeholder' => 'Ex: 10, 50, 100...',
+                    'class' => 'form-control bg-success-custom-brown-f shadow rounded'
+                ],
+                'mapped' => false, // Permet de gérer la quantité sans planter à cause de l'objet Stock
+                'row_attr' => [
+                    'class' => 'shadow bg-success-custom-brown-f p-4 m-4'
+                ],
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une quantité pour le stock.'
+                    ]),
+                    new Positive([
+                        'message' => 'Le stock doit être supérieur ou égal à 0.'
+                    ])
+                ]
+            ]); // Fermeture du builder 
            
 
                 // ->add('Ajouter',SubmitType::class) //creation bouton formulaire
-        ;
+        
     }
     
 

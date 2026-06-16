@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -11,6 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cette adresse email ')]
+#[ORM\HasLifecycleCallbacks] // Permet de mettre à jour le champ updatedAt automatiquement
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -39,17 +42,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $firstname = null;
-
     #[ORM\Column]
     private bool $isVerified = false;
 
-    #[ORM\Column(length: 255)]
-    private ?string $adresse_mail = null;
+    #[ORM\Column(nullable: true)] // Passer en nullable ou string selon vos besoins de formatage
+    private ?int $numero_de_telephone = null;
 
     #[ORM\Column]
-    private ?int $numero_de_telephone = null;
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Commande>
+     */
+    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'utilisateur')]
+    private Collection $commandes;
+
+    /**
+     * @var Collection<int, AdresseDeLivraison>
+     */
+    #[ORM\OneToMany(targetEntity: AdresseDeLivraison::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $adresseDeLivraisons;
+
+    // LE CONSTRUCTEUR : Initialise les dates à la création de l'objet pour éviter le bug "0000-00-00"
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+        $this->commandes = new ArrayCollection();
+        $this->adresseDeLivraisons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -64,13 +88,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
     /**
      * A visual identifier that represents this user.
-     *
      * @see UserInterface
      */
     public function getUserIdentifier(): string
@@ -84,9 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
@@ -96,7 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -111,18 +130,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
     public function __serialize(): array
     {
         $data = (array) $this;
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
         return $data;
     }
 
@@ -140,7 +154,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(?string $firstName): static
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -152,7 +165,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(?string $lastName): static
     {
         $this->lastName = $lastName;
-
         return $this;
     }
 
@@ -164,19 +176,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function getAdresseMail(): ?string
-    {
-        return $this->adresse_mail;
-    }
-
-    public function setAdresseMail(string $adresse_mail): static
-    {
-        $this->adresse_mail = $adresse_mail;
-
         return $this;
     }
 
@@ -185,9 +184,101 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->numero_de_telephone;
     }
 
-    public function setNumeroDeTelephone(int $numero_de_telephone): static
+    public function setNumeroDeTelephone(?int $numero_de_telephone): static
     {
         $this->numero_de_telephone = $numero_de_telephone;
+        return $this;
+    }
+
+    // GETTERS & SETTERS POUR LES DATES
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * Met à jour automatiquement la date de modification avant chaque UPDATE en BDD
+     */
+    #[ORM\PreUpdate]
+    public function updateTimestamp(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUtilisateur() === $this) {
+                $commande->setUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdresseDeLivraison>
+     */
+    public function getAdresseDeLivraisons(): Collection
+    {
+        return $this->adresseDeLivraisons;
+    }
+
+    public function addAdresseDeLivraison(AdresseDeLivraison $adresseDeLivraison): static
+    {
+        if (!$this->adresseDeLivraisons->contains($adresseDeLivraison)) {
+            $this->adresseDeLivraisons->add($adresseDeLivraison);
+            $adresseDeLivraison->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdresseDeLivraison(AdresseDeLivraison $adresseDeLivraison): static
+    {
+        if ($this->adresseDeLivraisons->removeElement($adresseDeLivraison)) {
+            // set the owning side to null (unless already changed)
+            if ($adresseDeLivraison->getUser() === $this) {
+                $adresseDeLivraison->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,76 +1,91 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}{{parent()}} | Gestion des produits{% endblock %}
-{% block description %}{{parent()}} | Gestion des produits{% endblock %}
-{% block keywords %}{{parent()}} |  Gestion des produits{% endblock %}
+{% block title %}{{ parent() }} | Gestion des produits{% endblock %}
+{% block description %}{{ parent() }} | Gestion des produits{% endblock %}
+{% block keywords %}{{ parent() }} |  Gestion des produits{% endblock %}
 {% block h1 %}Gestion des produits{% endblock %}
 
 {% block body %}
 
-<a class="btn btn-custom-green"href="{{path('app_product_new')}}">Gestion des produits</a>
+<div class="container mt-4">
+    {# Affichage des messages de succès (Ajout / Modification) #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
 
-{# <pre>
-{{dump(products)}};
-</pre> #}
-{#si le tableau product contient quelque qqch#}
+    {# Bouton pour ajouter un produit (Texte corrigé pour plus de clarté) #}
+    <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
+        Ajouter un produit
+    </a>
 
-{% if products %}
-    {# Tableau en html#}
-    <table class="table table-striped table-bordered table-hover text-center mt-3">
-        <thead class="table-success">
-            <tr>
-                <th>ID</th>
-                <th>Titre</th>
-                <th>Illustration</th>
-                <th>Prix(€)</th>
-                <th>Description</th>
-               <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-        {#
-            A chaque tour de boucle l'objet est injecté dans le "terme" product 
-
-            on n'affiche pas le produit mais ce que 
-        #}
-            {% for product in products %}
-            {# <pre>
-            {{dump(products)}};
-            </pre> #}
+    {% if products is not empty %}
+        {# Tableau en html #}
+        <table class="table table-striped table-bordered table-hover text-center mt-3">
+            <thead class="table-success">
                 <tr>
-                    <td>{{product.id}}</td>
-                    <td>{{product.title|capitalize}}</td>
-                    <td>{{product.illustration}}</td>
-                    <td>{{product.price}}</td>
-                    <td>
-                    {# condition pour afficher une icone s'il n'y apas d'image#}
-                        {% if product.Description|length > 20 %}
-                            {{product.Description| slice(0,17) }}...
-                        {% else %}
-                            {{product.Description|nl2br}}
-                            {{ux_icon('lucide:circle-off',{class:'text-danger icon20'})}}
-                       {% endif %}
-                    </td>
-                    <td>
-                        {# Icône Modifier #}
-                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="text-decoration-none">
-                            {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
-                        </a>
-                        
-                        {# Icône Supprimer #}
-                        <a href="#" class="text-decoration-none">
-                            {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
-                        </a>  
-                    </td>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Illustration</th>
+                    <th>Prix(€)</th>
+                    <th>Description</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-   
-{% else %}
-    
-{% endif %}
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        {# Petite correction : attention à la propriété 'title' ou 'name' selon ton entité. J'ai gardé title ici #}
+                        <td>{{ product.title|capitalize }}</td>
+                        <td>
+                            {# Rendu visuel de l'image au lieu du simple texte #}
+                            {% if product.illustration %}
+                                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-thumbnail">
+                            {% else %}
+                                {{ ux_icon('lucide:image-off', {class: 'text-muted icon20'}) }}
+                            {% endif %}
+                        </td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            {# Attention en Twig aux majuscules, utilise plutôt product.description au lieu de product.Description #}
+                            {% if product.description|length > 20 %}
+                                {{ product.description|slice(0, 17) }}...
+                            {% else %}
+                                {{ product.description|nl2br }}
+                            {% endif %}
+                        </td>
+                         <td>{{ product.stock }}</td>
+                        
+                        <td>
+                            {# Icône Voir (Fiche produit insérée ici) #}
+                            <a href="{{ path('app_product_show', {'id': product.id}) }}" class="text-decoration-none me-2" title="Voir la fiche">
+                                {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
+                            </a>
+
+                            {# Icône Modifier #}
+                            <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="text-decoration-none me-2" title="Modifier">
+                                {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
+                            </a>
+                            
+                            {# Icône Supprimer #}
+                            <a href="{{ path('app_product_delete', {'id': product.id}) }}" class="text-decoration-none me-2" title="Supprimer">
+                                {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                           
+                            </a>  
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3">
+            {{ ux_icon('lucide:info', {class: 'me-2'}) }} Aucun produit n'est disponible pour le moment.
+        </div>
+    {% endif %}
+</div>
 
 {% endblock %}

@@ -11,9 +11,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home', methods: ['GET', 'POST'])]
-    public function index(): Response
+    public function index(ProductRepository $productRepository): Response
     {
-        return $this->render('home/index.html.twig');
+        return $this->render('home/index.html.twig',[
+            'products' => $productRepository->findAll(),
+        ]);
     }
 
 

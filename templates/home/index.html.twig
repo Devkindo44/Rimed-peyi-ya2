@@ -1,30 +1,82 @@
 {% extends 'base.html.twig' %}
 
-
 {# bloc pour les metadonnées seo#}
-
-{% block title %}{{parent()}} | page d'Accueil{% endblock %}
-{% block description %}{{parent()}} |  page d'Accueil{% endblock %}
-{% block keywords %}{{parent()}} |  page d'Accueil{% endblock %}
-{% block h1 %}Rimed Péyi ya{% endblock %}
-
-
-{% block body %}
-<main class="container text-center py-5">
-    
-    <div class="container">
-        <div class="row">
-            <div class=" row justify-content-center">
-                <div class="col-lg-10">
-                    <img src="{{ asset('/images/ForetArbreVoyageur.jpg') }}" 
-                        class=" hero-image img-fluid " 
-                        alt="ForetArbreVoyageur.jpg">
-            </div>
-        </div>
-    </div>
-    
-</main>
+{% block title %}
+	{{parent()}}
+	| page d'Accueil
+{% endblock %}
+{% block description %}
+	{{parent()}}
+	|  page d'Accueil
+{% endblock %}
+{% block keywords %}
+	{{parent()}}
+	|  page d'Accueil
+{% endblock %}
+{% block h1 %}Rimed Péyi ya
 {% endblock %}
 
+{% block body %}
+	<main>
+		{# Correction de la balise main qui était mal fermée #}
 
+		<div class="container text-center py-5">
+			<div class="row justify-content-center">
+				<div class="col-lg-10">
+					<img src="{{ asset('/images/ForetArbreVoyageur.jpg') }}" class="img-fluid hero-image" alt="Forêt avec un arbre du voyageur">
+				</div>
+			</div>
+                  
+			<div id="myCarousel" class="carousel slide py-5" data-bs-ride="carousel">
 
+				<div class="carousel-inner">
+
+					{% for product in products %}
+						{# Si c'est le premier produit de la boucle, on lui ajoute la classe 'active' #}
+						<div class="carousel-item {% if loop.first %}active{% endif %} py-4">
+							<div class="row justify-content-center">
+								<div class="col-md-4 col-sm-6">
+									<div
+										class="card shadow-sm h-100 border bg-custom-cream border border-warning">
+
+                                            {# images des produits#}
+										<img src="{{ product.illustration ? asset('images/' ~ product.illustration) : asset('images/gombo.webp') }}" class="card-img-top mx-auto d-block p-3" alt="{{ product.title }}" style="height: 200px; object-fit: contain;">
+
+										<div
+											class="card-body rounded text-white bg-custom-green">
+											{# titre des produits#}
+											<h5 class="card-title">{{ product.title }}</h5>
+                                             {% if app.user %}
+											<p class="card-text text-warning">{{ product.price }}
+												€</p>
+											<a href="{{path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-success btn-sm">Voir le produit</a>
+                                            {% endif %}
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<div class="carousel-item active py-5">
+							<p class="text-muted">Aucun remède disponible pour le moment.</p>
+						</div>
+					{% endfor %}
+
+				</div>
+
+				<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+					<span class="visually-hidden">Précédent</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+					<span class="visually-hidden">Suivant</span>
+				</button>
+
+			</div>
+
+		</div>
+
+	</main>
+{% endblock %}
