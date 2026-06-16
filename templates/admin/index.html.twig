@@ -5,7 +5,7 @@
 
 {% block body %}
 <div class="row">
-    {# SECTION GESTION DES MEMBRES #}
+    {# SECTION GESTION DES utilisateurs #}
     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
         <div class="list-group">
             <div class="list-group-item bg-success text-white font-weight-bold">Gestion des membres</div>
@@ -36,5 +36,18 @@
             <a href="{{ path('app_categories_new') }}" class="list-group-item list-group-item-action">Ajouter une catégorie</a>
         </div>
     </div>
+     {# Gestion des produits #}
+     <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
+        <div class="list-group">
+            <div class="list-group-item bg-success text-white font-weight-bold">Gestion des produits</div>
+            
+            {# Ce lien mène à la liste complète #}
+            <a href="{{ path('app_home_catalogue')}}" class="list-group-item list-group-item-action">Liste des produits</a>
+            
+            {# Ce lien mène au formulaire de création #}
+            <a href="{{ path('app_product_new')  }}" class="list-group-item list-group-item-action">Ajouter un produit</a>
+        </div>
+    </div>
+    
 </div>
 {% endblock %}

@@ -32,4 +32,12 @@ class Stock
 
         return $this;
     }
+    /**
+     * Permet à Symfony de convertir cet objet en texte automatiquement
+     */
+    public function __toString(): string
+    {
+        // On convertit la quantité en string, si elle est nulle on affiche "0"
+        return (string) ($this->quantity ?? 0);
+    }
 }

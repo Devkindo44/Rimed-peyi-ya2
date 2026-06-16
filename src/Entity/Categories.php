@@ -6,7 +6,7 @@ use App\Repository\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; // <-- Le bon import à utiliser ici
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity; //mport pour le UniqueEntity fields
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Ce nom de catégorie existe déjà.')] //  Validation par nom unique

@@ -7,6 +7,7 @@ use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -191,10 +192,36 @@ class ProductType extends AbstractType
                 ],
    
            ])
+          
+            // BLOC STOCK :
+            ->add('stock', IntegerType::class, [
+                'label' => 'Quantité en stock<span class="text-danger">*</span>',
+                'label_html' => true,
+                'label_attr' => [
+                    'class' => 'text-success',
+                ],
+                'attr' => [
+                    'placeholder' => 'Ex: 10, 50, 100...',
+                    'class' => 'form-control bg-success-custom-brown-f shadow rounded'
+                ],
+                'mapped' => false, // Permet de gérer la quantité sans planter à cause de l'objet Stock
+                'row_attr' => [
+                    'class' => 'shadow bg-success-custom-brown-f p-4 m-4'
+                ],
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir une quantité pour le stock.'
+                    ]),
+                    new Positive([
+                        'message' => 'Le stock doit être supérieur ou égal à 0.'
+                    ])
+                ]
+            ]); // Fermeture du builder 
            
 
                 // ->add('Ajouter',SubmitType::class) //creation bouton formulaire
-        ;
+        
     }
     
 

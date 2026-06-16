@@ -31,6 +31,7 @@
                     <th>Illustration</th>
                     <th>Prix(€)</th>
                     <th>Description</th>
+                    <th>Stock</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -57,6 +58,7 @@
                                 {{ product.description|nl2br }}
                             {% endif %}
                         </td>
+                         <td>{{ product.stock }}</td>
                         
                         <td>
                             {# Icône Voir (Fiche produit insérée ici) #}
@@ -70,8 +72,9 @@
                             </a>
                             
                             {# Icône Supprimer #}
-                            <a href="#" class="text-decoration-none" title="Supprimer">
+                            <a href="{{ path('app_product_delete', {'id': product.id}) }}" class="text-decoration-none me-2" title="Supprimer">
                                 {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                           
                             </a>  
                         </td>
                     </tr>

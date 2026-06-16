@@ -78,6 +78,10 @@ color: #6D4C41;
     background-color: var(--main-green); 
 }
 
+.bg-custom-cream { 
+    background-color: var(  --bg-cream); 
+}
+
 H1.bg-custom-brown{
     color: #2e7d32; /*#6D4C41;*/
 }
@@ -158,6 +162,11 @@ border: #1a5d1a solid 2px;
 
 border: #6D4C41 solid 2px;
 border-radius: 10px;
+}
+
+.border-green{
+
+--main-green: #1a5d1a;
 }
 
 /*.card-container{
