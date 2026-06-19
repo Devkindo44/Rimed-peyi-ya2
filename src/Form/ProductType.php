@@ -67,7 +67,7 @@ class ProductType extends AbstractType
                     'rows'=>8,
                     'class'=>'form-control   bg-success-custom-brown-f shadow'
                ],
-               'help'=>'Ajouter une description  pertinente du produit : <span class="text-custom-brown">200 charactères max. </span>',
+               'help'=>'Ajouter une description  pertinente du produit : <span class="text-custom-brown">1000 charactères max. </span>',
                'help_html'=>true,
                'help_attr'=> [
                 'class'=> 'text-success'
@@ -82,8 +82,8 @@ class ProductType extends AbstractType
                     ]),
                  new Length([
                         
-                        'max'=>200,
-                        'maxMessage'=>'Veuillez saisir au maximum 200 caractères'
+                        'max'=>1000,
+                        'maxMessage'=>'Veuillez saisir au maximum 1000 caractères'
 
                     ])
                ]
