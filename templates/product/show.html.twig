@@ -1,73 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} | Fiche {{ product.title }}{% endblock %}
-{% block h1 %}Fiche "{{ product.title }}"{% endblock %}
+{% block title %}
+	{{ parent() }}
+	| Fiche
+	{{ product.title }}
+{% endblock %}
+{% block h1 %}Fiche "{{ product.title }}"
+{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    
-    {# Bouton de retour à la liste #}
-    <a class="btn btn-custom-green mb-4" href="{{ path('app_product_index') }}">
-        {{ ux_icon('lucide:arrow-left', {class: 'me-1 icon20'}) }} Gestion des produits
-    </a>
+	<div
+		class="container my-5 px-4">
 
-    <div class="row bg-light p-4 rounded border border-success shadow-sm">
-        {# Colonne Gauche : L'image du produit #}
-        <div class="col-md-4 text-center mb-3 mb-md-0">
-            {% if product.illustration %}
-                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded img-thumbnail shadow-sm" style="max-height: 300px; object-fit: cover;">
-            {% else %}
-                <div class="border rounded d-flex flex-column align-items-center justify-content-center bg-white text-muted" style="height: 250px;">
-                    {{ ux_icon('lucide:image-off', {class: 'icon40 mb-2'}) }}
-                    <span>Aucune illustration</span>
-                </div>
-            {% endif %}
-        </div>
+		{# BOUTON RETOUR #}
+		<div class="mb-4">
+        {% if is_granted('ROLE_ADMIN') %}
+			<a class="btn btn-outline-success btn-sm rounded-pill px-3" href="{{ path('app_product_index') }}">
+				{{ ux_icon('lucide:arrow-left', {class: 'me-1 icon20'}) }}
+				Gestion des produits
+			</a>
+        {% endif %}
+		</div>
 
-        {# Colonne Droite : Les informations détaillées #}
-        <div class="col-md-7">
-            <table class="table table-bordered bg-white border border-success">
-                <tbody>
-                       
+		{# CARTE PRINCIPALE PRODUIT #}
+		<div
+			class="row g-4 bg-white p-4 p-md-5 rounded-4 shadow-sm border-brown">
 
-                    <tr>
-                     {% if is_granted('ROLE_ADMIN') %}
-                        <th class="table-secondary" style="width: 25%;">ID</th>
-                        <td>{{ product.id }}</td>
-                     {% endif %}
-                    </tr>
-                   
-                    <tr>
-                        <th class="table-secondary">Titre</th>
-                        <td><strong>{{ product.title }}</strong></td>
-                    </tr>
-                    <tr>
-                        <th class="table-secondary">Prix</th>
-                        <td><span class="badge bg-success fs-6">{{ product.price }} €</span></td>
-                    </tr>
-                    <tr>
-                        <th class="table-secondary">Description</th>
-                        <td>{{ product.description|nl2br }}</td>
-                    </tr>
-                    <tr>
-                        <th class="table-secondary">stock</th>
-                        <td>{{ product.stock }}</td>
-                    </tr>
-                </tbody>
-            </table>
+			{# COLONNE GAUCHE : L'IMAGE #}
+			<div class="col-md-5 col-lg-4 text-center">
+				<div class="d-flex align-items-center justify-content-center bg-light rounded-3 p-3 border-brown h-100" style="min-height: 300px;">
+					{% if product.illustration %}
+						<img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded-3 shadow-sm mx-auto d-block" style="max-height: 350px; object-fit: contain;">
+					{% else %}
+						<div class="text-muted py-5">
+							{{ ux_icon('lucide:image-off', {class: 'icon40 mb-2 text-custom-brown'}) }}
+							<p class="mb-0 small fw-medium">Aucune illustration disponible</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
 
-            {# Boutons d'action en bas de fiche #}
-            <div class="d-flex justify-content-end mt-3">
-                {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning me-2">
-                    {{ ux_icon('lucide:edit', {class: 'me-1 icon20'}) }} Modifier ce produit
-                </a>
-                {% endif %}
-                <a class="btn btn-custom-green mb-3" href="{{ path('app_product_index') }}">
-                    {{ ux_icon('lucide:shopping-bag', {class: 'me-2 icon20'}) }} Ajouter au panier
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+			{# COLONNE DROITE : LES INFORMATIONS #}
+			<div class="col-md-7 col-lg-8 d-flex flex-column justify-content-between">
+				<div>
+					{# Titre & Badge ID optionnel #}
+					<div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-2">
+						<h2 class="section-title text-custom-green-l mb-0 fs-2">{{ product.title }}</h2>
+
+						{% if is_granted('ROLE_ADMIN') %}
+							<span class="badge bg-secondary font-monospace opacity-75 py-2 px-3 rounded-pill">
+								ID: #{{ product.id }}
+							</span>
+						{% endif %}
+					</div>
+					<div class="title-underline mb-4" style="width: 60px;"></div>
+
+					{# Prix #}
+					<div class="mb-4">
+						<span class="fs-2 fw-bold text-custom-brown">{{ product.price }}
+							€</span>
+					</div>
+
+					{# Bloc Description #}
+					<div class="mb-4">
+						<h6 class="text-uppercase fw-bold text-muted small tracking-wider mb-2">Description / Bienfaits</h6>
+						<div class="p-3 bg-light rounded-3 border-start border-success border-3 text-dark fs-6" style="line-height: 1.6;">
+							{{ product.description|nl2br }}
+						</div>
+					</div>
+
+					{# État du Stock #}
+					<div class="mb-4 d-flex align-items-center gap-2">
+						<span class="text-uppercase fw-bold text-muted small tracking-wider me-2">Disponibilité: {{ product.stock}}:</span>
+
+						{# On vérifie d'abord si le stock existe, puis on accède à sa propriété numérique #}
+						{% if product.stock and product.stock.quantity > 0 %}
+							<span class="badge bg-success-custom px-3 py-2 rounded-pill fw-medium">
+								{{ ux_icon('lucide:check-circle', {class: 'me-1 icon20'}) }}
+								En stock ({{ product.stock.quantity }})
+							</span>
+						{% else %}
+							<span class="badge bg-danger px-3 py-2 rounded-pill fw-medium">
+								{{ ux_icon('lucide:alert-triangle', {class: 'me-1 icon20'}) }}
+								Rupture de stock
+							</span>
+						{% endif %}
+					</div>
+				</div>
+
+				{# BOUTONS D'ACTION #}
+				<div class="border-top pt-4 mt-4 d-flex flex-wrap gap-2 justify-content-end">
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-warning px-4 py-2 rounded-pill fw-medium">
+							{{ ux_icon('lucide:edit', {class: 'me-1 icon20'}) }}
+							Modifier ce produit
+						</a>
+					{% endif %}
+
+					<a class="btn btn-custom-brown px-4 py-2 rounded-pill fw-medium transition-all" href="{{ path('app_product_index') }}">
+						{{ ux_icon('lucide:shopping-bag', {class: 'me-2 icon20'}) }}
+						Ajouter au panier
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
 {% endblock %}

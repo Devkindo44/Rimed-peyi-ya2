@@ -1,25 +1,16 @@
-/*Fichier css*/
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
-
-*{
-    font-family:"poppins",sans serif;
-}
-/*Palette de couleur du site*/
+/* Palette de couleur du site */
 :root {
-    --main-green: #1a5d1a; /* Le vert de du header et du footer */
-    --main-green2:#2e7d32;/* vert intermediaire*/
-    --bg-cream: #f4f4e4;   /* Le fond crème de la maquette */
-    --bg-cream1:#f5f5dc;/*secondaire*/
-    --t-brown: #6D4C41;/*marron terre*/
-    --bg-white:#ffffff;
+    --main-green: #1a5d1a;   /* Vert principal */
+    --main-green2: #2e7d32;  /* Vert intermédiaire */
+    --bg-cream: #f4f4e4;     /* Fond crème */
+    --bg-cream1: #f5f5dc;    /* Secondaire */
+    --t-brown: #6D4C41;      /* Marron terre */
+    --bg-white: #ffffff;
 }
 
-/* Structure pour bloquer le footer en bas */
+/* Base & Footer sticky */
 html, body {
     height: 100%;
     margin: 0;
@@ -27,199 +18,149 @@ html, body {
 
 body { 
     background-color: var(--bg-cream); 
-    font-family: 'Georgia', serif; 
+    font-family: 'Poppins', sans-serif; /* Police moderne pour la lecture */
     display: flex;
     flex-direction: column;
+    color: var(--t-brown);
 }
 
-/* Le contenu principal pousse le footer */
 main {
     flex: 1 0 auto;
 }
-
-/*Couleur ecriture*/
-.text-custom-brown{
-    color: #6D4C41;
-}
-
-.text-custom-green-l{
-    color:#1a5d1a;
-}
-
-
-/* Nav*/
-
 
 footer {
     flex-shrink: 0;
 }
 
-/*Menu Nav*/
-
-.dropdown-menu {
-border-radius: 0;
-color: #6D4C41;
-}
-.dropdown-item{
-    color: #2e7d32;
+/* Typographie de Titrage */
+h1, h2, h3, h4, h5, .section-title {
+    font-family: 'Playfair Display', serif; /* Police élégante pour les titres */
+    font-weight: 600;
 }
 
-.dropdown-menu:hover{
-    background-color:   #f4f4e4;
-    
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.dropdown-menu-end{
-    color: #2e7d32;
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background-color: var(--t-brown);
+    border-radius: 2px;
 }
 
-/* Classes utilitaires */
-.bg-custom-green { 
-    background-color: var(--main-green); 
+/* Couleurs de textes */
+.text-custom-brown { color: var(--t-brown); }
+.text-custom-green-l { color: var(--main-green); }
+.text-muted{
+    color:white;
 }
 
-.bg-custom-cream { 
-    background-color: var(  --bg-cream); 
-}
+/* Arrières-plans */
+.bg-custom-green { background-color: var(--main-green); }
+.bg-custom-cream { background-color: var(--bg-cream); }
+.bg-custom-brown { background-color: var(--t-brown); }
 
-H1.bg-custom-brown{
-    color: #2e7d32; /*#6D4C41;*/
-}
-
-.nav-link, .footer-link { 
-    color: white !important; 
-}
-
-.logo-p{
-    
-
-}
-
+/* Image Hero */
 .hero-image { 
-    border-radius: 20px; 
-    box-shadow: 0 4px 15px rgba(163, 98, 1, 0.2);
-    object-fit: cover;
+    width: 100%;
+    height: 50vh; /* S'adapte à la hauteur de l'écran */
+    min-height: 350px;
+    max-height: 600px;
+    object-fit: cover; /* Garde les proportions sans écraser l'image */
+    border-radius: 0;
 }
 
-h1{
-    color: #6D4C41;
-   
+@media screen and (min-width: 768px) {
+    .hero-image {
+        border-radius: 20px; /* Bords ronds uniquement sur grand écran */
+    }
 }
 
-img-fluid{
-height: 500px;
+/* Cartes Produits */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.btn-custom-brown{
-background-color: #6D4C41;
-border-color: #5d4037;
-color: #f4f4e4;
-
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(109, 76, 65, 0.2) !important;
 }
 
-.btn-custom-green{
-/* background-color: #1a5d1a; */
-color:#1a5d1a;
-border: #1a5d1a solid 2px;
-
-}
-.bg-success-custom-brown{
-background-color: #1a5d1a;
-color: #f4f4e4;
-border: #6D4C41 solid 2px;
+.border-brown {
+    border: var(--t-brown) solid 2px;
 }
 
-.bg-success-custom-green{
-
-color: #6D4C41;
-border: #1a5d1a solid 2px;
+.border-green {
+    border: var(--main-green) solid 2px;
 }
 
-.bg-success-custom-brown-f{
-
-color: #6D4C41  ;
-border: #6D4C41 solid 2px;
+/* Boutons */
+.btn-outline-light:hover {
+    background-color: var(--t-brown);
+    border-color: var(--t-brown);
+    color: var(--bg-cream);
 }
 
-.bg-success-custom-marroneffect{
-box-shadow: #6D4C41;
-color: #6D4C41;
-border: #1a5d1a solid 2px;
+/* Carrousel Boutons */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 50%; /* Réduit un peu la taille des flèches */
 }
 
-.bg-success-custom-beigeffect{
-    background-color: #f4f4e4;
-    color: #1a5d1a;
+/* Formulaires & Autres (Gardé de ton code) */
+.form-bg-image {
+    background-image: url('images/plantes-jardin-creole.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.bg-success-custom{
-    background-color: #1a5d1a;
-    color: #f4f4e4;
+.login-form {
+    max-width: 500px; /* Remplacé width par max-width pour le mobile */
+    width: 100%;
+    border: solid 2px var(--t-brown);
+    margin: 0 auto;
 }
 
-
-.border-brown{
-
-border: #6D4C41 solid 2px;
-border-radius: 10px;
+.security-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 80vh; /* Remplacé 100vh par min-height */
 }
 
-.border-green{
-
---main-green: #1a5d1a;
+/* Menu Nav */
+.dropdown-menu {
+    border-radius: 0;
+    border: 1px solid var(--t-brown);
 }
 
-/*.card-container{
-background-color: yellow !important
-
-}*/
-
-.form-bg-image{
-background-image: url('images/plantes-jardin-creole.webp');
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
+.dropdown-item {
+    color: var(--main-green2);
+    transition: background-color 0.2s ease;
 }
 
-/*Formulaire*/
-
-.login-form{
-    width:500px;
-    border:solid 2px  #6D4C41;
-}
-.security-form{
-display:flex;
-align-items:center;
-justify-content:space-around;
-width:100%;
-height:100vh;
+.dropdown-item:hover {
+    background-color: var(--bg-cream);
+    color: var(--t-brown);
 }
 
-/*Footer*/
-
-.reseaux{
-   list-style: none;
-   display: flex;
-   align-items:flex-start;
+/* Mobile Réseaux */
+.reseaux {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espace entre les icônes */
+    padding-left: 0;
 }
 
-.icon-reseaux{
-    /* display: flex;
-    width: 2px;
-    height: 2px; */
-}
-.icon25{
-    width: 25px;
-    height: 25px;
-}
-
-.icon20{
-    width: 25px;
-    height: 25px;
-}
-
-@media screen and (max-width:768px){
-    .firstPosition{
-        order:-1;
+@media screen and (max-width: 768px) {
+    .firstPosition {
+        order: -1;
     }
 }
