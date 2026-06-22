@@ -1,52 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block nav %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block title %}Profil de {{ user.firstName|capitalize }}{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
-  <a class="btn btn-custom-green"href="{{path('app_user_index')}}">Gestion des membres</a>
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>IsVerified</th>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Numero_de_telephone</th>
-                <td>{{ user.numeroDeTelephone }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container my-5">
+    
+    {# En-tête avec navigation claire #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-custom-green-l"> Détails du Membre</h2>
+            <p class="text-muted">Vue d'ensemble du compte utilisateur #{{ user.id }}.</p>
+        </div>
+        <div class="btn-group">
+            <a class="btn btn-custom-brown" href="{{ path('app_user_index') }}">
+                Index des membres
+            </a>
+            <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+                ← Tableau de bord
+            </a>
+        </div>
+    </div>
 
-    <a class="btn btn-custom-green" href="{{ path('app_user_index') }}">back to list</a>
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            {# Conteneur carte stylisé #}
+            <div class="card shadow-sm border-green table-card-clean">
+                <div class="card-header bg-custom-green text-white fw-bold py-3">
+                    Fiche d'identité
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped vertical-align-middle mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="ps-4 w-25">ID</th>
+                                <td><span class="badge bg-light text-dark">#{{ user.id }}</span></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-4">Prénom</th>
+                                <td>{{ user.firstName|capitalize }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-4">Nom</th>
+                                <td>{{ user.lastName|upper }}</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-4">Email</th>
+                                <td>
+                                    {{ user.email }}
+                                    {% if user.isVerified %}
+                                        <span class="badge bg-success ms-2">✓ Vérifié</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark ms-2"> Non vérifié</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="ps-4">Rôles</th>
+                                <td>
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <span class="badge bg-danger">Administrateur</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Membre</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="ps-4">Téléphone</th>
+                                <td>{{ user.numeroDeTelephone ? user.numeroDeTelephone : '<em class="text-muted">Non renseigné</em>' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-  <a class="btn btn-custom-green" href="{{ path('app_user_new', {'id': user.id}) }}">new</a>
-    <a class="btn btn-custom-green" href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-    <a  {{ include('user/_delete_form.html.twig') }}</a>
+            {# Barre d'outils et actions en bas #}
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <a class="btn btn-warning me-2" href="{{ path('app_user_edit', {'id': user.id}) }}">
+                        ✏ Éditer ce profil
+                    </a>
+                    <a class="btn btn-outline-success" href="{{ path('app_user_new') }}">
+                        + Créer un nouveau membre
+                    </a>
+                </div>
+                
+                {# Le formulaire de suppression est maintenant extrait proprement #}
+                <div>
+                    {{ include('user/_delete_form.html.twig') }}
+                </div>
+            </div>
 
-   
+        </div>
+    </div>
+</div>
 {% endblock %}

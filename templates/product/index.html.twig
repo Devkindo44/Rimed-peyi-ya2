@@ -17,25 +17,30 @@
     {% endfor %}
 
     {# Bouton pour ajouter un produit (Texte corrigé pour plus de clarté) #}
-    <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
+        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+                ← Tableau de bord
+        </a>
+         <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
         Ajouter un produit
-    </a>
+        </a>
 
     {% if products is not empty %}
+    
         {# Tableau en html #}
-        <table class="table table-striped table-bordered table-hover text-center mt-3">
-            <thead class="table-success">
-                <tr>
-                    <th>ID</th>
-                    <th>Titre</th>
-                    <th>Illustration</th>
-                    <th>Prix(€)</th>
-                    <th>Description</th>
-                    <th>Stock</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+        <table class="table table-striped vertical-align-middle mb-0 table-bordered table-hover  text-center text-white mt-3">
+            <thead>
+        <tr>
+            {# Bootstrap nécessite la classe utilitaire de fond ET 'border-0' ou un style pour surcharger l'en-tête #}
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">ID</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Titre</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Illustration</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prix(€)</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Description</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Stock</th>
+            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
                 {% for product in products %}
                     <tr>
                         <td>{{ product.id }}</td>
@@ -87,5 +92,6 @@
         </div>
     {% endif %}
 </div>
+
 
 {% endblock %}

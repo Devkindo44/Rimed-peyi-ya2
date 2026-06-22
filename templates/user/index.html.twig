@@ -1,49 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block nav %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block title %}Liste des membres{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
- <a class="btn btn-custom-green"href="{{path('app_admin_user_index')}}">Gestion des membres</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>IsVerified</th>
-                <th>Numero_de_telephone</th>
-               
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-                <td>{{ user.eMail }}</td>
-                <td>{{ user.numeroDeTelephone }}</td>
-                <td>
-                    <a btn btn-custom-green href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a class="btn btn-custom-green"href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                    <a class="btn btn-custom-green" href="{{ path('app_user_delete', {'id': user.id}) }}">delete</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="container my-5">
 
-    <a class="btn btn-custom-green" href="{{ path('app_user_new') }}">Create new</a>
+    {# En-tête de la page #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+            ← Retour au Tableau de bord
+        </a>
+        <div>
+            <h2 class="fw-bold text-custom-green-l"> Gestion des membres</h2>
+            <p class="text-muted">Liste complète des utilisateurs inscrits sur le site.</p>
+        </div>
+       
+        <a class="btn btn-custom-green" href="{{ path('app_user_new') }}">
+            + Ajouter un membre
+        </a>
+    </div>
+
+    {# Tableau des utilisateurs #}
+    <div class="card shadow-sm border-green table-card-clean">
+        <div class="card-header bg-custom-green text-white fw-bold py-3">
+            Comptes utilisateurs
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped vertical-align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Statut</th>
+                        <th>Rôles</th>
+                        <th>Téléphone</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="ps-4"><span class="badge bg-light text-dark">#{{ user.id }}</span></td>
+                        <td>{{ user.firstName|capitalize }}</td>
+                        <td>{{ user.lastName|upper }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.isVerified %}
+                                <span class="badge bg-success">✓ Vérifié</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">⚠ En attente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                <span class="badge bg-danger">Admin</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Membre</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.numeroDeTelephone ? user.numeroDeTelephone : '<em class="text-muted">Aucun</em>' }}</td>
+                        <td class="text-end pe-4">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a class="btn btn-outline-primary" href="{{ path('app_user_show', {'id': user.id}) }}" title="Voir">
+                                    👁 Voir
+                                </a>
+                                <a class="btn btn-outline-warning" href="{{ path('app_user_edit', {'id': user.id}) }}" title="Modifier">
+                                    ✏ Éditer
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            Aucun utilisateur trouvé dans la base de données.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

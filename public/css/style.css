@@ -53,14 +53,16 @@ h1, h2, h3, h4, h5, .section-title {
 /* Couleurs de textes */
 .text-custom-brown { color: var(--t-brown); }
 .text-custom-green-l { color: var(--main-green); }
-.text-muted{
-    color:white;
-}
+.text-muted{color:white;}
 
 /* Arrières-plans */
 .bg-custom-green { background-color: var(--main-green); }
 .bg-custom-cream { background-color: var(--bg-cream); }
 .bg-custom-brown { background-color: var(--t-brown); }
+
+
+.btn-custom-brown {background-color: var(--t-brown);color:white;}
+.btn-custom-green {background-color: var(--main-green);color:white;}
 
 /* Image Hero */
 .hero-image { 
@@ -157,6 +159,29 @@ h1, h2, h3, h4, h5, .section-title {
     align-items: center;
     gap: 15px; /* Espace entre les icônes */
     padding-left: 0;
+}
+
+/*Espace Admin*/
+/* Structure globale */
+.admin-container {
+    display: flex;
+    min-height: auto;
+    
+}
+/* Barre latérale (Sidebar) */
+.sidebar {
+    width: 260px;
+   
+    border: 3mm ridge var(--main-green);
+    color: var(--t-brown);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 30px rgba(109, 76, 65, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
 }
 
 @media screen and (max-width: 768px) {

@@ -16,8 +16,9 @@
     
     <body>
         <header>
-             {% include "_include/_nav.html.twig" %}
-               
+            {% block nav%}
+                {% include "_include/_nav.html.twig" %}
+            {% endblock %}
         </header>
 
         <main class="container ">
@@ -27,7 +28,9 @@
         </main>
         
         <footer>
-            {% include "_include/_footer.html.twig" %}
+            {% block footer %}
+                {% include "_include/_footer.html.twig" %}
+            {% endblock %}
         </footer>
         
         
