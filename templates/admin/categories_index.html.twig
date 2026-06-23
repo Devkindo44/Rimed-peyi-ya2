@@ -9,10 +9,9 @@
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold text-custom-green-l"> Gestion des catégories</h2>
-           
+            <h2 class="fw-bold text-custom-green-l">Gestion des catégories</h2>
         </div>
-        {# Lien de retour ou d'ajout #}
+        {# Lien de retour #}
         <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
             ← Retour au Tableau de bord
         </a>
@@ -22,62 +21,62 @@
         <div class="card-header bg-custom-green text-white fw-bold py-3">
             Liste des catégories disponibles
         </div>
-       <div class="card-body p-0">
-       {#lignes alternées grises et blanches bootstrap#}
-    <table class="table table-striped vertical-align-middle mb-0"> 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom de la catégorie</th>
-                <th>Nombre de produits</th>
-                 <th>Produits par categories</th>
-            </tr>
-        </thead>
-        <tbody>
-            {# On parcourt le tableau allCategories envoyé par le contrôleur #}
-            {% for uneCategorie in allCategories %}
-                <tr>
-                    <td>{{ uneCategorie.id }}</td>
-                    <td>{{ uneCategorie.name }}</td>
-                    <td>
-                        <span class="badge bg-custom-green text-white rounded-pill">
-                            {{ uneCategorie.products|length }}
-                            {% if uneCategorie.products|length >=2 %}
-                                produits
-                            {% else %}
-                                produit
-                            {% endif %}
-                        </span>
-                    </td>
-                    <td>
-                        {% if uneCategorie.products|length > 0 %}
+        <div class="card-body p-0">
+            {# lignes alternées grises et blanches bootstrap #}
+            <table class="table table-striped vertical-align-middle mb-0"> 
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom de la catégorie</th>
+                        <th>Nombre de produits</th>
+                        <th>Produits par categories</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {# On parcourt le tableau allCategories envoyé par le contrôleur #}
+                    {% for uneCategorie in allCategories %}
+                        <tr>
+                            <td>{{ uneCategorie.id }}</td>
+                            <td>{{ uneCategorie.name }}</td>
+                            <td>
+                                <span class="badge bg-custom-green text-white rounded-pill">
+                                    {{ uneCategorie.products|length }}
+                                    {% if uneCategorie.products|length >= 2 %}
+                                        produits
+                                    {% else %}
+                                        produit
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                {% if uneCategorie.products|length > 0 %}
                                     <div class="d-flex flex-wrap gap-1">
-                                {% for produit in uneCategorie.products %}
-                                    <span class="badge bg-secondary bg-opacity-25 text-dark fw-normal">
-                                         {{ produit.title }}
-                                    </span>
-                                {% endfor %}
+                                        {% for produit in uneCategorie.products %}
+                                            <span class="badge bg-secondary bg-opacity-25 text-dark fw-normal">
+                                                {{ produit.title }}
+                                            </span>
+                                        {% endfor %}
                                     </div>
                                 {% else %}
                                     <span class="text-muted small"><em>Aucun produit</em></span>
-                        {% endif %}
-                    </td>
-
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="2" class="text-center text-muted py-4">
-                        Aucune catégorie enregistrée pour le moment.
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-                <a href="{{ path('app_categories_new') }}" class="btn btn-custom-green">
-                    + Ajouter une nouvelle catégorie
-                </a>
-            </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">
+                                Aucune catégorie enregistrée pour le moment.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# Bouton d'action placé proprement en bas de la carte #}
+        <div class="card-footer bg-transparent border-0 p-3">
+            <a href="{{ path('app_categories_new') }}" class="btn btn-custom-green">
+                + Ajouter une nouvelle catégorie
+            </a>
         </div>
     </div>
 </div>

@@ -36,6 +36,8 @@ class Categories
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        // pour Génèrer automatiquement la date et l'heure actuelle lors de la création
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

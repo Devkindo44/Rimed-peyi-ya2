@@ -13,7 +13,7 @@
        <aside class="sidebar">
     <div class="logo">
         <h2>AdminPanel</h2>
-  
+    </div>
     <nav class="nav-links d-grid gap-2 px-3">
         {# Le bouton actif (Tableau de bord) #}
         {# <a href="#" class="btn btn-success text-start fw-bold">
@@ -43,8 +43,7 @@
         <a href="{{ path('app_logout') }}" class="btn btn-danger text-start mt-3">
             Déconnexion
         </a>
-    </nav>  
-    </div>
+    </nav>
 </aside>
 
 {# On ouvre la condition de connexion dès le début pour protéger tout le bloc d'administration #}
@@ -94,7 +93,7 @@
                     <a href="{{ path('app_categories') }}" class="list-group-item list-group-item-action">
                         Liste des catégories
                     </a>
-                    <a href="path"{{ path('app_categories_new') }} class="list-group-item list-group-item-action">
+                    <a href={{ path('app_categories_new') }} class="list-group-item list-group-item-action">
                         Ajouter une catégorie
                     </a>
                 </div>

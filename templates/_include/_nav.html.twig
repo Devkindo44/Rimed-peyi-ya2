@@ -1,24 +1,22 @@
 <nav class="navbar navbar-expand-lg bg-custom-green p-0" id="nav">
     <div class="container-fluid">
         
-        {# Logo associé a Rimed Peyi ya #}
-       
-        <div class=" d-flex col-md-2  align-items-center border border-warning">
+        {# Logo associé à Rimed Peyi ya #}
+        <div class="d-flex col-md-2 align-items-center">
             <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
                 <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
                 <span class="text-white">🌿RIMED PEYI YA🌿</span>
             </a>
         </div>
 
-        {#BOUTON BURGER (Ajouté pour le responsive sur mobile) #}
+        {# BOUTON BURGER (Pour le responsive sur mobile) #}
         <button class="navbar-toggler bg-success-custom-beigeffect" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"> </span>
+            <span class="navbar-toggler-icon"></span>
         </button>
             
         {# Le menu qui se replie #}
-        <div class="collapse navbar-collapse border border-danger" id="navbarNavDropdown">
-        
-            <ul class="navbar-nav w-100">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav w-100 align-items-center">
 
                 {# Accueil #}
                 <li class="nav-item dropdown">
@@ -55,69 +53,52 @@
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </a> 
-                        {# <ul class="dropdown-menu">
-                            <li><a class="dropdown-item " href="{{ path('app_categories/infusions') }}">Infusions</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/sirops') }}">Sirops</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/plantes') }}">Plantes</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_categories/recettes') }}">Recettes</a></li>
-                        </ul> #}
                     </div>
                 </li> 
 
-               
-                {# Gestion des produits #}
-                <li class="nav-item">
-                	{% if is_granted('ROLE_ADMIN') %}
-                    <a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
+                {# Liens d'administration #}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Espace Administrateur</a>
+                    </li>
+                {% endif %}
+
+                {# 🛒 LE PANIER (Poussé à droite via ms-auto) #}
+                <li class="nav-item ms-auto me-3">
+                    {# Modifiez 'app_home' par le nom de votre route panier (ex: 'app_cart') #}
+                    <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_home') }}">
+                        {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }} Panier
+                        {# Badge du compteur d'articles (Remplacer le '0' par votre variable de session/panier à l'avenir) #}
+                        <span class="badge rounded-pill bg-danger ms-2">0</span>
+                    </a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Espace Administrateur</a>
-                </li>
-                     {% endif %}
-                 {# Espace client (Aligné à droite grâce à ms-auto) #}
-<li class="nav-item dropdown ms-auto">
-    {#lien cliquable standard pour le dropdown #}
-    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-         Espace client
-    </a>
-    
-    {# Menu déroulant aligné sur le bord droit #}
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient"> 
-        {% if app.user %}
-            <li><span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span></li>
-            <li><hr class="dropdown-divider"></li>
-            
-            {% if is_granted('ROLE_ADMIN') %}
-                <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}"> Back office</a></li>
-            {% endif %}
-            
-            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
-        {% else %} 
-            <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
-            <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
-        {% endif %}
-    </ul>
-</li>
-                 {# <li class="nav-item dropdown dropdown-menu-end ms-auto">
-                    <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('#') }}">Mon espace client</a>
-                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ path('app_profile') }}">Mon espace client</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a></li>
-                            
-                            {# Correction ici : Utilisation d'un <hr> ou d'un <li> direct pour le séparateur
+
+                {# Espace client #}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Espace client
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient"> 
+                        {% if app.user %}
+                            <li><span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span></li>
                             <li><hr class="dropdown-divider"></li>
-                            
-                            {# <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li> #}
-                        </ul>
-                    </div>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        {% else %} 
+                            <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
+                        {% endif %}
+                    </ul>
                 </li>
+
             </ul>
         </div>
 
