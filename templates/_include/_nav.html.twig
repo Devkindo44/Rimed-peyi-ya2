@@ -72,10 +72,10 @@
                 {# 🛒 LE PANIER (Poussé à droite via ms-auto) #}
                 <li class="nav-item ms-auto me-3">
                     {# Modifiez 'app_home' par le nom de votre route panier (ex: 'app_cart') #}
-                    <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_home') }}">
+                    <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
                         {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }} Panier
                         {# Badge du compteur d'articles (Remplacer le '0' par votre variable de session/panier à l'avenir) #}
-                        <span class="badge rounded-pill bg-danger ms-2">0</span>
+                        <span class="badge rounded-pill bg-danger ms-2">{{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}</span>
                     </a>
                 </li>
 

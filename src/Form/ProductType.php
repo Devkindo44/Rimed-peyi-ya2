@@ -56,7 +56,7 @@ class ProductType extends AbstractType
                ]
 
             ])
-            ->add('Description',TextareaType::class, [
+            ->add('description',TextareaType::class, [
                 'label' => 'Description<span class="text-danger">*</span>',
                'label_html' => true,
                'label_attr'=>[
@@ -75,7 +75,7 @@ class ProductType extends AbstractType
                'row_attr' => [
                'class'=>'shadow  bg-success-custom-brown-f  p-4 m-4'
                ],
-               'required'=> false,
+            //    'required'=> false,
                'constraints'=>[
                  new NotBlank([
                         'message'=> 'Veuillez saisir la description du produit.'

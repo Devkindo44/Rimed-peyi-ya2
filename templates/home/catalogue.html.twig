@@ -8,9 +8,9 @@
 
 {% block body %}
 <div class="container my-5 px-4  ">
-{% if is_granted('ROLE_ADMIN') %}
-  <a class="btn btn-custom-green"href="{{ path('app_admin_user_index')}}">Retour tableau de bord</a>
-  {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+    <a class="btn btn-custom-green"href="{{ path('app_admin_user_index')}}">Retour tableau de bord</a>
+    {% endif %}
     {# BARRE DE FILTRES DES CATÉGORIES #}
     <div class="text-center mb-5">
         <h4 class="mb-3 text-muted ">Rechercher par catégorie :</h4>
@@ -63,6 +63,7 @@
                                 <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-light btn-sm px-4 py-2 rounded-pill transition-all">
                                     Voir plus
                                 </a>
+                                <a href="{{ path('app_cart_new', {'id': product.id}) }}"class="btn btn-custom-brown btn-sm m-b-2 mt-3 px-4 py-2"> Ajouter au panier</a>
                             {% else %}
                                 <p class="small text-light opacity-75 mb-0">Connectez-vous pour plus de details</p>
                             {% endif %}
@@ -76,7 +77,7 @@
                 <p class="text-muted fs-5">Aucun produit ne correspond à cette catégorie pour le moment.</p>
             </div>
         {% endfor %}
-
     </div>
+  
 </div>
 {% endblock %}

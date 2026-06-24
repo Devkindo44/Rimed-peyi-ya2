@@ -170,10 +170,11 @@ h1, h2, h3, h4, h5, .section-title {
 }
 /* Barre latérale (Sidebar) */
 .sidebar {
-    width: 260px;
+    width: 440px;
    
     border: 3mm ridge var(--main-green);
     color: var(--t-brown);
+    color: var(--main-green);
     padding: 20px;
     display: flex;
     flex-direction: column;

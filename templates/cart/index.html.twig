@@ -1,20 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Mon Panier{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-5">
+    <h1>Mon Panier</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if items is empty %}
+        <div class="alert alert-info mt-4">
+            Votre panier est vide pour le moment.
+        </div>
+        <a href="#" class="btn btn-primary">Continuer mes achats</a>
+    {% else %}
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.product.price }} €</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.product.price * item.quantity }} €</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">Total Général :</td>
+                    <td class="fw-bold text-success">{{ total }} €</td>
+                </tr>
+            </tfoot>
+        </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/ksema/Mes projetweb/rimedpeyiya/src/Controller/CartController.php</code></li>
-        <li>Your template at <code>C:/Users/ksema/Mes projetweb/rimedpeyiya/templates/cart/index.html.twig</code></li>
-    </ul>
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('app_home_catalogue') }}"class="btn btn-secondary">Continuer mes achats</a>
+            <a href="#" class="btn btn-success">Passer à la caisse</a>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

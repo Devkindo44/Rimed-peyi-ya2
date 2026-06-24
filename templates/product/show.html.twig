@@ -97,7 +97,7 @@
 						</a>
 					{% endif %}
 
-					<a class="btn btn-custom-brown px-4 py-2 rounded-pill fw-medium transition-all" href="{{ path('app_product_index') }}">
+					<a class="btn btn-custom-brown px-4 py-2 rounded-pill fw-medium transition-all" href="{{ path('app_cart',{'id':product.id}) }}">
 						{{ ux_icon('lucide:shopping-bag', {class: 'me-2 icon20'}) }}
 						Ajouter au panier
 					</a>
