@@ -8,41 +8,45 @@
 {% block body %}
 
 <div class="container mt-4">
-    {# Affichage des messages de succès (Ajout / Modification) #}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    {# Affichage de tous les messages flash (success et danger pour Turbo) #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
     {% endfor %}
 
-    {# Bouton pour ajouter un produit (Texte corrigé pour plus de clarté) #}
-    <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
-        Ajouter un produit
-    </a>
+    {# Boutons de navigation #}
+    <div class="mb-3">
+        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+            ← Tableau de bord
+        </a>
+        <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
+            Ajouter un produit
+        </a>
+    </div>
 
     {% if products is not empty %}
-        {# Tableau en html #}
-        <table class="table table-striped table-bordered table-hover text-center mt-3">
-            <thead class="table-success">
+        <table class="table table-striped vertical-align-middle mb-0 table-bordered table-hover text-center text-white mt-3">
+            <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Titre</th>
-                    <th>Illustration</th>
-                    <th>Prix(€)</th>
-                    <th>Description</th>
-                    <th>Stock</th>
-                    <th>Actions</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">ID</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Titre</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Illustration</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prix (€)</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Description</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Stock</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for product in products %}
                     <tr>
                         <td>{{ product.id }}</td>
-                        {# Petite correction : attention à la propriété 'title' ou 'name' selon ton entité. J'ai gardé title ici #}
                         <td>{{ product.title|capitalize }}</td>
                         <td>
-                            {# Rendu visuel de l'image au lieu du simple texte #}
                             {% if product.illustration %}
                                 <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-thumbnail">
                             {% else %}
@@ -51,17 +55,22 @@
                         </td>
                         <td>{{ product.price }}</td>
                         <td>
-                            {# Attention en Twig aux majuscules, utilise plutôt product.description au lieu de product.Description #}
                             {% if product.description|length > 20 %}
                                 {{ product.description|slice(0, 17) }}...
                             {% else %}
                                 {{ product.description|nl2br }}
                             {% endif %}
                         </td>
-                         <td>{{ product.stock }}</td>
-                        
                         <td>
-                            {# Icône Voir (Fiche produit insérée ici) #}
+                            {# CORRECTION DU STOCK : On vérifie d'abord si l'objet existe, puis la quantité #}
+                            {% if product.stock is not null and product.stock.quantity > 0 %}
+                                <span class="badge bg-success">{{ product.stock.quantity }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">Épuisé</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {# Icône Voir #}
                             <a href="{{ path('app_product_show', {'id': product.id}) }}" class="text-decoration-none me-2" title="Voir la fiche">
                                 {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
                             </a>
@@ -71,10 +80,12 @@
                                 {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
                             </a>
                             
-                            {# Icône Supprimer #}
-                            <a href="{{ path('app_product_delete', {'id': product.id}) }}" class="text-decoration-none me-2" title="Supprimer">
+                            {# Icône Supprimer avec confirmation native #}
+                            <a href="{{ path('app_product_delete', {'id': product.id}) }}" 
+                               class="text-decoration-none" 
+                               title="Supprimer"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
                                 {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
-                           
                             </a>  
                         </td>
                     </tr>

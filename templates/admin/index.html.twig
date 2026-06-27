@@ -1,55 +1,189 @@
 {% extends 'base.html.twig' %}
 
+{% block nav %}{% endblock %}
+{% block footer %}{% endblock %} {# <-- Ajoutez cette ligne pour masquer le footer #}
+
 {% block title %}Back office{% endblock %}
 {% block h1 %}Back office{% endblock %}
 
+
 {% block body %}
-<div class="container border border-success">
-    <div class="row">
-        {# SECTION GESTION DES utilisateurs #}
-        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-            <div class="list-group">
-                <div class="list-group-item bg-success text-white font-weight-bold">Gestion des membres</div>
-                <a href="{{ path('app_admin_user_index') }}" class="list-group-item list-group-item-action">Liste des membres</a>
-                
-                {# profil et modification uniqueùment si l'utilisateur est connecté #}
-                {% if app.user %}
-                    <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">Mon profil</a>
-                {% endif %}
-                
-                <a href="{{ path('app_user_new') }}" class="list-group-item list-group-item-action">Ajouter un membre</a>
-                
-                {% if app.user %}
-                    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">Modifier un MEMBRES</a>
-                {% endif %}
-            </div>
+
+<div class="text-center">
+       <aside class="sidebar">
+    <div class="logo text-custom-brown">
+     <h2>AdminPanel</h2>
+    <img src="{{asset('images/logo_Projet.png')}}" alt="logo">
+       
+    </div>
+    <br><br>
+    <nav class="nav-links d-grid gap-2 px-3">
+        {# Le bouton actif (Tableau de bord) #}
+        {# <a href="#" class="btn btn-success text-start fw-bold">
+            Tableau de bord
+        </a> #}
+        {# Liens d'action #}
+        <a href="{{ path('app_home') }}" target="_blank" class="list-group-item list-group-item-action bg-custom-green-admin">
+             Voir le site public
+        
+        </a>
+
+        <hr class="text-muted my-2"> {# Une petite ligne de séparation #}
+
+        {# Les autres boutons de gestion #}
+        <a href="{{path('app_user_index')}}" class="list-group-item list-group-item-action bg-custom-green-admin">
+            Utilisateurs
+        </a>
+        
+        <a href="{{ path('app_product_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
+          Produits
+        </a>
+        
+        <a href="{{ path('app_admin_categories_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
+           Catégories
+        </a>
+        
+
+        <a href="{{ path('app_cart') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
+            Accès panier
+        </a>
+        
+        <a href="{{ path('app_logout') }}" class="btn btn-danger text-start mt-3">
+            Déconnexion
+        </a>
+    </nav>
+</aside>
+
+{# On ouvre la condition de connexion dès le début pour protéger tout le bloc d'administration #}
+{% if app.user %}
+<div class=" my-5">
+    
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-custom-green-l">Tableau de bord Administration</h2>
+        <p class="text-muted">Bienvenue, {{ app.user.firstname|capitalize}}.</p>
     </div>
 
-        {# SECTION GESTION DES CATÉGORIES #}
-        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-            <div class="list-group">
-                <div class="list-group-item bg-success text-white">Gestion des catégories</div>
-                
-                {# Ce lien mène à la liste complète #}
-                <a href="{{ path('app_categories') }}" class="list-group-item list-group-item-action">Liste des catégories</a>
-                
-                {# Ce lien mène au formulaire de création #}
-                <a href="{{ path('app_categories_new') }}" class="list-group-item list-group-item-action">Ajouter une catégorie</a>
+    <div class="row g-4">
+        
+        {# SECTION GESTION DES UTILISATEURS #}
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 shadow-sm border-green">
+                <div class="card-header bg-custom-green text-white fw-bold py-3">
+                     Gestion des membres
+                      <span class="badge bg-white text-custom-brown rounded-pill">({{ totalUsers }} membres inscrits)</span>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ path('app_admin_user_index') }}" class="list-group-item list-group-item-action">
+                        Liste des membres
+                      
+                    </a>
+                    <a href="{{ path('app_user_show', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">
+                        Mon profil admin
+                    </a>
+                    <a href="{{ path('app_user_new') }}" class="list-group-item list-group-item-action">
+                        Ajouter un membre
+                    </a>
+                    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class="list-group-item list-group-item-action">
+                        Modifier mon profil
+                    </a>
+                </div>
             </div>
         </div>
-        {# Gestion des produits #}
-        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-            <div class="list-group">
-                <div class="list-group-item bg-success text-white font-weight-bold">Gestion des produits</div>
-                
-                {# Ce lien mène à la liste complète #}
-                <a href="{{ path('app_home_catalogue')}}" class="list-group-item list-group-item-action">Liste des produits</a>
-                
-                {# Ce lien mène au formulaire de création #}
-                <a href="{{ path('app_product_new')  }}" class="list-group-item list-group-item-action">Ajouter un produit</a>
+
+        {# SECTION GESTION DES CATÉGORIES #}
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 shadow-sm border-green">
+                <div class="card-header bg-custom-green text-white fw-bold py-3">
+                     Gestion des catégories
+                    <span class="badge bg-white text-custom-brown rounded-pill">({{ totalCategories }} categories enregistrés)</span>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ path('app_categories') }}" class="list-group-item list-group-item-action">
+                        Liste des catégories
+                    </a>
+                    <a href={{ path('app_categories_new') }} class="list-group-item list-group-item-action">
+                        Ajouter une catégorie
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# SECTION GESTION DES PRODUITS #}
+        <div class="col-xl-4 col-md-6">
+            <div class="card h-100 shadow-sm border-green">
+                <div class="card-header bg-custom-green text-white py-3">
+                    🌿 Gestion des produits
+                    <span class="badge bg-white text-custom-brown rounded-pill">{{ totalProducts }}  produits enregistrés</span>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{{ path('app_product_index') }}" class="list-group-item list-group-item-action">
+                        Liste des produits (Afficher,Modifier,Supprimer)
+                    </a>
+                    <a href="{{ path('app_home_catalogue') }}" class="list-group-item list-group-item-action">
+                        Liste des produits (Catalogue)
+                    </a>
+                    <a href="{{ path('app_product_new') }}" class="list-group-item list-group-item-action">
+                        Ajouter un nouveau produit
+                    </a>
+                </div> 
+            </div>
+        </div>
+
+        {# TABLEAU DE LA LISTE DES MEMBRES INSCRITS #}
+        {# On utilise p-0 pour enlever les marges internes et table-card-clean pour l'arrondi du bas #}
+        <div class="col-12 mt-5">
+            <div class="card shadow-sm border-green table-card-clean">
+                <div class="card-header bg-custom-green text-white fw-bold py-3">
+                   Information des membres inscrits
+                </div>
+                <div class="card-body p-0">
+                    {# mb-0 retire la marge sous le tableau pour coller parfaitement au bas de la carte #}
+                    <table class="table table-striped vertical-align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Prénom</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Email</th>
+                                <th>Date d'Inscription</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leMembre in users %}
+                                <tr>
+                                    <td>{{ leMembre.id }}</td>
+                                    <td>{{ leMembre.firstname|capitalize }}</td>
+                                    <td>{{ leMembre.lastname|upper }}</td>
+                                    <td>{{ leMembre.email }}</td>
+                                    <td>
+                                        {% if 'ROLE_ADMIN' in leMembre.roles %}
+                                            <span class="badge bg-danger">Administrateur</span>
+                                        {% else %}
+                                            <span class="badge bg-custom-green">Membre</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ leMembre.createdAt|date('d/m/Y à H:i') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Aucun utilisateur inscrit pour le moment.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         
     </div>
+</div>
+{% else %}
+<div class="my-5 text-center">
+    <div class="alert alert-danger d-inline-block px-5 py-3 rounded-3" role="alert">
+      <strong>Accès refusé :</strong> Vous devez être connecté pour accéder à cette page.
+    </div>
+</div>
+{% endif %}
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Stock; // <-- IMPORT DE L'ENTITÉ STOCK INDISPENSABLE
+use App\Entity\Stock;
 use App\Form\ProductType;
 use App\Repository\CategoriesRepository;
 use App\Repository\ProductRepository;
@@ -35,49 +35,51 @@ final class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
+       
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                
+                // --- GESTION DU STOCK  ---
+                $quantity = $form->get('stock')->getData();
+                
+                $stock = new Stock();
+                $stock->setQuantity($quantity); 
+                $product->setStock($stock);
+                
+                $entityManager->persist($stock);
+              
+                // Gestion de l'illustration
+                $illustration = $form->get('illustration')->getData();
+                if ($illustration) {
+                    $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFileName = $slugger->slug($originalName);
+                    $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            // --- GESTION DU STOCK  ---
-            // On récupère la valeur entière tapée dans le champ 'stock' (qui est mapped => false)
-            $quantity = $form->get('stock')->getData();
-            
-            // On instancie un nouvel objet Stock, on lui donne la quantité, et on le lie au produit
-            $stock = new Stock();
-            $stock->setQuantity($quantity); 
-            $product->setStock($stock);
-            
-            // On demande à Doctrine de persister le Stock en premier
-            $entityManager->persist($stock);
-          
+                    $illustration->move(
+                        $this->getParameter('kernel.project_dir') . '/public/images',
+                        $newFileName
+                    );
 
-            // Gestion de l'illustration
-            $illustration = $form->get('illustration')->getData();
-            if ($illustration) {
-                $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFileName = $slugger->slug($originalName);
-                $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
+                    $product->setIllustration($newFileName);
+                }
 
-                $illustration->move(
-                    $this->getParameter('kernel.project_dir') . '/public/images',
-                    $newFileName
-                );
+                $entityManager->persist($product);
+                $entityManager->flush();
 
-                $product->setIllustration($newFileName);
+                $this->addFlash('success', 'Le produit et son stock ont bien été ajoutés');
+
+                return $this->redirectToRoute('app_product_index');
+            } else {
+                // Le formulaire a été soumis mais il contient des erreurs
+                $this->addFlash('danger', 'Le formulaire contient des erreurs. Veuillez les corriger.');
             }
-
-            $entityManager->persist($product);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Le produit et son stock ont bien été ajoutés');
-
-            return $this->redirectToRoute('app_product_index');
         }
 
+        // Le render est maintenant en dehors des conditions de soumission, accessible au premier chargement
         return $this->render('product/new.html.twig', [
             'formProduct' => $form->createView(),
             'categories'=> $categories,
-        ]);
+        ],new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY)); 
     }
 
     // Fiche d'un produit spécifique
@@ -93,10 +95,8 @@ final class ProductController extends AbstractController
     #[Route('/produit/modifier/{id}', name: 'app_product_edit')] 
     public function edit(Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        // --- PRÉ-REMPLISSAGE DU CHAMP STOCK POUR LA MODIFICATION (NOUVEAU) ---
         $form = $this->createForm(ProductType::class, $product);
         
-        // Si le produit a déjà un stock, on pré-remplit le champ non-mappé dans le formulaire
         if ($product->getStock()) {
             $form->get('stock')->setData($product->getStock()->getQuantity());
         }
@@ -105,22 +105,17 @@ final class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            // --- MISE A JOUR DU STOCK EN MODIFICATION (NOUVEAU) ---
             $quantity = $form->get('stock')->getData();
             
             if ($product->getStock()) {
-                // Si le stock existe déjà, on met juste à jour sa quantité
                 $product->getStock()->setQuantity($quantity);
             } else {
-                // Cas de secours au cas où un produit en base n'aurait pas de stock
                 $stock = new Stock();
                 $stock->setQuantity($quantity);
                 $product->setStock($stock);
                 $entityManager->persist($stock);
             }
-            // ------------------------------------------------------
 
-            // Gestion de l'illustration
             $illustration = $form->get('illustration')->getData();
             if ($illustration) {
                 $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
@@ -145,19 +140,17 @@ final class ProductController extends AbstractController
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'formProduct' => $form->createView()
-        ]);
-        
+        ],new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY));
     }
+
     // Suppression d'un produit spécifique
     #[Route('/produit/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
     public function delete(Product $product, EntityManagerInterface $entityManager): Response
     {
-        // Suppression du Stock associé s'il existe
         if ($product->getStock()) {
             $entityManager->remove($product->getStock());
         }
 
-        // Suppression du produit
         $entityManager->remove($product);
         $entityManager->flush();
 

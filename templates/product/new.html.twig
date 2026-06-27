@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}{{parent()}} | Ajouter un produit{% endblock %}
 {% block description %}{{parent()}} | Ajouter un produit{% endblock %}
 {% block keywords %}{{parent()}} |  Ajouter un produit{% endblock %}
@@ -8,24 +7,28 @@
 
 {% block body %}
 
-<a class="btn btn-custom-green"href="{{path('app_product_index')}}">Gestion des produits</a>
-{# {{ dump(formProduct) }} #}
-{# {{form(formProduct)}} #}
-{#
- 2manière d'afficher un formulaire Symfony
-   
-    soit la fonction twig form(): elle appelle integralement la balise form ouvrante à la balise fermante
-     {{form(formProduct)}} = avantage 1 ligne, 1 fonction sans pouvoir faire des manipulations dessus.
-    ->add('Ajouter',SubmitType::class)dans le ProductType
-    soit :
-    form_row() regroupe form_label() + form_errors() + form_widget() + form_help()
-    syntaxe twig : parent.enfant
-        form.element
-#}
-<div class="w-75 mx-auto  border-brown">
-    {{form_start(formProduct)}} {#Ouverture de la balise form#}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div style="padding: 15px; background-color: #f8d7da; color: #721c24; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+            [{{ label }}] {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
 
-        <div class="row">
+<a class="btn btn-custom-green mb-3" href="{{path('app_product_index')}}">Gestion des produits</a>
+
+{# CODE DE SÉCURITÉ POUR TESTER LES FLASHs #}
+
+
+
+<div class="w-75 mx-auto border-brown p-4">
+    {# On ajoute novalidate pour forcer Symfony (PHP) à valider et ainsi déclencher ton flash danger #}
+    {{form_start(formProduct, {'attr': {'novalidate': 'novalidate'}})}} 
+
+        {# 1. OBLIGATOIRE : Affiche les erreurs globales du formulaire (ex: CSRF ou erreurs globales) #}
+       
+
+        <div class="row mb-3">
             <div class="col">
                 {{form_row(formProduct.title)}} 
             </div>
@@ -34,25 +37,25 @@
             </div>      
         </div>
 
-        <div class="col">
-                {{form_row(formProduct.illustration)}} 
+        <div class="mb-3">
+            {{form_row(formProduct.illustration)}} 
         </div>
-        <div class="col">
-                {{form_row(formProduct.Description)}} 
+        
+        <div class="mb-3">
+          
+            {{form_row(formProduct.description)}} 
         </div>
-            {# affiche dans l'ordre demandé ex: prix sera avant tous les autres #}
-            {#{{form_rest(formProduct)}}   affiche le reste des elements non appelés #}
 
-        <div class="col">
-                {{form_row(formProduct.categories)}} 
+        <div class="mb-3">
+            {{form_row(formProduct.categories)}} 
         </div>
-         <div class="col">
-                {{form_row(formProduct.stock)}} 
+        
+        <div class="mb-3">
+            {{form_row(formProduct.stock)}} 
         </div>
-        <input type="submit" value="Ajouter le produit" class="btn btn-custom-brown w-100 mt-2 p-0">
-    {{form_end(formProduct)}} {#Fermeture de la balise form#}
+
+        <button type="submit" class="btn btn-custom-brown w-100 mt-2">Ajouter le produit</button>
+
+    {{form_end(formProduct)}} 
 </div>
 {% endblock %}
-
-
-

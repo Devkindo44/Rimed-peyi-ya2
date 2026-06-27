@@ -42,7 +42,7 @@ final class CategoriesController extends AbstractController
 
             $this->addFlash('success', 'La catégorie a été ajoutée avec succès !');
 
-            return $this->redirectToRoute('app_categories');
+            return $this->redirectToRoute('app_admin_categories_index');
         }
 
         return $this->render('categories/new.html.twig', [

@@ -17,7 +17,7 @@
         <div class="container-fluid py-3">
             <h1 class="display-5 fw-bold">{{ category.name }}</h1>
             
-            {% if category.slug == 'infusions' %}
+            {% if category.slug == 'infusion' %}
                 <p class="col-md-8 fs-4">Prenez soin de vous avec notre sélection d'infusions locales, douces et réconfortantes.</p>
             {% elseif category.slug == 'sirops' %}
                 <p class="col-md-8 fs-4">Découvrez nos sirops artisanaux à base de plantes pour napper vos desserts ou agrémenter vos boissons.</p>
@@ -42,10 +42,22 @@
                         <h5 class="card-title fw-bold">{{ product.title }}</h5>
                         <p class="card-text text-muted">{{ product.description|slice(0, 100) }}...</p>
                     </div>
+                     {% if app.user %}
                     <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pb-3">
+                    {# Formulaire d'ajout avec Quantité #}
+                                    <form action="{{ path('app_cart_new', {'id': product.id}) }}" method="POST" class="mt-1">
+                                        <div class="input-group input-group-sm mb-2">
+                                            <span class="input-group-text bg-light text-dark">Qté</span>
+                                           <input type="number" name="quantity" class="form-control text-center" placeholder="Qté" min="1" max="100">
+                                        </div>
+                                        <button type="submit" class="btn btn-custom-brown btn-sm w-100 py-2">
+                                            Ajouter au panier
+                                        </button>
+                                    </form>
                         <span class="text-success fw-bold fs-5">{{ product.price }} €</span>
                         <a href="{{ path('app_product_show', {'id':product.id}) }}" class="btn btn-outline-dark btn-sm">Voir le produit</a>
                     </div>
+                    {%  endif %}
                 </div>
             </div>
         {% else %}
