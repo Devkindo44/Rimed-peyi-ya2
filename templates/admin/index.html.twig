@@ -11,33 +11,41 @@
 
 <div class="text-center">
        <aside class="sidebar">
-    <div class="logo">
-        <h2>AdminPanel</h2>
+    <div class="logo text-custom-brown">
+     <h2>AdminPanel</h2>
+    <img src="{{asset('images/logo_Projet.png')}}" alt="logo">
+       
     </div>
+    <br><br>
     <nav class="nav-links d-grid gap-2 px-3">
         {# Le bouton actif (Tableau de bord) #}
         {# <a href="#" class="btn btn-success text-start fw-bold">
             Tableau de bord
         </a> #}
+        {# Liens d'action #}
+        <a href="{{ path('app_home') }}" target="_blank" class="list-group-item list-group-item-action bg-custom-green-admin">
+             Voir le site public
         
+        </a>
+
+        <hr class="text-muted my-2"> {# Une petite ligne de séparation #}
+
         {# Les autres boutons de gestion #}
-        <a href="{{path('app_user_index')}}" class="btn bg-custom-green ">
+        <a href="{{path('app_user_index')}}" class="list-group-item list-group-item-action bg-custom-green-admin">
             Utilisateurs
         </a>
         
-        <a href="{{ path('app_product_index') }}" class="btn bg-custom-green ">
+        <a href="{{ path('app_product_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
           Produits
         </a>
         
-        <a href="{{ path('app_admin_categories_index') }}" class="btn bg-custom-green">
+        <a href="{{ path('app_admin_categories_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
            Catégories
         </a>
         
-        <hr class="text-muted my-2"> {# Une petite ligne de séparation #}
-        
-        {# Liens d'action #}
-        <a href="{{ path('app_home') }}" target="_blank" class="btn bg-custom-green">
-             Voir le site public
+
+        <a href="{{ path('app_cart') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
+            Accès panier
         </a>
         
         <a href="{{ path('app_logout') }}" class="btn btn-danger text-start mt-3">

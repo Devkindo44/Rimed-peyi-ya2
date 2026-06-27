@@ -33,7 +33,7 @@ footer {
 }
 
 /* Typographie de Titrage */
-h1, h2, h3, h4, h5, .section-title {
+h1, h2, .section-title {
     font-family: 'Playfair Display', serif; /* Police élégante pour les titres */
     font-weight: 600;
 }
@@ -57,6 +57,7 @@ h1, h2, h3, h4, h5, .section-title {
 
 /* Arrières-plans */
 .bg-custom-green { background-color: var(--main-green); }
+.bg-custom-green-admin {background-color: var(--main-green);color:white;}
 .bg-custom-cream { background-color: var(--bg-cream); }
 .bg-custom-brown { background-color: var(--t-brown); }
 

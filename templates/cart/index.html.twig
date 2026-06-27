@@ -3,46 +3,62 @@
 {% block title %}Mon Panier{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>Mon Panier</h1>
 
-    {% if items is empty %}
-        <div class="alert alert-info mt-4">
-            Votre panier est vide pour le moment.
-        </div>
-        <a href="#" class="btn btn-primary">Continuer mes achats</a>
-    {% else %}
-        <table class="table table-bordered mt-4">
-            <thead>
-                <tr>
-                    <th>Produit</th>
-                    <th>Prix unitaire</th>
-                    <th>Quantité</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td>{{ item.product.title }}</td>
-                        <td>{{ item.product.price }} €</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.product.price * item.quantity }} €</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-end fw-bold">Total Général :</td>
-                    <td class="fw-bold text-success">{{ total }} €</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="d-flex justify-content-between mt-4">
-            <a href="{{ path('app_home_catalogue') }}"class="btn btn-secondary">Continuer mes achats</a>
-            <a href="#" class="btn btn-success">Passer à la caisse</a>
-        </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+                ← Tableau de bord
+        </a>
     {% endif %}
-</div>
+    <div class="container mt-5">
+        <h1>Mon Panier</h1>
+    <div class="border border-success text-center shadow mx-auto">
+        {% if items is empty %}
+            <div class="alert alert-info mt-4">
+                Votre panier est vide pour le moment.
+            </div>
+            <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success">Continuer mes achats</a>
+        {% else %}
+            <table class="table table-striped mt-4">
+                <thead>
+                    <tr>
+                        <th>Nom du Produit</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.product.title }}</td>
+                            <td>{{ item.product.price }} €</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price * item.quantity }} €</td>
+                            <td>
+                                <a href="{{ path('app_cart_product_remove',{'id':item.product.id})}}" class="text-danger text-decoration-none ms-auto"
+                                > {{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }} supprimer le produit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {# <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end fw-bold">Total Général :</td>
+                        <td class="fw-bold text-success">{{ total }} €</td>
+                    </tr>
+                </tfoot> #}
+            </table>
+            <br><br>
+            <h3>Total: {{ total }} €</h3>
+            </div>
+
+            <div class="row mx-auto justify-content-between">
+                <a href="{{ path('app_home_catalogue') }}"class="btn btn-outline-success col-lg-3 mt-3">Continuer mes achats</a>
+                <a href="#" class="btn btn-outline-success col-lg-3 mt-3">Valider la commande</a>
+                <a href="{{path('app_cart_remove')}}" class="btn btn-outline-danger col-lg-3 mt-3">supprimer le panier</a>
+            </div>
+        {% endif %}
+    
+    </div>
 {% endblock %}
