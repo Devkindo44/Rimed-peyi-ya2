@@ -10,38 +10,48 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-   
-    <form method="post" class="col-md-4 mx-auto p-4 m-3 shadow btn-custom-green"> 
 
-    <h1 class="h3 mb-2 font-weight-normal">Please register in</h1>
-    {{ form_start(registrationForm) }}
+     <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5 " style="min-height: 100vh; overflow: hidden;">
         
-        <div class="mb-3">
-            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
-        </div>
+    {# L'image en arrière-plan absolu, prenant 100% de la largeur et de la hauteur #}
+        <img src="{{ asset('images/p-connexion.jpg') }}" 
+             class="position-absolute top-0 start-0 w-100 h-100" 
+             alt="page de connexion" 
+             style="object-fit: cover; z-index: 2; filter: brightness(0.3);">
+        
+        {# Le formulaire positionné au-dessus de l'image (grâce au z-index) #}
+                <form method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="z-index: 2; backdrop-filter: blur(5px);">
 
-        <div class="mb-3">
-            {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
-        </div>
+                <h1 class="h3 mb-2 font-weight-normal text-white">Creer un compte</h1>
+                {{ form_start(registrationForm) }}
+                    
+                    <div class="mb-3">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                    </div>
 
-        <div class="mb-3">
-            {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
-        </div>
+                    <div class="mb-3">
+                        {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
+                    </div>
 
-        <div class="mb-3">
-            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
-        </div>
-    
-        <div class="form-check mb-3">
-            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-            <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
-                {# J'accepte les conditions d'utilisation #}
-            </label>
-        </div>
+                    <div class="mb-3">
+                        {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                    </div>
 
-        <button type="submit" class="btn btn-lg btn-custom-brown w-100">S'inscrire</button>
+                    <div class="mb-3">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                    </div>
+                
+                    <div class="form-check mb-3">
+                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                        <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                            {# J'accepte les conditions d'utilisation #}
+                        </label>
+                    </div>
 
-    {{ form_end(registrationForm) }}
-</form>
+                    <button type="submit" class="btn btn-lg btn-custom-green w-100">S'inscrire</button>
+
+                {{ form_end(registrationForm) }}
+        </form>
+</div>
     
    {% endblock %}

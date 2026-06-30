@@ -107,6 +107,20 @@ h1, h2, .section-title {
     border-color: var(--t-brown);
     color: var(--bg-cream);
 }
+/* icon lucid*/
+.icon25{
+    color: #1a5d1a;
+    width: 25px;
+    height: 25px; 
+}
+/* popup suppression panier*/
+.custom-tooltip-danger {
+    /* Cette variable colore automatiquement le fond ET la flèche en Bootstrap 5 */
+    --bs-tooltip-bg: #dc3545 !important;
+    --bs-tooltip-color: #ffffff !important;
+}
+
+
 
 /* Carrousel Boutons */
 .carousel-control-prev-icon,
@@ -185,6 +199,11 @@ h1, h2, .section-title {
     left: 0;
     bottom: 0;
 }
+/* *********************************************************************** */
+
+
+
+/* *********************************************************************** */
 
 @media screen and (max-width: 768px) {
     .firstPosition {

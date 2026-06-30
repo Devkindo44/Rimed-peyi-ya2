@@ -75,7 +75,7 @@
                     <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
                         {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }} Panier
                         {# Badge du compteur d'articles (Remplacer le '0' par votre variable de session/panier à l'avenir) #}
-                        <span class="badge rounded-pill bg-danger ms-2">{{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}</span>
+                        <span class="badge rounded-pill bg-warning text-dark ms-2">{{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}</span>
                     </a>
                 </li>
 
