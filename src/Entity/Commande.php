@@ -21,6 +21,14 @@ class Commande
     #[ORM\Column]
     private ?float $montant_total = null;
 
+    // --- AJOUT DES PROPRIÉTÉS MANQUANTES ---
+    #[ORM\Column(type: 'float', options: ['default' => 0])]
+    private ?float $frais_port = 0.0;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $transporteur_nom = null;
+    // ---------------------------------------
+
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $utilisateur = null;
@@ -65,6 +73,32 @@ class Commande
         return $this;
     }
 
+    // --- AJOUT DES GETTERS & SETTERS MANQUANTS ---
+    public function getFraisPort(): ?float
+    {
+        return $this->frais_port;
+    }
+
+    public function setFraisPort(float $frais_port): static
+    {
+        $this->frais_port = $frais_port;
+
+        return $this;
+    }
+
+    public function getTransporteurNom(): ?string
+    {
+        return $this->transporteur_nom;
+    }
+
+    public function setTransporteurNom(?string $transporteur_nom): static
+    {
+        $this->transporteur_nom = $transporteur_nom;
+
+        return $this;
+    }
+    // ----------------------------------------------
+
     public function getUtilisateur(): ?User
     {
         return $this->utilisateur;
@@ -98,7 +132,6 @@ class Commande
     public function removeLigneDeCommande(LigneDeCommande $ligneDeCommande): static
     {
         if ($this->ligneDeCommandes->removeElement($ligneDeCommande)) {
-            // set the owning side to null (unless already changed)
             if ($ligneDeCommande->getCommande() === $this) {
                 $ligneDeCommande->setCommande(null);
             }
