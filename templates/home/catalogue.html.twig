@@ -82,6 +82,7 @@
                     </div>
 
                 </div>
+             
             </div>
         {% else %}
             <div class="col-12 text-center py-5">
@@ -89,6 +90,9 @@
             </div>
         {% endfor %}
     </div>
-  
+       {# Affichage des boutons de navigation #}
+<div class="d-flex justify-content-center  my-4">
+    {{ knp_pagination_render(products) }}
+</div>
 </div>
 {% endblock %}

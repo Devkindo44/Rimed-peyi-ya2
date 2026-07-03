@@ -1,111 +1,143 @@
 <nav class="navbar navbar-expand-lg bg-custom-green p-0" id="nav">
-    <div class="container-fluid">
-        
-        {# Logo associé à Rimed Peyi ya #}
-        <div class="d-flex col-md-2 align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
-                <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
-                <span class="text-white"> RIMED PEYI YA </span>
-                <div class="d-flex ms-2 align-items-center">
-                    {# Ajout du drapeau culturel juste ici #}
-                        <img src="{{ asset('images/gwada-f.jpg') }}" 
-                            alt="Drapeau Guadeloupe" 
-                            width="28" 
-                            height="21" 
-                            class="rounded shadow-sm me-2 align-middle">
-                </div>
-                
-            </a>
-        </div>
-      
+	<div
+		class="container-fluid">
 
-        {# BOUTON BURGER (Pour le responsive sur mobile) #}
-        <button class="navbar-toggler bg-success-custom-beigeffect" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-            
-        {# Le menu qui se replie #}
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav w-100 align-items-center">
+		{# Logo associé à Rimed Peyi ya #}
+		<div class="d-flex col-md-2 align-items-center">
+			<a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
+				<img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
+				<span class="text-white">
+					RIMED PEYI YA
+				</span>
+				<div
+					class="d-flex ms-2 align-items-center">
+					{# Ajout du drapeau culturel juste ici #}
+					<img src="{{ asset('images/gwada-f.jpg') }}" alt="Drapeau Guadeloupe" width="28" height="21" class="rounded shadow-sm me-2 align-middle">
+				</div>
 
-                {# Accueil #}
-                <li class="nav-item dropdown">
-                    <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
-                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
-                            <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
-                        </ul>
-                    </div>
-                </li>
+			</a>
+		</div>
 
-                {# Boutique #}
-                <li class="nav-item dropdown">
-                    <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('app_home_catalogue') }}">Catalogue</a>
-                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
-                            <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
-                        </ul>
-                    </div>
-                </li>
 
-                {# Catégories #}
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
-                </li> 
+		{# BOUTON BURGER (Pour le responsive sur mobile) #}
+		<button class="navbar-toggler bg-success-custom-beigeffect" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-                {# Liens d'administration #}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des catégories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Espace Administrateur</a>
-                    </li>
-                {% endif %}
+		{# Le menu qui se replie #}
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul
+				class="navbar-nav w-100 align-items-center">
 
-                {#  PANIER (Visible par tout le monde ou uniquement connecté) #}
-                <li class="nav-item ms-auto me-3">
-                    <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
-                        {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }} Panier
-                        <span class="badge rounded-pill bg-warning text-dark ms-2">
-                            {{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}
+				{# Accueil #}
+				<li class="nav-item dropdown">
+					<div class="d-flex align-items-center">
+						<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
+						<a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+							<span class="visually-hidden">Toggle Dropdown</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a class="dropdown-item" href="#">Plantes médicinales</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Remèdes grand-mère</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+
+				{# Boutique #}
+				<li class="nav-item dropdown">
+					<div class="d-flex align-items-center">
+						<a class="nav-link text-white" href="{{ path('app_home_catalogue') }}">Catalogue</a>
+						<a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+							<span class="visually-hidden">Toggle Dropdown</span>
+						</a>
+						<ul
+							class="dropdown-menu">
+							{# Lien pour voir tous les produits sans filtre #}
+							<li>
+								<a class="dropdown-item fw-bold" href="{{ path('app_home_catalogue') }}">Tous les produits</a>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+
+							{# Boucle dynamique sur les vraies catégories #}
+							{% for category in categories %}
+								<li>
+									<a class="dropdown-item" href="{{ path('app_home_catalogue', {'category': category.id}) }}">
+										{{ category.name }}
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<span class="dropdown-item text-muted">Aucune catégorie disponible</span>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</li>
+
+				{# Catégories #}
+				<li class="nav-item">
+					<a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
+				</li>
+
+				{# Liens d'administration #}
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des catégories</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Espace Administrateur</a>
+					</li>
+				{% endif %}
+
+				{#  PANIER (Visible par tout le monde ou uniquement connecté) #}
+				<li class="nav-item ms-auto me-3">
+					<a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
+						{{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }}
+						Panier
+						<span class="badge rounded-pill bg-warning text-dark ms-2">
+                            {{ app.session.get('cart', [])|reduce((total, qty) => total + (qty matches '/^\\d+$/' ? qty : 0), 0) }}
                         </span>
-                    </a>
-                </li>
+					</a>
+				</li>
 
-                {# Espace client #}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Espace client
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient"> 
-                        {% if app.user %}
-                            <li><span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li><a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a></li>
-                            {% endif %}
-                            <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
-                        {% else %} 
-                            <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
-                            {# <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li> #}
-                        {% endif %}
-                    </ul>
-                </li>
+				{# Espace client #}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Espace client
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient">
+						{% if app.user %}
+							<li>
+								<span class="dropdown-item-text text-muted fw-bold">Bonjour
+									{{ app.user.firstname|capitalize }}</span>
+							</li>
+							<li><hr class="dropdown-divider"></li>
+							{% if is_granted('ROLE_ADMIN') %}
+								<li>
+									<a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a>
+								</li>
+							{% endif %}
+							<li>
+								<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
+							</li>
+						{% else %}
+							<li>
+								<a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+							</li>
+							{# <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li> #}
+						{% endif %}
+					</ul>
+				</li>
 
-            </ul>
-        </div>
+			</ul>
+		</div>
 
-    </div>
+	</div>
 </nav>

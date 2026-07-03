@@ -40,46 +40,35 @@
 									<div
 										class="d-flex justify-content-center align-items-center">
 										{# Bouton Moins (-) #}
-										<a href="{{ path('app_cart_decrease', {'id': item.product.id}) }}" class="btn btn-sm  ms-2 text-danger text-decoration-none "
-   data-bs-toggle="tooltip" 
-   data-bs-placement="top" 
-   data-bs-title="Reduire la quantité">
-										{{ ux_icon('lucide:circle-minus', {class: 'text-custom-brown icon25'}) }}
+										<a href="{{ path('app_cart_decrease', {'id': item.product.id}) }}" class="btn btn-sm  ms-2 text-danger text-decoration-none " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reduire la quantité">
+											{{ ux_icon('lucide:circle-minus', {class: 'text-custom-brown icon25'}) }}
 										</a>
 
 										{# Quantité actuelle #}
 										<span class=" fs-5">{{ item.quantity }}</span>
 
 										{# Bouton Plus (+) #}
-										<a href="{{ path('app_cart_increase', {'id': item.product.id}) }}" class="btn btn-sm me-2 text-danger  text-decoration-none "
-   data-bs-toggle="tooltip" 
-   data-bs-placement="top" 
-   data-bs-title="augmenter la quantité">
-										{{ ux_icon('lucide:circle-plus', {class: 'text-custom-brown  icon25'}) }}
+										<a href="{{ path('app_cart_increase', {'id': item.product.id}) }}" class="btn btn-sm me-2 text-danger  text-decoration-none " data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="augmenter la quantité">
+											{{ ux_icon('lucide:circle-plus', {class: 'text-custom-brown  icon25'}) }}
 										</a>
 									</div>
 								</td>
 								<td>{{ item.product.price * item.quantity }}
 									€</td>
 								<td>
-                                    <a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" 
-                                        class="text-danger text-decoration-none ms-auto"
-                                        data-bs-toggle="tooltip" 
-                                        data-bs-placement="top"
-                                        data-bs-custom-class="custom-tooltip-danger" 
-                                        data-bs-title="Supprimer la ligne produit">
-                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }}
-                                    </a>
-                                </td>
+									<a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" class="text-danger text-decoration-none ms-auto" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger" data-bs-title="Supprimer la ligne produit">
+										{{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }}
+									</a>
+								</td>
 							</tr>
 						{% endfor %}
 					</tbody>
 					{# <tfoot>
-					                    <tr>
-					                        <td colspan="3" class="text-end fw-bold">Total Général :</td>
-					                        <td class="fw-bold text-success">{{ total }} €</td>
-					                    </tr>
-					                </tfoot> #}
+										                    <tr>
+										                        <td colspan="3" class="text-end fw-bold">Total Général :</td>
+										                        <td class="fw-bold text-success">{{ total }} €</td>
+										                    </tr>
+										                </tfoot> #}
 				</table>
 				<br><br>
 				<h3 class="fw-bold">Total:
