@@ -5,9 +5,19 @@
         <div class="d-flex col-md-2 align-items-center">
             <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
                 <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
-                <span class="text-white">🌿RIMED PEYI YA🌿</span>
+                <span class="text-white"> RIMED PEYI YA </span>
+                <div class="d-flex ms-2 align-items-center">
+                    {# Ajout du drapeau culturel juste ici #}
+                        <img src="{{ asset('images/gwada-f.jpg') }}" 
+                            alt="Drapeau Guadeloupe" 
+                            width="28" 
+                            height="21" 
+                            class="rounded shadow-sm me-2 align-middle">
+                </div>
+                
             </a>
         </div>
+      
 
         {# BOUTON BURGER (Pour le responsive sur mobile) #}
         <button class="navbar-toggler bg-success-custom-beigeffect" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +31,7 @@
                 {# Accueil #}
                 <li class="nav-item dropdown">
                     <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('app_home') }}">🌿Accueil</a>
+                        <a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
                         <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </a>
@@ -47,13 +57,8 @@
                 </li>
 
                 {# Catégories #}
-                <li class="nav-item dropdown">
-                    <div class="d-flex align-items-center">
-                        <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
-                        <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </a> 
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
                 </li> 
 
                 {# Liens d'administration #}
@@ -69,13 +74,13 @@
                     </li>
                 {% endif %}
 
-                {# 🛒 LE PANIER (Poussé à droite via ms-auto) #}
+                {#  PANIER (Visible par tout le monde ou uniquement connecté) #}
                 <li class="nav-item ms-auto me-3">
-                    {# Modifiez 'app_home' par le nom de votre route panier (ex: 'app_cart') #}
                     <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
                         {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }} Panier
-                        {# Badge du compteur d'articles (Remplacer le '0' par votre variable de session/panier à l'avenir) #}
-                        <span class="badge rounded-pill bg-warning text-dark ms-2">{{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}</span>
+                        <span class="badge rounded-pill bg-warning text-dark ms-2">
+                            {{ app.session.get('cart', [])|reduce((total, qty) => total + qty, 0) }}
+                        </span>
                     </a>
                 </li>
 
@@ -94,7 +99,7 @@
                             <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
                         {% else %} 
                             <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
+                            {# <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li> #}
                         {% endif %}
                     </ul>
                 </li>
