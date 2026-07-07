@@ -71,6 +71,7 @@ class UserType extends AbstractType
                 ])
                ]
             ])
+           ->add('numero_de_telephone')
             // ->add('isVerified')
             // ->add('adresse_mail')
             // ->add('numero_de_telephone')

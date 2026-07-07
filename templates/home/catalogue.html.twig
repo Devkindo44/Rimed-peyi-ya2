@@ -9,7 +9,7 @@
 {% block body %}
 <div class="container my-5 px-4  ">
     {% if is_granted('ROLE_ADMIN') %}
-    <a class="btn btn-custom-green" href="{{ path('app_admin_user_index')}}">Retour tableau de bord</a>
+    <a class="btn btn-custom-green" href="{{ path('app_admin_user_dashboard')}}">Retour tableau de bord</a>
     {% endif %}
     {# BARRE DE FILTRES DES CATÉGORIES #}
     <div class="text-center mb-5">

@@ -65,6 +65,11 @@ h1, h2, .section-title {
 .btn-custom-brown {background-color: var(--t-brown);color:white;}
 .btn-custom-green {background-color: var(--main-green);color:white;}
 
+.navbar-toggler{
+    
+    line-height: 1;
+    color: white;}
+
 /* Image Hero */
 .hero-image { 
     width: 100%;
@@ -185,19 +190,17 @@ h1, h2, .section-title {
 }
 /* Barre latérale (Sidebar) */
 .sidebar {
-    width: 440px;
-   
+   width: 280px; /* Réduit à 280px pour laisser de la place au contenu */
     border: 3mm ridge var(--main-green);
     color: var(--t-brown);
-    color: var(--main-green);
     padding: 20px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 15px 30px rgba(109, 76, 65, 0.2);
-    position: fixed;
+    /* Supprime position: fixed, top, left, bottom pour laisser le Flexbox agir */
+    position: sticky;
     top: 0;
-    left: 0;
-    bottom: 0;
+    height: 100vh;
 }
 /* *********************************************************************** */
 

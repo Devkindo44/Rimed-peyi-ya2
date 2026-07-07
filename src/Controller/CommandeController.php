@@ -28,8 +28,21 @@ final class CommandeController extends AbstractController
             return $this->redirectToRoute('app_home_catalogue');
         }
 
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        // --- RÉCUPÉRATION ET VÉRIFICATION DE L'ADRESSE ---
+        $adresse = $user->getAdresseDeLivraisons()->first();
+
+        if (!$adresse) {
+            $this->addFlash('danger', 'Veuillez configurer une adresse de livraison dans votre profil avant de commander.');
+            return $this->redirectToRoute('app_adresse_de_livraison_new'); // Ou redirige vers ta page profil / formulaire adresse
+        }
+        // -------------------------------------------------
+
         $commande = new Commande();
-        $commande->setUtilisateur($this->getUser());
+        $commande->setUtilisateur($user);
+        $commande->setAdressedeLivraison($adresse); // Assigne l'adresse de livraison obligatoire !
         $commande->setDate(new \DateTime());
         
         $commande->setFraisPort(0.0);
@@ -37,14 +50,12 @@ final class CommandeController extends AbstractController
 
         $sousTotal = 0;
 
-       foreach ($cart as $id => $cartValue) {
+        foreach ($cart as $id => $cartValue) {
             $product = $productRepository->find($id);
 
             if ($product) {
-                // Initialisation par défaut
                 $quantity = 1;
 
-                // Cas 1 : La session stocke un tableau associatif (ex: ['quantity' => 3])
                 if (is_array($cartValue)) {
                     if (isset($cartValue['quantity'])) {
                         $quantity = $cartValue['quantity'];
@@ -52,12 +63,10 @@ final class CommandeController extends AbstractController
                         $quantity = $cartValue['quantite'];
                     }
                 } 
-                // Cas 2 : La session stocke un entier brut (ex: 3)
                 elseif (is_numeric($cartValue) || is_string($cartValue)) {
                     $quantity = $cartValue;
                 }
 
-                // Conversion de sécurité absolue (Empêche le NULL à coup sûr)
                 $finalQuantity = (int)$quantity;
                 if ($finalQuantity < 1) {
                     $finalQuantity = 1;
@@ -66,7 +75,7 @@ final class CommandeController extends AbstractController
                 $ligne = new LigneDeCommande();
                 $ligne->setCommande($commande);
                 $ligne->setProduct($product);
-                $ligne->setQuantity($finalQuantity); // Ta méthode anglaise validée par Symfony
+                $ligne->setQuantity($finalQuantity); 
                 $ligne->setPrixUnitaire($product->getPrice());
 
                 $sousTotal += $product->getPrice() * $finalQuantity;
@@ -80,8 +89,6 @@ final class CommandeController extends AbstractController
             }
         }
 
-
-
         $commande->setMontantTotal($sousTotal + $commande->getFraisPort());
 
         $em->persist($commande);
@@ -92,7 +99,7 @@ final class CommandeController extends AbstractController
         $this->addFlash('success', 'Votre commande a été validée avec succès !');
 
         return $this->redirectToRoute('app_commande_recap', ['id' => $commande->getId()]);
-    } // <-- Cette accolade ferme proprement la méthode creer()
+    }
 
     #[Route('/commande/recap/{id}', name: 'app_commande_recap')]
     #[IsGranted('ROLE_USER')]

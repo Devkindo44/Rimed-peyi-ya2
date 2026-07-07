@@ -9,6 +9,7 @@
 				<span class="text-white">
 					RIMED PEYI YA
 				</span>
+				
 				<div
 					class="d-flex ms-2 align-items-center">
 					{# Ajout du drapeau culturel juste ici #}
@@ -89,10 +90,10 @@
 						<a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ path('app_categories_new') }}">Gestion des catégories</a>
+						<a class="nav-link text-white" href="{{ path('app_admin_categories_dashboard') }}">Gestion des catégories</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ path('app_admin_user_index') }}">Espace Administrateur</a>
+						<a class="nav-link text-white" href="{{ path('app_admin_user') }}">Espace Administrateur</a>
 					</li>
 				{% endif %}
 
@@ -121,7 +122,7 @@
 							<li><hr class="dropdown-divider"></li>
 							{% if is_granted('ROLE_ADMIN') %}
 								<li>
-									<a class="dropdown-item" href="{{ path('app_admin_user_index') }}">Back office</a>
+									<a class="dropdown-item" href="{{ path('app_admin_user') }}">Back office</a>
 								</li>
 							{% endif %}
 							<li>

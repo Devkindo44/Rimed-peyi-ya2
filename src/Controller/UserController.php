@@ -11,10 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/user')]
+// Changement ici : toutes les URLs commenceront par /admin/user
+#[Route('/admin/user')]
 final class UserController extends AbstractController
 {
-    #[Route(name: 'app_user_index', methods: ['GET'])]
+    // L'URL exacte devient : /admin/user
+    // Harmonisation du nom de la route en 'app_admin_user_index' pour correspondre à vos besoins
+    #[Route('', name: 'app_admin_user', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
@@ -22,6 +25,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    // L'URL devient : /admin/user/new
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -33,7 +37,8 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            // Redirection corrigée vers le bon nom de route de l'index
+            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
@@ -42,6 +47,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    // L'URL devient : /admin/user/{id}
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -50,6 +56,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    // L'URL devient : /admin/user/{id}/edit
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -59,7 +66,8 @@ final class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            // Redirection corrigée vers le bon nom de route de l'index
+            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -68,6 +76,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+    // L'URL devient : /admin/user/{id} (via méthode POST uniquement)
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {

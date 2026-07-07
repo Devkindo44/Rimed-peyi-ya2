@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AdresseDeLivraison index{% endblock %}
+
+{% block body %}
+    <h1>Adresse De Livraison index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Adresse_postale</th>
+                <th>Code_postale</th>
+                 <th>Ville</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for adresse_de_livraison in adresse_de_livraisons %}
+            <tr>
+                <td>{{ adresse_de_livraison.id }}</td>
+                <td>{{ adresse_de_livraison.adressePostale }}</td>
+                <td>{{ adresse_de_livraison.codePostale }}</td>
+                <td>{{ adresse_de_livraison.ville }}</td>
+                <td>
+                    <a href="{{ path('app_adresse_de_livraison_show', {'id': adresse_de_livraison.id}) }}">show</a>
+                    <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse_de_livraison.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_adresse_de_livraison_new') }}">Create new</a>
+{% endblock %}

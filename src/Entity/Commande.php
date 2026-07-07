@@ -39,6 +39,10 @@ class Commande
     #[ORM\OneToMany(targetEntity: LigneDeCommande::class, mappedBy: 'commande', orphanRemoval: true)]
     private Collection $ligneDeCommandes;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AdresseDeLivraison $adressedeLivraison = null;
+
     public function __construct()
     {
         $this->ligneDeCommandes = new ArrayCollection();
@@ -136,6 +140,18 @@ class Commande
                 $ligneDeCommande->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdressedeLivraison(): ?AdresseDeLivraison
+    {
+        return $this->adressedeLivraison;
+    }
+
+    public function setAdressedeLivraison(?AdresseDeLivraison $adressedeLivraison): static
+    {
+        $this->adressedeLivraison = $adressedeLivraison;
 
         return $this;
     }

@@ -14,10 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+// Toutes les URLs de ce contrôleur commenceront par /admin/produit
+#[Route('/admin/produit')]
 final class ProductController extends AbstractController
 {
-    // Affichage des produits
-    #[Route('/produit/index', name: 'app_product_index')]
+    // L'URL exacte devient : /admin/produit
+    #[Route('', name: 'app_product_index')]
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
@@ -27,8 +29,8 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    // Ajout d'un produit
-    #[Route('/produit/ajouter', name: 'app_product_new')]
+    // L'URL devient : /admin/produit/ajouter
+    #[Route('/ajouter', name: 'app_product_new')]
     public function new(Request $request, CategoriesRepository $categoriesRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {   
         $categories = $categoriesRepository->findAll();
@@ -68,22 +70,20 @@ final class ProductController extends AbstractController
 
                 $this->addFlash('success', 'Le produit et son stock ont bien été ajoutés');
 
-                return $this->redirectToRoute('app_product_index');
+                return $this->redirectToRoute('app_product_index'); // <-- Correction ici
             } else {
-                // Le formulaire a été soumis mais il contient des erreurs
                 $this->addFlash('danger', 'Le formulaire contient des erreurs. Veuillez les corriger.');
             }
         }
 
-        // Le render est maintenant en dehors des conditions de soumission, accessible au premier chargement
         return $this->render('product/new.html.twig', [
             'formProduct' => $form->createView(),
             'categories'=> $categories,
-        ],new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY)); 
+        ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY)); 
     }
 
-    // Fiche d'un produit spécifique
-    #[Route('/produit/fiche/{id}', name: 'app_product_show')]
+    // L'URL devient : /admin/produit/fiche/{id}
+    #[Route('/fiche/{id}', name: 'app_product_show')]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
@@ -91,8 +91,8 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    // Modification d'un produit spécifique
-    #[Route('/produit/modifier/{id}', name: 'app_product_edit')] 
+    // L'URL devient : /admin/produit/modifier/{id}
+    #[Route('/modifier/{id}', name: 'app_product_edit')] 
     public function edit(Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -134,17 +134,17 @@ final class ProductController extends AbstractController
 
             $this->addFlash('success', 'Le produit a bien été modifié');
 
-            return $this->redirectToRoute('app_product_index');
+            return $this->redirectToRoute('app_product_index'); // <-- Redirection cohérente
         }
 
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'formProduct' => $form->createView()
-        ],new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY));
+        ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
-    // Suppression d'un produit spécifique
-    #[Route('/produit/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
+    // L'URL devient : /admin/produit/supprimer/{id}
+    #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
     public function delete(Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($product->getStock()) {
@@ -156,6 +156,6 @@ final class ProductController extends AbstractController
 
         $this->addFlash('success', 'Le produit a bien été supprimé.');
 
-        return $this->redirectToRoute('app_product_index');
+        return $this->redirectToRoute('app_product_index'); // <-- Redirection cohérente
     }
 }

@@ -1,54 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block nav %}{% endblock %}
-{% block footer %}{% endblock %}
-
-{% block title %}Liste des membres{% endblock %}
+{% block title %}{{ parent() }} | Gestion des membres{% endblock %}
+{% block description %}{{ parent() }} | Gestion des membres{% endblock %}
+{% block keywords %}{{ parent() }} |  Gestion des membres{% endblock %}
+{% block h1 %}Gestion des membres{% endblock %}
 
 {% block body %}
-<div class="container my-5">
 
-    {# En-tête de la page #}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
-            ← Retour au Tableau de bord
+<div class="container mt-4">
+    {# Affichage de tous les messages flash (success et danger pour Turbo) #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Boutons de navigation #}
+    <div class="mb-3">
+        {# Correction : pointe vers le tableau de bord général plutôt que vers lui-même #}
+        <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
+            ← Tableau de bord
         </a>
-        <div>
-            <h2 class="fw-bold text-custom-green-l"> Gestion des membres</h2>
-            <p class="text-muted">Liste complète des utilisateurs inscrits sur le site.</p>
-        </div>
-       
         <a class="btn btn-custom-green" href="{{ path('app_user_new') }}">
-            + Ajouter un membre
+            Ajouter un membre
         </a>
     </div>
 
-    {# Tableau des utilisateurs #}
-    <div class="card shadow-sm border-green table-card-clean">
-        <div class="card-header bg-custom-green text-white fw-bold py-3">
-            Comptes utilisateurs
-        </div>
-        <div class="card-body p-0">
-            <table class="table table-striped vertical-align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th class="ps-4">ID</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
-                        <th>Email</th>
-                        <th>Statut</th>
-                        <th>Rôles</th>
-                        <th>Téléphone</th>
-                        <th class="text-end pe-4">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+    {% if users is not empty %}
+        <table class="table table-striped vertical-align-middle mb-0 table-bordered table-hover text-center text-white mt-3">
+            <thead>
+                <tr>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 70px;">ID</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prénom</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Nom</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Email</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 120px;">Statut</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 110px;">Rôles</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Téléphone</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for user in users %}
                     <tr>
-                        <td class="ps-4"><span class="badge bg-light text-dark">#{{ user.id }}</span></td>
+                        {# ID #}
+                        <td>{{ user.id }}</td>
+                        
+                        {# Prénom #}
                         <td>{{ user.firstName|capitalize }}</td>
+                        
+                        {# Nom #}
                         <td>{{ user.lastName|upper }}</td>
-                        <td>{{ user.email }}</td>
+                        
+                        {# Email #}
+                        <td class="text-start px-3">{{ user.email }}</td>
+                        
+                        {# Statut #}
                         <td>
                             {% if user.isVerified %}
                                 <span class="badge bg-success">✓ Vérifié</span>
@@ -56,6 +66,8 @@
                                 <span class="badge bg-warning text-dark">⚠ En attente</span>
                             {% endif %}
                         </td>
+                        
+                        {# Rôles #}
                         <td>
                             {% if 'ROLE_ADMIN' in user.roles %}
                                 <span class="badge bg-danger">Admin</span>
@@ -63,28 +75,47 @@
                                 <span class="badge bg-secondary">Membre</span>
                             {% endif %}
                         </td>
-                        <td>{{ user.numeroDeTelephone ? user.numeroDeTelephone : '<em class="text-muted">Aucun</em>' }}</td>
-                        <td class="text-end pe-4">
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a class="btn btn-outline-primary" href="{{ path('app_user_show', {'id': user.id}) }}" title="Voir">
-                                    👁 Voir
+                        
+                        {# Téléphone #}
+                        <td>
+                            {% if user.numeroDeTelephone %}
+                                {{ user.numeroDeTelephone }}
+                            {% else %}
+                                <span class="text-muted small"><em>Aucun</em></span>
+                            {% endif %}
+                        </td>
+                        
+                        {# Actions #}
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                {# Fiche #}
+                                <a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-decoration-none" title="Voir la fiche">
+                                    {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
                                 </a>
-                                <a class="btn btn-outline-warning" href="{{ path('app_user_edit', {'id': user.id}) }}" title="Modifier">
-                                    ✏ Éditer
+
+                                {# Modifier #}
+                                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="text-decoration-none" title="Modifier">
+                                    {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
                                 </a>
+                                
+                                {# Supprimer : Remplacement par un formulaire POST sécurisé avec Token CSRF #}
+                                <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?');" style="display: inline-block;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                    <button class="btn btn-link p-0 m-0 align-baseline text-decoration-none" type="submit" title="Supprimer">
+                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
-                            Aucun utilisateur trouvé dans la base de données.
-                        </td>
-                    </tr>
                 {% endfor %}
-                </tbody>
-            </table>
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3">
+            {{ ux_icon('lucide:info', {class: 'me-2'}) }} Aucun utilisateur trouvé dans la base de données.
         </div>
-    </div>
+    {% endif %}
 </div>
+
 {% endblock %}
