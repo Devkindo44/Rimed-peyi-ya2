@@ -1,21 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{# bloc pour les metadonnées seo#}
-
-{% block title %}{{parent()}} | CGV{% endblock %}
-{% block description %}{{parent()}} |  CGV{% endblock %}
-{% block keywords %}{{parent()}} |  CGV{% endblock %}
-{% block h1 %}CGV{% endblock %}
-
-
-{% block stylesheets %}{% endblock %}
-
-
-
-
+{% block title %}Conditions Générales de Vente - Rimed Peyi Ya{% endblock %}
 
 {% block body %}
+<main class="container my-5 text-custom-brown">
+    <h1 class="section-title text-center">Conditions Générales de Vente (CGV)</h1>
+    <div class="title-underline mx-auto mb-5"></div>
 
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm border-brown">
+        <p class="text-muted text-dark mb-4"><em>En vigueur au 14 juillet 2026</em></p>
 
-   
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">1. Identification de l'éditeur</h2>
+            <p>Le site <strong>Rimed Peyi Ya</strong> est édité par l'entreprise SEMA , immatriculée sous le numéro <strong>KS11223344</strong> dont le siège social est situé au <strong> 22 rue Jacques Nestor Port-Louis 97117<strong>.</p>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">2. Produits et Tarifs</h2>
+            <p>Les produits proposés à la vente sont ceux décrits dans le catalogue du site. Les prix sont indiqués en Euros (€) toutes taxes comprises (TTC) hors frais de livraison, lesquels sont calculés et affichés avant la validation définitive de la commande.</p>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">3. Commande</h2>
+            <p>Pour passer commande, le client doit créer un compte ou s'identifier sur son espace client. La validation de la commande par le client vaut acceptation pleine et entière des présentes CGV. Un email de confirmation récapitulant les détails de la commande sera envoyé.</p>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">4. Modalités de Paiement</h2>
+            <p>Le paiement est exigible immédiatement à la commande. Le règlement s'effectue par carte bancaire ou tout autre moyen sécurisé proposé sur le site au moment du paiement.</p>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">5. Livraison</h2>
+            <p>Les produits sont livrés à l'adresse de livraison indiquée lors du processus de commande. Les délais de livraison ne sont donnés qu'à titre indicatif et l'éditeur ne pourra être tenu responsable des retards imputables aux transporteurs.</p>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">6. Droit de rétractation</h2>
+            <p>Conformément à l'article L221-18 du Code de la consommation, le consommateur dispose d'un délai de <strong>14 jours</strong> pour exercer son droit de rétractation sans avoir à motiver sa décision.</p>
+            <div class="alert alert-info bg-custom-cream border-brown text-custom-brown">
+                <strong>Exception importante :</strong> Conformément à la législation, le droit de rétractation ne peut être exercé pour les produits qui ont été descellés par le consommateur après la livraison et qui ne peuvent être renvoyés pour des raisons d'hygiène ou de protection de la santé (ex: infusions, huiles, plantes en sachets ouverts).
+            </div>
+        </section>
+
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">7. Litiges et Loi applicable</h2>
+            <p>Les présentes CGV sont soumises à la loi française. En cas de litige, une solution amiable sera recherchée avant toute action judiciaire auprès des tribunaux compétents.</p>
+        </section>
+    </div>
+</main>
 {% endblock %}

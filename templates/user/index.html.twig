@@ -40,6 +40,7 @@
                     <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 120px;">Statut</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 110px;">Rôles</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Téléphone</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 160px;">Date d'inscription</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Actions</th>
                 </tr>
             </thead>
@@ -84,6 +85,15 @@
                                 <span class="text-muted small"><em>Aucun</em></span>
                             {% endif %}
                         </td>
+
+                        {# Date d'inscription #}
+                        <td>
+                            {% if user.createdAt %}
+                                {{ user.createdAt|date('d/m/Y à H:i') }}
+                            {% else %}
+                                <span class="text-muted small"><em>Inconnue</em></span>
+                            {% endif %}
+                        </td>
                         
                         {# Actions #}
                         <td>
@@ -98,7 +108,7 @@
                                     {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
                                 </a>
                                 
-                                {# Supprimer : Remplacement par un formulaire POST sécurisé avec Token CSRF #}
+                                {# Supprimer #}
                                 <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?');" style="display: inline-block;">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                                     <button class="btn btn-link p-0 m-0 align-baseline text-decoration-none" type="submit" title="Supprimer">

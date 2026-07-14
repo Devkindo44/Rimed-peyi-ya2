@@ -49,7 +49,7 @@ final class CartController extends AbstractController
         // Si le produit n'existe pas, on redirige
         if (!$product) {
             $this->addFlash('danger', 'Produit introuvable.');
-            return $this->redirectToRoute('app_cart');
+            return $this->redirectToRoute('app_home_catalogue');
         }
 
         $cart = $session->get('cart', []);
@@ -79,7 +79,7 @@ final class CartController extends AbstractController
 
         $session->set('cart', $cart);
 
-        return $this->redirectToRoute('app_cart');
+        return $this->redirectToRoute('app_home_catalogue');
     }
 
    #[Route('/cart/augmenter/{id}', name: 'app_cart_increase')]

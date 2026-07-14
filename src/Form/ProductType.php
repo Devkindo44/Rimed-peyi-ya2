@@ -154,8 +154,9 @@ class ProductType extends AbstractType
                     'class' => 'text-success',
                 ],
                 'placeholder' => ' Choisir le conditionnement',
-                'required' => false,
+                'required' => true,
                 'choices'  => [
+                    'Paquet de 100g'    =>  'Paquet de 100g',
                     'Sachet de 100g'    =>  'Sachet de 100g',
                     'Sachet de 250g'    =>  'Sachet de 250g',
                     'Sachet de 500g'    =>  'Sachet de 500g',
@@ -168,7 +169,7 @@ class ProductType extends AbstractType
                 'attr' => [
                     'class' => 'form-select bg-success-custom-brown-f shadow rounded' // form-select s'adapte mieux au dropdown
                 ],
-                'help' => 'Sélectionnez le format du conditionnement : <span class="text-custom-brown">Sachet, bouteille, flacon.</span>',
+                'help' => 'Sélectionnez le format du conditionnement : <span class="text-custom-brown">Sachet, bouteille, flacon, paquet.</span>',
                 'help_html' => true,
                 'help_attr' => [
                     'class' => 'text-success'

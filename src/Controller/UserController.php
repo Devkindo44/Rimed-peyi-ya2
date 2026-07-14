@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-// Changement ici : toutes les URLs commenceront par /admin/user
+// toutes les URLs commencent par /admin/user
 #[Route('/admin/user')]
 final class UserController extends AbstractController
 {
     // L'URL exacte devient : /admin/user
-    // Harmonisation du nom de la route en 'app_admin_user_index' pour correspondre à vos besoins
+    
     #[Route('', name: 'app_admin_user', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -37,7 +37,7 @@ final class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Redirection corrigée vers le bon nom de route de l'index
+            // Redirection vers  route de l'index (page admin)
             return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -66,7 +66,7 @@ final class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            // Redirection corrigée vers le bon nom de route de l'index
+            // Redirection vers  route de l'index (page admin)
             return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
         }
 

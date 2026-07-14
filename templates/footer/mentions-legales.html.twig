@@ -1,16 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} | Mentions legales{% endblock %}
-{% block description %}{{parent()}} |  Mentions legales{% endblock %}
-{% block keywords %}{{parent()}} |  Mentions legales{% endblock %}
-{% block h1 %}Mentions legales{% endblock %}
-
-
-
-
-
+{% block title %}Mentions Légales - Rimed Peyi Ya{% endblock %}
 
 {% block body %}
+<main class="container my-5 text-custom-brown ">
+    <h1 class="section-title text-center">Mentions Légales</h1>
+    <div class="title-underline mx-auto mb-5"></div>
 
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm border-brown">
+        <p class="text-muted text-dark mb-4"><em>En vigueur au 14 juillet 2026</em></p>
 
+        {# Section 1 : Éditeur du site #}
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">1. Édition du site</h2>
+            <p>
+                Le site internet <strong>Rimed Peyi Ya</strong> (accessible à l'adresse <code class="text-dark bg-light px-1 rounded">https://www.rimedpeyiya.fr</code>) 
+                est édité par l'association / l'entreprise <strong>SEMA</strong>, au capital de [Montant] €, immatriculée au 
+                Registre du Commerce et des Sociétés de [Votre Ville] sous le numéro SIRET [Votre numéro SIRET].
+            </p>
+            <ul class="list-unstyled ps-3">
+                <li><strong>Siège social :</strong> [Votre Adresse Postale]</li>
+                <li><strong>Directeur de la publication :</strong> [Votre Nom et Prénom]</li>
+                <li><strong>Adresse e-mail de contact :</strong> contact@rimedpeyiya.fr</li>
+            </ul>
+        </section>
+
+        {# Section 2 : Hébergeur #}
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">2. Hébergement du site</h2>
+            <p>
+                Le site Rimed Peyi Ya est hébergé par la société <strong>Pokosav</strong>.
+            </p>
+            <ul class="list-unstyled ps-3">
+                <li><strong>Adresse de l'hébergeur :</strong> [Nous poko sav]</li>
+                <li><strong>Téléphone de l'hébergeur :</strong> [Numéro de téléphone de l'hébergeur]</li>
+            </ul>
+        </section>
+
+        {# Section 3 : Propriété intellectuelle #}
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">3. Propriété intellectuelle et contrefaçons</h2>
+            <p>
+                L'éditeur est propriétaire des droits de propriété intellectuelle et détient les droits d’usage sur tous les éléments 
+                accessibles sur le site internet, notamment les textes, images, graphismes, logos, vidéos, architecture, icônes et sons.
+            </p>
+            <p>
+                Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, 
+                quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de l'éditeur.
+            </p>
+        </section>
+
+        {# Section 4 : Clause de non-responsabilité médicale #}
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">4. Limitation de responsabilité & Avis de non-responsabilité médicale</h2>
+            <div class="alert alert-warning border-green bg-custom-cream text-custom-brown">
+                <strong>Important :</strong> Rimed Peyi Ya s'attache à valoriser les remèdes traditionnels créoles et l'usage des plantes. 
+                Cependant, l'ensemble des informations et conseils dispensés sur ce site n'ont qu'une valeur documentaire et ne sauraient 
+                se substituer à une consultation médicale ou à l'avis d'un professionnel de santé. 
+            </div>
+            <p>
+                L'éditeur ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l’utilisateur lors de l’accès au site, 
+                ni d'une mauvaise utilisation ou interprétation des remèdes présentés.
+            </p>
+        </section>
+
+        {# Section 5 : CNIL et Données personnelles #}
+        <section class="mb-4">
+            <h2 class="h4 text-custom-green-l mb-3">5. Gestion des données personnelles et cookies</h2>
+            <p>
+                Conformément aux dispositions de la loi 78-17 du 6 janvier 1978 modifiée et au RGPD, l’utilisateur du site dispose d’un droit d’accès, 
+                de modification et de suppression des informations collectées (notamment lors de la création d'un compte ou d'une commande). 
+            </p>
+            <p>
+                Pour exercer ce droit, l'utilisateur peut adresser un message à notre support via notre page de 
+                <a href="{{ path('app_contact') }}" class="text-custom-green-l fw-bold">contact</a>.
+            </p>
+        </section>
+    </div>
+</main>
 {% endblock %}

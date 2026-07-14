@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos de Rimed Peyi Ya{% endblock %}
+
+{% block body %}
+<main class="container my-5 text-custom-brown">
+    <h1 class="section-title text-center">À propos de nous</h1>
+    <div class="title-underline mx-auto mb-5"></div>
+
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm border-brown">
+        
+        <section class="mb-5">
+            <h2 class="h4 text-custom-green-l mb-3">Notre Mission</h2>
+            <p><strong>Rimed Peyi Ya</strong> est un espace dédié à la préservation et à la valorisation du patrimoine culturel des remèdes traditionnels et des secrets de grand-mère. Notre objectif est de documenter et de partager ces savoirs ancestraux, souvent transmis oralement de génération en génération, afin qu'ils ne tombent pas dans l'oubli.</p>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="h4 text-custom-green-l mb-3">Culture, Nature et Tradition</h2>
+            <p>Chaque plante, chaque infusion et chaque astuce partagée sur cette plateforme porte en elle une histoire. Qu'il s'agisse des plantes médicinales de nos jardins ou des rituels bien-être de nos régions, nous croyons fermement que la nature regorge de ressources précieuses qu'il convient de respecter et de redécouvrir.</p>
+        </section>
+
+        <section class="mb-5">
+            <div class="alert alert-warning border-green bg-custom-cream text-custom-brown">
+                <h5 class="alert-heading font-weight-bold mb-2">Un héritage culturel avant tout</h5>
+                <p class="mb-0">Les pratiques répertoriées ici relèvent de la tradition populaire. Elles ont pour vocation de faire vivre la mémoire collective et culturelle. Elles ne remplacent en aucun cas la médecine moderne, les consultations chez un médecin ou les traitements prescrits par des professionnels de santé.</p>
+            </div>
+        </section>
+
+        <section class="text-center mt-4">
+            <h3 class="h5 text-custom-brown mb-3">Envie de partager un remède ou une histoire ?</h3>
+            <p>Ce site vit grâce à la transmission. Si vous souhaitez enrichir notre encyclopédie populaire avec une recette de votre région ou un souvenir de votre enfance, n'hésitez pas à participer !</p>
+            <a href="{{ path('app_contact') }}" class="btn btn-success bg-custom-green-l border-0 px-4 py-2 mt-2">Nous contacter</a>
+        </section>
+
+    </div>
+</main>
+{% endblock %}

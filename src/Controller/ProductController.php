@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-// Toutes les URLs de ce contrôleur commenceront par /admin/produit
+//  /admin/produit
 #[Route('/admin/produit')]
 final class ProductController extends AbstractController
 {
@@ -29,7 +29,7 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    // L'URL devient : /admin/produit/ajouter
+    // /admin/produit/ajouter
     #[Route('/ajouter', name: 'app_product_new')]
     public function new(Request $request, CategoriesRepository $categoriesRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {   
@@ -65,12 +65,12 @@ final class ProductController extends AbstractController
                     $product->setIllustration($newFileName);
                 }
 
-                $entityManager->persist($product);
-                $entityManager->flush();
+                $entityManager->persist($product); //prepare le produit pour l'envoi à la BD
+                $entityManager->flush();// Envoi le produit, le stock et l'image en BD
 
                 $this->addFlash('success', 'Le produit et son stock ont bien été ajoutés');
 
-                return $this->redirectToRoute('app_product_index'); // <-- Correction ici
+                return $this->redirectToRoute('app_product_index'); 
             } else {
                 $this->addFlash('danger', 'Le formulaire contient des erreurs. Veuillez les corriger.');
             }
@@ -134,7 +134,7 @@ final class ProductController extends AbstractController
 
             $this->addFlash('success', 'Le produit a bien été modifié');
 
-            return $this->redirectToRoute('app_product_index'); // <-- Redirection cohérente
+            return $this->redirectToRoute('app_product_index'); // <-- Redirection
         }
 
         return $this->render('product/edit.html.twig', [
@@ -156,6 +156,6 @@ final class ProductController extends AbstractController
 
         $this->addFlash('success', 'Le produit a bien été supprimé.');
 
-        return $this->redirectToRoute('app_product_index'); // <-- Redirection cohérente
+        return $this->redirectToRoute('app_product_index'); // <-- Redirection 
     }
 }

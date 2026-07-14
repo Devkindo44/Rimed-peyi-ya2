@@ -1,39 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AdresseDeLivraison index{% endblock %}
+{# bloc pour les metadonnées seo #}
+{% block title %}{{ parent() }} | Gestion des adresses{% endblock %}
+{% block description %}{{ parent() }} | Gestion des adresses de livraison{% endblock %}
+{% block keywords %}{{ parent() }} | Gestion des adresses{% endblock %}
+{% block h1 %}Gestion des adresses de livraison{% endblock %}
 
 {% block body %}
-    <h1>Adresse De Livraison index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Adresse_postale</th>
-                <th>Code_postale</th>
-                 <th>Ville</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for adresse_de_livraison in adresse_de_livraisons %}
-            <tr>
-                <td>{{ adresse_de_livraison.id }}</td>
-                <td>{{ adresse_de_livraison.adressePostale }}</td>
-                <td>{{ adresse_de_livraison.codePostale }}</td>
-                <td>{{ adresse_de_livraison.ville }}</td>
-                <td>
-                    <a href="{{ path('app_adresse_de_livraison_show', {'id': adresse_de_livraison.id}) }}">show</a>
-                    <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse_de_livraison.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+<div class="container mt-4">
+    {# Affichage de tous les messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+    {% endfor %}
 
-    <a href="{{ path('app_adresse_de_livraison_new') }}">Create new</a>
+    {# Boutons de navigation #}
+    <div class="mb-3">
+        <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
+            ← Tableau de bord
+        </a>
+        <a class="btn btn-custom-green" href="{{ path('app_adresse_de_livraison_new') }}">
+            Ajouter une adresse
+        </a>
+    </div>
+
+    {% if adresse_de_livraisons is not empty %}
+        <table class="table table-striped vertical-align-middle mb-0 table-bordered table-hover text-center text-white mt-3">
+            <thead>
+                <tr>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 80px;">ID</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Adresse postale</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Code postal</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Ville</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for adresse in adresse_de_livraisons %}
+                    <tr>
+                        {# ID #}
+                        <td>{{ adresse.id }}</td>
+                        
+                        {# Adresse #}
+                        <td>{{ adresse.adressePostale }}</td>
+                        
+                        {# Code Postal #}
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-25 text-dark fw-normal fs-6">
+                                {{ adresse.codePostale }}
+                            </span>
+                        </td>
+                        
+                        {# Ville #}
+                        <td><strong>{{ adresse.ville|upper }}</strong></td>
+                        
+                        {# Actions #}
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                {# Fiche / Voir #}
+                                <a href="{{ path('app_adresse_de_livraison_show', {'id': adresse.id}) }}" class="text-decoration-none" title="Voir les détails">
+                                    {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
+                                </a>
+
+                                {# Modifier #}
+                                <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse.id}) }}" class="text-decoration-none" title="Modifier">
+                                    {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
+                                </a>
+                                
+                                {# Supprimer sécurisé avec Token CSRF #}
+                                <form method="post" action="{{ path('app_adresse_de_livraison_delete', {'id': adresse.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette adresse ?');" style="display: inline-block; margin: 0;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ adresse.id) }}">
+                                    <button class="btn btn-link p-0 m-0 align-baseline text-decoration-none" type="submit" title="Supprimer">
+                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3">
+            {{ ux_icon('lucide:info', {class: 'me-2'}) }} Aucune adresse de livraison n'a été enregistrée pour le moment.
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -3,21 +3,20 @@
 		class="container-fluid">
 
 		{# Logo associé à Rimed Peyi ya #}
-		<div class="d-flex col-md-2 align-items-center">
-			<a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
-				<img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
-				<span class="text-white">
-					RIMED PEYI YA
-				</span>
-				
-				<div
-					class="d-flex ms-2 align-items-center">
-					{# Ajout du drapeau culturel juste ici #}
-					<img src="{{ asset('images/gwada-f.jpg') }}" alt="Drapeau Guadeloupe" width="28" height="21" class="rounded shadow-sm me-2 align-middle">
-				</div>
+<div class="d-flex align-items-center">
+    <a class="navbar-brand d-flex align-items-center me-0" href="{{ path('app_home') }}">
+        <img src="{{ asset('/images/logo_Projet.png') }}" class="shadow rounded me-2" alt="Logo RimedPeyiYa" width="100">
+        
+        <span class="text-white fw-bold me-3">
+            RIMED PEYI YA
+        </span>
+    </a>
 
-			</a>
-		</div>
+    {# Le drapeau est sorti du lien <a> pour éviter les conflits d'alignement, mais reste à côté #}
+    <div class="d-flex align-items-center">
+        <img src="{{ asset('images/gwada-f.jpg') }}" alt="Drapeau Guadeloupe" width="28" height="21" class="rounded shadow-sm">
+    </div>
+</div>
 
 
 		{# BOUTON BURGER (Pour le responsive sur mobile) #}
@@ -26,119 +25,106 @@
 		</button>
 
 		{# Le menu qui se replie #}
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul
-				class="navbar-nav w-100 align-items-center">
+<div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav w-100 align-items-center">
 
-				{# Accueil #}
-				<li class="nav-item dropdown">
-					<div class="d-flex align-items-center">
-						<a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
-						<a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-							<span class="visually-hidden">Toggle Dropdown</span>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a class="dropdown-item" href="#">Plantes médicinales</a>
-							</li>
-							<li>
-								<a class="dropdown-item" href="#">Remèdes grand-mère</a>
-							</li>
-						</ul>
-					</div>
-				</li>
+        {# Accueil #}
+        <li class="nav-item dropdown ms-4">
+            <div class="d-flex align-items-center">
+                <a class="nav-link text-white" href="{{ path('app_home') }}">Accueil</a>
+                <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Plantes médicinales</a></li>
+                    <li><a class="dropdown-item" href="#">Remèdes grand-mère</a></li>
+                </ul>
+            </div>
+        </li>
 
-				{# Boutique #}
-				<li class="nav-item dropdown">
-					<div class="d-flex align-items-center">
-						<a class="nav-link text-white" href="{{ path('app_home_catalogue') }}">Catalogue</a>
-						<a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
-							<span class="visually-hidden">Toggle Dropdown</span>
-						</a>
-						<ul
-							class="dropdown-menu">
-							{# Lien pour voir tous les produits sans filtre #}
-							<li>
-								<a class="dropdown-item fw-bold" href="{{ path('app_home_catalogue') }}">Tous les produits</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
+        {# Boutique #}
+        <li class="nav-item dropdown">
+            <div class="d-flex align-items-center">
+                <a class="nav-link text-white" href="{{ path('app_home_catalogue') }}">Catalogue</a>
+                <a class="nav-link dropdown-toggle dropdown-toggle-split text-white" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item fw-bold" href="{{ path('app_home_catalogue') }}">Tous les produits</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    {% for category in categories %}
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_home_catalogue', {'category': category.id}) }}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li><span class="dropdown-item text-muted">Aucune catégorie disponible</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
 
-							{# Boucle dynamique sur les vraies catégories #}
-							{% for category in categories %}
-								<li>
-									<a class="dropdown-item" href="{{ path('app_home_catalogue', {'category': category.id}) }}">
-										{{ category.name }}
-									</a>
-								</li>
-							{% else %}
-								<li>
-									<span class="dropdown-item text-muted">Aucune catégorie disponible</span>
-								</li>
-							{% endfor %}
-						</ul>
-					</div>
-				</li>
+        {# Catégories #}
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
+        </li>
 
-				{# Catégories #}
-				<li class="nav-item">
-					<a class="nav-link text-white" href="{{ path('app_categories') }}">Catégories</a>
-				</li>
+        {# Liens d'administration (S'alignent à la suite à gauche) #}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ path('app_admin_categories_dashboard') }}">Gestion des catégories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ path('app_admin_user_dashboard') }}">Espace Administrateur</a>
+            </li>
+        {% endif %}
 
-				{# Liens d'administration #}
-				{% if is_granted('ROLE_ADMIN') %}
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ path('app_product_index') }}">Gestion des produits</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ path('app_admin_categories_dashboard') }}">Gestion des catégories</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="{{ path('app_admin_user') }}">Espace Administrateur</a>
-					</li>
-				{% endif %}
+        {# PANIER (Pousse tout vers la droite s'il est affiché) #}
+        {% if app.user %}
+            <li class="nav-item ms-auto me-3">
+                <a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
+                    {{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }}
+                    Panier
+                    <span class="badge rounded-pill bg-warning text-dark ms-2">
+                        {{ app.session.get('cart', [])|reduce((total, qty) => total + (qty matches '/^\\d+$/' ? qty : 0), 0) }}
+                    </span>
+                </a>
+            </li>
+        {% endif %}
 
-				{#  PANIER (Visible par tout le monde ou uniquement connecté) #}
-				<li class="nav-item ms-auto me-3">
-					<a class="nav-link text-white position-relative d-flex align-items-center" href="{{ path('app_cart') }}">
-						{{ ux_icon('lucide:shopping-cart', {class: 'me-1 icon20'}) }}
-						Panier
-						<span class="badge rounded-pill bg-warning text-dark ms-2">
-                            {{ app.session.get('cart', [])|reduce((total, qty) => total + (qty matches '/^\\d+$/' ? qty : 0), 0) }}
-                        </span>
-					</a>
-				</li>
+        {# Espace client (Prend le "ms-auto" uniquement si le panier n'est pas là, sinon s'aligne juste après lui) #}
+        <li class="nav-item dropdown {% if not app.user %}ms-auto{% else %}me-2{% endif %}">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Espace client
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient">
+                {% if app.user %}
+                    <li>
+                        <span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_admin_user') }}">Back office</a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </li>
 
-				{# Espace client #}
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownClient" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Espace client
-					</a>
-					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownClient">
-						{% if app.user %}
-							<li>
-								<span class="dropdown-item-text text-muted fw-bold">Bonjour
-									{{ app.user.firstname|capitalize }}</span>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							{% if is_granted('ROLE_ADMIN') %}
-								<li>
-									<a class="dropdown-item" href="{{ path('app_admin_user') }}">Back office</a>
-								</li>
-							{% endif %}
-							<li>
-								<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
-							</li>
-						{% else %}
-							<li>
-								<a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
-							</li>
-							{# <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li> #}
-						{% endif %}
-					</ul>
-				</li>
-
-			</ul>
-		</div>
+    </ul>
+</div>
 
 	</div>
 </nav>

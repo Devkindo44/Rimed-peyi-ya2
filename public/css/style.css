@@ -65,6 +65,15 @@ h1, h2, .section-title {
 .btn-custom-brown {background-color: var(--t-brown);color:white;}
 .btn-custom-green {background-color: var(--main-green);color:white;}
 
+/* 1. Styles par défaut pour Mobile */
+.navbar-brand img {
+  width: 60px; /* Plus petit sur mobile */
+}
+
+.navbar-brand span {
+  font-size: 0.9rem; /* Texte plus discret */
+}
+
 .navbar-toggler{
     
     line-height: 1;
@@ -78,12 +87,6 @@ h1, h2, .section-title {
     max-height: 600px;
     object-fit: cover; /* Garde les proportions sans écraser l'image */
     border-radius: 0;
-}
-
-@media screen and (min-width: 768px) {
-    .hero-image {
-        border-radius: 20px; /* Bords ronds uniquement sur grand écran */
-    }
 }
 
 /* Cartes Produits */
@@ -206,10 +209,83 @@ h1, h2, .section-title {
 
 
 
-/* *********************************************************************** */
+/* ==========================================================================
+   MÉDIAS QUERIES - RESPONSIVE DESIGN
+   ========================================================================== */
 
-@media screen and (max-width: 768px) {
+/* --------------------------------------------------------------------------
+   1. Écrans MOBILES UNIQUEMENT (max-width: 767.98px ou max-width: 47.99rem)
+   Toutes les règles spécifiques aux smartphones se mettent ici.
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 47.99rem) {
+    /* Évite que les 3 blocs (Description/Événement/News) ne s'écrasent */
+    .row.bg-custom-brown {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; /* Ajoute un espace vertical entre les 3 cartes */
+        padding: 1.5rem 1rem !important; /* Ajoute de l'air sur les côtés */
+    }
+
+    .row.bg-custom-brown .col {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    /* Gère l'ordre de priorité sur mobile si nécessaire */
     .firstPosition {
         order: -1;
+    }
+
+    /* Ajustement de la hauteur de l'image forêt sur mobile */
+    .hero-image {
+        height: 35vh; /* Plus petite sur mobile pour ne pas cacher le contenu */
+        min-height: 250px;
+    }
+
+    /* Ajustement de la barre latérale Admin (Sidebar) sur mobile :
+       Elle passe d'une colonne fixe à une bannière horizontale au-dessus du contenu */
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-width: 1.5mm; /* Bordure plus fine */
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Écrans TABLETTES & ORDINATEURS (min-width: 768px ou min-width: 48rem)
+   Le design s'élargit et se structure sur plusieurs colonnes.
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 48rem) {
+    /* Le logo et son titre reprennent leur taille d'origine */
+    .navbar-brand img {
+        width: 100px;
+    }
+    
+    .navbar-brand span {
+        font-size: 1.25rem;
+    }
+
+    /* Les 3 blocs (Description/Événement/News) s'alignent proprement sur 3 colonnes */
+    .row.bg-custom-brown {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 2.5rem !important;
+    }
+
+    .row.bg-custom-brown .col {
+        flex: 1; /* Distribue une largeur égale de 33% à chaque colonne */
+    }
+
+    /* L'image forêt récupère ses proportions idéales */
+    .hero-image {
+        height: 50vh;
+        border-radius: 20px; /* Bords ronds élégants uniquement sur grand écran */
     }
 }
