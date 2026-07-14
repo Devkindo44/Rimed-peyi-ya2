@@ -1,21 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{# bloc pour les metadonnées seo#}
-
-{% block title %}{{parent()}} | Nous rejoindre{% endblock %}
-{% block description %}{{parent()}} |  Nous rejoindre{% endblock %}
-{% block keywords %}{{parent()}} | Nous rejoindre{% endblock %}
-{% block h1 %}Nous rejoindre{% endblock %}
-
-
-{% block stylesheets %}{% endblock %}
-
-
-
-
+{% block title %}Nous rejoindre - Rimed Peyi Ya{% endblock %}
 
 {% block body %}
+<main class="container my-5 text-custom-brown">
+    <h1 class="section-title text-center">Nous rejoindre</h1>
+    <div class="title-underline mx-auto mb-5"></div>
 
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm border-brown mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+                <h2 class="h4 text-custom-green-l mb-3">Pourquoi devenir contributeur ?</h2>
+                <p><strong>Rimed Peyi Ya</strong> vit et grandit grâce à vous. Notre mission est de rassembler et préserver la richesse de nos remèdes traditionnels, et chaque savoir compte ! Que vous teniez vos secrets de vos grands-parents, de vos lectures ou de votre propre expérience de la nature, votre voix a de la valeur.</p>
+                <p class="mb-0">En rejoignant notre communauté, vous aidez à documenter un patrimoine précieux et à le rendre accessible aux générations futures dans le respect et la bienveillance.</p>
+            </div>
+            <div class="col-lg-5">
+                <div class="bg-custom-cream p-4 rounded border-green text-center">
+                    <h3 class="h5 mb-3 fw-bold">Un projet collaboratif</h3>
+                    <ul class="list-unstyled text-start mb-0">
+                        <li class="mb-2"> <strong>Partagez</strong> vos recettes de tisanes et remèdes.</li>
+                        <li class="mb-2"> <strong>Contribuez</strong> à l'encyclopédie des plantes.</li>
+                        <li class="mb-0"> <strong>Échangez</strong> avec d'autres passionnés.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-   
+    <div class="text-center bg-white p-4 p-md-5 rounded shadow-sm border-brown">
+        <h2 class="h4 text-custom-green-l mb-3">Prêt(e) à partager votre premier remède ?</h2>
+        <p class="mx-auto" style="max-width: 600px;">
+            Vous pouvez nous envoyer directement vos suggestions de remèdes ou poser votre candidature pour devenir rédacteur régulier sur le site en nous contactant.
+        </p>
+        <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+            <a href="{{ path('app_contact') }}" class="btn btn-success bg-custom-green-l border-0 px-4 py-2 fw-bold">
+                Nous envoyer un message
+            </a>
+            <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success border-green text-custom-green-l bg-transparent px-4 py-2 fw-bold">
+                Explorer le catalogue
+            </a>
+        </div>
+    </div>
+</main>
 {% endblock %}

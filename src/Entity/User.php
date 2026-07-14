@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Un compte existe déjà avec cette adresse email ')]
-#[ORM\HasLifecycleCallbacks] // Permet de mettre à jour le champ updatedAt automatiquement
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -45,8 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    #[ORM\Column(nullable: true)] // Passer en nullable ou string selon vos besoins de formatage
-    private ?int $numero_de_telephone = null;
+    #[ORM\Column(length: 20, nullable: true)] // Propriété configurée en VARCHAR(20)
+    private ?string $numero_de_telephone = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -66,7 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: AdresseDeLivraison::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $adresseDeLivraisons;
 
-    // LE CONSTRUCTEUR : Initialise les dates à la création de l'objet pour éviter le bug "0000-00-00"
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -91,18 +90,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -110,18 +102,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -143,7 +129,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[\Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
     }
 
     public function getFirstName(): ?string
@@ -179,18 +164,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNumeroDeTelephone(): ?int
+    // CORRECTION ICI : Le type de retour est désormais une chaîne (?string)
+    public function getNumeroDeTelephone(): ?string
     {
         return $this->numero_de_telephone;
     }
 
-    public function setNumeroDeTelephone(?int $numero_de_telephone): static
+    // CORRECTION ICI : L'argument attendu est désormais une chaîne (?string)
+    public function setNumeroDeTelephone(?string $numero_de_telephone): static
     {
         $this->numero_de_telephone = $numero_de_telephone;
         return $this;
     }
-
-    // GETTERS & SETTERS POUR LES DATES
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -214,9 +199,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Met à jour automatiquement la date de modification avant chaque UPDATE en BDD
-     */
     #[ORM\PreUpdate]
     public function updateTimestamp(): void
     {
@@ -244,7 +226,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeCommande(Commande $commande): static
     {
         if ($this->commandes->removeElement($commande)) {
-            // set the owning side to null (unless already changed)
             if ($commande->getUtilisateur() === $this) {
                 $commande->setUtilisateur(null);
             }
@@ -274,7 +255,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAdresseDeLivraison(AdresseDeLivraison $adresseDeLivraison): static
     {
         if ($this->adresseDeLivraisons->removeElement($adresseDeLivraison)) {
-            // set the owning side to null (unless already changed)
             if ($adresseDeLivraison->getUser() === $this) {
                 $adresseDeLivraison->setUser(null);
             }

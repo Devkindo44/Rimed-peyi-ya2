@@ -17,15 +17,16 @@
 
 <a class="btn btn-custom-green mb-3" href="{{path('app_product_index')}}">Gestion des produits</a>
 
-{# CODE DE SÉCURITÉ POUR TESTER LES FLASHs #}
-
 
 
 <div class="w-75 mx-auto border-brown p-4">
-    {# On ajoute novalidate pour forcer Symfony (PHP) à valider et ainsi déclencher ton flash danger #}
+    {# On ajoute novalidate pour forcer Symfony à valider et ainsi déclencher le flash danger
+        L'attribut 'novalidate': 'novalidate' sert à désactiver la validation automatique du navigateur (HTML5) pour forcer l'utilisation exclusive de la validation de Symfony (Back-end).
+    
+     #}
     {{form_start(formProduct, {'attr': {'novalidate': 'novalidate'}})}} 
 
-        {# 1. OBLIGATOIRE : Affiche les erreurs globales du formulaire (ex: CSRF ou erreurs globales) #}
+        {#  OBLIGATOIRE : Affiche les erreurs globales du formulaire (ex: CSRF ou erreurs globales) #}
        
 
         <div class="row mb-3">
@@ -49,9 +50,12 @@
         <div class="mb-3">
             {{form_row(formProduct.categories)}} 
         </div>
-        
         <div class="mb-3">
             {{form_row(formProduct.stock)}} 
+        </div>
+        
+        <div class="mb-3">
+            {{ form_row(formProduct.contenance) }}
         </div>
 
         <button type="submit" class="btn btn-custom-brown w-100 mt-2">Ajouter le produit</button>

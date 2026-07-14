@@ -15,10 +15,10 @@
             <p class="text-muted">Vue d'ensemble du compte utilisateur #{{ user.id }}.</p>
         </div>
         <div class="btn-group">
-            <a class="btn btn-custom-brown" href="{{ path('app_user_index') }}">
+            <a class="btn btn-custom-brown" href="{{ path('app_admin_user') }}">
                 Index des membres
             </a>
-            <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+            <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
                 ← Tableau de bord
             </a>
         </div>
@@ -63,7 +63,7 @@
                                     {% if 'ROLE_ADMIN' in user.roles %}
                                         <span class="badge bg-danger">Administrateur</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">Membre</span>
+                                        <span class="badge bg-secondary">Utilisateur</span>
                                     {% endif %}
                                 </td>
                             </tr>

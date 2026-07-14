@@ -8,7 +8,7 @@
 {% block body %}
 
 <div class="container mt-4">
-    {# Affichage de tous les messages flash (success et danger pour Turbo) #}
+    {# Affichage de tous les messages flash (success et danger) #}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
@@ -20,7 +20,7 @@
 
     {# Boutons de navigation #}
     <div class="mb-3">
-        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+        <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
             ← Tableau de bord
         </a>
         <a class="btn btn-custom-green" href="{{ path('app_product_new') }}">
@@ -68,6 +68,7 @@
                             {% else %}
                                 <span class="badge bg-danger">Épuisé</span>
                             {% endif %}
+                            
                         </td>
                         <td>
                             {# Icône Voir #}

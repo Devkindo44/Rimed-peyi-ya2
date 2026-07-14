@@ -3,62 +3,88 @@
 {% block title %}Mon Panier{% endblock %}
 
 {% block body %}
-
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('app_admin_user_index') }}" class="btn btn-custom-green">
+        <div class="container mt-3">
+            <a href="{{ path('app_admin_user') }}" class="btn btn-custom-green">
                 ← Tableau de bord
-        </a>
+            </a>
+        </div>
     {% endif %}
+
     <div class="container mt-5">
         <h1>Mon Panier</h1>
-    <div class="border border-success text-center shadow mx-auto">
+        
         {% if items is empty %}
-            <div class="alert alert-info mt-4">
-                Votre panier est vide pour le moment.
+            <div class="border border-success text-center shadow p-5 mx-auto rounded">
+                <div class="alert alert-info">
+                    Actuellement, votre panier ne contient aucun produit.
+                </div>
+                <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success">Continuer mes achats</a>
             </div>
-            <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success">Continuer mes achats</a>
         {% else %}
-            <table class="table table-striped mt-4">
-                <thead>
-                    <tr>
-                        <th>Nom du Produit</th>
-                        <th>Prix unitaire</th>
-                        <th>Quantité</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in items %}
+            <div class="border border-success text-center shadow mx-auto p-3 rounded bg-white">
+                <table class="table table-bordered mt-4 align-middle">
+                    <thead>
                         <tr>
-                            <td>{{ item.product.title }}</td>
-                            <td>{{ item.product.price }} €</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>{{ item.product.price * item.quantity }} €</td>
-                            <td>
-                                <a href="{{ path('app_cart_product_remove',{'id':item.product.id})}}" class="text-danger text-decoration-none ms-auto"
-                                > {{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }} supprimer le produit</a>
-                            </td>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Nom du Produit</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prix unitaire</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Quantité</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Total</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Action</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-                {# <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end fw-bold">Total Général :</td>
-                        <td class="fw-bold text-success">{{ total }} €</td>
-                    </tr>
-                </tfoot> #}
-            </table>
-            <br><br>
-            <h3>Total: {{ total }} €</h3>
-            </div>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                <td>{{ item.product.title }}</td>
+                                <td>{{ item.product.price }} €</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center gap-2">
+                                        {# Bouton Moins (-) #}
+                                        <a href="{{ path('app_cart_decrease', {'id': item.product.id}) }}" class="btn btn-sm text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Réduire la quantité">
+                                            {{ ux_icon('lucide:circle-minus', {class: 'text-custom-brown icon25'}) }}
+                                        </a>
 
-            <div class="row mx-auto justify-content-between">
-                <a href="{{ path('app_home_catalogue') }}"class="btn btn-outline-success col-lg-3 mt-3">Continuer mes achats</a>
-                <a href="#" class="btn btn-outline-success col-lg-3 mt-3">Valider la commande</a>
-                <a href="{{path('app_cart_remove')}}" class="btn btn-outline-danger col-lg-3 mt-3">supprimer le panier</a>
+                                        {# Quantité actuelle #}
+                                        <span class="fs-5 px-2">{{ item.quantity }}</span>
+
+                                        {# Bouton Plus (+) #}
+                                        <a href="{{ path('app_cart_increase', {'id': item.product.id}) }}" class="btn btn-sm text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Augmenter la quantité">
+                                            {{ ux_icon('lucide:circle-plus', {class: 'text-custom-brown icon25'}) }}
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{ item.product.price * item.quantity }} €</td>
+                                <td>
+                                    <a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" class="text-danger text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger" data-bs-title="Supprimer la ligne produit">
+                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="text-end my-4 pe-3">
+                    <h3 class="fw-bold">Total : <span class="text-success">{{ total }} €</span></h3>
+                </div>
+            </div> {# <-- La balise fermante a été déplacée ici pour bien englober le tableau #}
+
+            {# BARRE DE BOUTONS D'ACTION #}
+            <div class="row mx-auto justify-content-between mb-5 gap-2">
+                <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success col-lg-3 mt-3 rounded-pill">
+                    Continuer mes achats
+                </a>
+                
+                {# MODIFICATION ICI : Lien connecté au CommandeController #}
+                <a href="{{ path('app_commande_creer') }}" class="btn btn-success col-lg-3 mt-3 rounded-pill text-white fw-semibold">
+                    Valider la commande
+                </a>
+                
+                <a href="{{ path('app_cart_remove') }}" class="btn btn-outline-danger col-lg-3 mt-3 rounded-pill">
+                    Supprimer le panier
+                </a>
             </div>
         {% endif %}
-    
     </div>
 {% endblock %}

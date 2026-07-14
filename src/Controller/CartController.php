@@ -49,7 +49,7 @@ final class CartController extends AbstractController
         // Si le produit n'existe pas, on redirige
         if (!$product) {
             $this->addFlash('danger', 'Produit introuvable.');
-            return $this->redirectToRoute('app_cart');
+            return $this->redirectToRoute('app_home_catalogue');
         }
 
         $cart = $session->get('cart', []);
@@ -79,6 +79,52 @@ final class CartController extends AbstractController
 
         $session->set('cart', $cart);
 
+        return $this->redirectToRoute('app_home_catalogue');
+    }
+
+   #[Route('/cart/augmenter/{id}', name: 'app_cart_increase')]
+    public function increase(int $id, SessionInterface $session): Response
+    {
+        $cart = $session->get('cart', []);
+
+        if (!empty($cart[$id])) {
+            // Récupération du produit pour vérifier son stock
+            $product = $this->productRepository->find($id);
+
+            if ($product) {
+                // Extraction de la quantité disponible (ou 0 si l'entité Stock n'existe pas)
+                $availableStock = $product->getStock() ? $product->getStock()->getQuantity() : 0;
+
+                // On vérifie si la future quantité dépasse le stock disponible
+                if ($cart[$id] + 1 > $availableStock) {
+                    $this->addFlash('warning', sprintf('Désolé, il ne reste que %d exemplaire(s) en stock.', $availableStock));
+                    // On bloque le panier à la valeur maximale du stock
+                    $cart[$id] = $availableStock; 
+                } else {
+                    // L'incrémentation ne doit se faire QUE si le stock le permet
+                    $cart[$id]++; 
+                }
+            }
+        }
+
+        $session->set('cart', $cart);
+        return $this->redirectToRoute('app_cart');
+    }
+    
+
+    #[Route('/cart/diminuer/{id}', name: 'app_cart_decrease')]
+    public function decrease(int $id, SessionInterface $session): Response
+    {
+        $cart = $session->get('cart', []);
+
+        if(!empty($cart[$id])) {
+            if($cart[$id] > 1){
+                $cart[$id]--; //Decrementation
+            }else{
+                unset($cart[$id]); //suppression du produit si la quantité est =0 
+            }
+        }
+        $session->set('cart', $cart);
         return $this->redirectToRoute('app_cart');
     }
 

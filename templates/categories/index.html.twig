@@ -8,7 +8,7 @@
 
 {% block body %}
 {% if is_granted('ROLE_ADMIN') %}
-  <a class="btn btn-custom-green"href="{{ path('app_admin_user_index')}}">Retour au tableau de bord</a>
+  <a class="btn btn-custom-green"href="{{ path('app_admin_user_dashboard')}}">Retour au tableau de bord</a>
 {% endif %}
     {# 1. Bannière de la page (unique, hors de la boucle) #}
     <div class="position-relative w-100 m-0 p-0 y-0 border border-danger">

@@ -1,9 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
-
-{% block h1 %}Contactez-nous{% endblock %}
+{% block title %}Contactez-nous - Rimed Peyi Ya{% endblock %}
 
 {% block body %}
+<main class="container my-5 text-custom-brown">
+    <h1 class="section-title text-center">Contactez-nous</h1>
+    <div class="title-underline mx-auto mb-5"></div>
 
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="bg-white p-4 p-md-5 rounded shadow-sm border-brown">
+                <p class="text-center mb-4">
+                    Une question, une suggestion ou un remède traditionnel à nous partager ? <br>
+                    Remplissez le formulaire ci-dessous, et nous vous répondrons dans les plus brefs délais.
+                </p>
+
+                {# Affichage des messages flash de succès si tu en ajoutes #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }} text-center">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {{ form_start(contactForm) }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(contactForm.name, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                            {{ form_widget(contactForm.name) }}
+                            {{ form_errors(contactForm.name) }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(contactForm.email, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                            {{ form_widget(contactForm.email) }}
+                            {{ form_errors(contactForm.email) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(contactForm.subject, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                        {{ form_widget(contactForm.subject) }}
+                        {{ form_errors(contactForm.subject) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(contactForm.message, null, {'label_attr': {'class': 'fw-bold'}}) }}
+                        {{ form_widget(contactForm.message) }}
+                        {{ form_errors(contactForm.message) }}
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success bg-custom-green-l border-0 px-5 py-2 fw-bold">
+                            Envoyer le message
+                        </button>
+                    </div>
+                {{ form_end(contactForm) }}
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock %}

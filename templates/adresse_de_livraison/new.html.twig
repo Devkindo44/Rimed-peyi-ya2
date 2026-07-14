@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New AdresseDeLivraison{% endblock %}
+
+{% block body %}
+    <h1>Create new AdresseDeLivraison</h1>
+    <div class="row mb-3">
+
+    {{ include('adresse_de_livraison/_form.html.twig') }}
+    </div>
+    <a href="{{ path('app_adresse_de_livraison_index') }}">back to list</a>
+{% endblock %}

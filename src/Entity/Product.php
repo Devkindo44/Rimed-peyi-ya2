@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -41,6 +42,9 @@ class Product
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Stock $stock = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contenance = null;
 
     public function __construct()
     {
@@ -132,6 +136,18 @@ class Product
     public function setStock(Stock $stock): static
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    public function getContenance(): ?string
+    {
+        return $this->contenance;
+    }
+
+    public function setContenance(?string $contenance): static
+    {
+        $this->contenance = $contenance;
 
         return $this;
     }

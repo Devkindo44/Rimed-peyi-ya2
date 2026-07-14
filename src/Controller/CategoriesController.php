@@ -42,7 +42,7 @@ final class CategoriesController extends AbstractController
 
             $this->addFlash('success', 'La catégorie a été ajoutée avec succès !');
 
-            return $this->redirectToRoute('app_admin_categories_index');
+            return $this->redirectToRoute('app_categories');
         }
 
         return $this->render('categories/new.html.twig', [
@@ -87,6 +87,7 @@ final class CategoriesController extends AbstractController
     }
 
     // 2. La route dynamique avec {slug} est placée tout à la fin
+    // Correction : Utilisation explicite du Repository pour contourner le problème d'autowiring
     #[Route('/{slug}', name: 'app_categories_show', methods: ['GET'])]
     public function show(string $slug, CategoriesRepository $categoriesRepository): Response
     {

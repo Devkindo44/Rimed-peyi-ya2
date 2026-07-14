@@ -3,10 +3,10 @@
 {% block title %}Ajouter un utilisateur{% endblock %}
 
 {% block body %}
- <a class="btn btn-custom-green" href="{{ path('app_user_index') }}">Gestion des membres</a>
+ <a class="btn btn-custom-green" href="{{ path('app_admin_user') }}">Gestion des membres</a>
     <h1>Ajouter un utilisateur</h1>
 
     {{ include('user/_form.html.twig') }}
 
-    <a href="{{ path('app_user_index') }}">back to list</a>
+    <a href="{{ path('app_admin_user') }}">back to list</a>
 {% endblock %}

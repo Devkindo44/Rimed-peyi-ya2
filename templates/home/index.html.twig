@@ -13,41 +13,23 @@
 	{{ parent() }}
 	| Page d'Accueil
 {% endblock %}
-
+{# 
 {% block h1 %}Rimed Péyi ya
-{% endblock %}
+{% endblock %} #}
 
 {% block body %}
 	<main>
+
 		<div class="container-fluid px-0">
+		<div>
+			<h1 class="text-center my-3">Rimed peyi ya</h1>
+			<h4 class="text-custom-green-l text-center my-2 ">"Remède du pays"</h4>
+		</div>
 			<div class="row m-0">
+			
 				<div class="col-12 p-0 position-relative ">
 					<img src="{{ asset('/images/ForetArbreVoyageur.jpg') }}" class="hero-image shadow-sm" alt="Forêt avec un arbre du voyageur">
-					<h4 class="text-center">reperage</h4>
-					<div class=" row bg-custom-brown  mx-auto  ">
-				
-				<div class="col bg-custom-cream text-custom-brown rounded-5 shadow ms- me-">
-				
-						<h4 >Description</h4>
-					<p class="ms-2 me-2"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea numquam aliquam accusantium tempora adipisci, nulla iure eum ad exercitationem. Fugit sed officia reprehenderit, quae vel in alias maxime repellat totam.</p>
-				</div>
-				<div class="col bg-custom-cream text-custom-brown rounded-5 shadow ms- me-"> 
-				<h4 >evenement</h4>
-					<p class="ms-3 me-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus vel a necessitatibus voluptates sed odit dolores natus iste deleniti accusantium, perspiciatis consequatur, ab ex vitae velit harum expedita ipsum ipsam!
-					Modi consequuntur amet natus delectus ipsum accusamus doloremque ex laborum fugit enim, exercitationem quod omnis voluptate? Minima commodi reiciendis mollitia dolor ab consequuntur non dolores sunt, ullam molestiae quae! Doloribus.</p>
-				</div>
-				<div class=" col  bg-custom-cream text-custom-brown rounded-5 shadow ms- me- ">
-					<h4 >News</h4>
-					<p class="ms-3 me-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium corporis, assumenda exercitationem ut amet similique nulla nemo molestias saepe impedit sed magnam! Eligendi iure explicabo recusandae amet vitae repellendus. 
-					<blockquote>Iste molestias illo magni itaque nihil vero, repellendus maiores esse. Quae, laboriosam? Dolorum libero consequatur sunt officia accusamus, odit ducimus corporis ut, maiores eaque reiciendis provident temporibus, cupiditate repellat iure!</blockquote>
-					Eveniet similique enim reprehenderit aperiam nam obcaecati nisi porro dolorem accusantium. Impedit corporis veniam dolor omnis, fugiat nulla est quibusdam vero vitae placeat fugit, asperiores molestiae amet inventore molestias! Ipsa?</p>
 					
-				</div>
-			</div>
-				</div>
-			</div>
-		</div>
-
 		<div class="container py-5">
 			<div class="text-center mb-5">
 				<h2 class="section-title text-custom-green-l">Liste de nos produits</h2>
@@ -103,6 +85,31 @@
 				{% endif %}
 
 			</div>
+			<h4 class="text-center">reperage</h4>
+			<div class="row bg-custom-brown gap-3 mx-auto">
+				
+				<div class="col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me-">
+				
+						<h4 >Description</h4>
+					<p class="ms-2 me-2"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea numquam aliquam accusantium tempora adipisci, nulla iure eum ad exercitationem. Fugit sed officia reprehenderit, quae vel in alias maxime repellat totam.</p>
+				</div>
+				<div class="col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me-"> 
+				<h4 >evenement</h4>
+					<p class="ms-3 me-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus vel a necessitatibus voluptates sed odit dolores natus iste deleniti accusantium, perspiciatis consequatur, ab ex vitae velit harum expedita ipsum ipsam!
+					Modi consequuntur amet natus delectus ipsum accusamus doloremque ex laborum fugit enim, exercitationem quod omnis voluptate? Minima commodi reiciendis mollitia dolor ab consequuntur non dolores sunt, ullam molestiae quae! Doloribus.</p>
+				</div>
+				<div class=" col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me- ">
+					<h4 >News</h4>
+					<p class="ms-3 me-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium corporis, assumenda exercitationem ut amet similique nulla nemo molestias saepe impedit sed magnam! Eligendi iure explicabo recusandae amet vitae repellendus. 
+					<blockquote>Iste molestias illo magni itaque nihil vero, repellendus maiores esse. Quae, laboriosam? Dolorum libero consequatur sunt officia accusamus, odit ducimus corporis ut, maiores eaque reiciendis provident temporibus, cupiditate repellat iure!</blockquote>
+					Eveniet similique enim reprehenderit aperiam nam obcaecati nisi porro dolorem accusantium. Impedit corporis veniam dolor omnis, fugiat nulla est quibusdam vero vitae placeat fugit, asperiores molestiae amet inventore molestias! Ipsa?</p>
+					
+				</div>
+			</div>
+				</div>
+			</div>
+		</div>
+
 		</div>
 	</main>
 {% endblock %}

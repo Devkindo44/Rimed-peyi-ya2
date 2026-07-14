@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Gestion des catégories{% endblock %}
+{% block description %}{{ parent() }} | Gestion des catégories{% endblock %}
+{% block keywords %}{{ parent() }} |  Gestion des catégories{% endblock %}
+{% block h1 %}Gestion des catégories{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    {# Affichage de tous les messages flash (success et danger #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Boutons de navigation #}
+    <div class="mb-3">
+        <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
+            ← Tableau de bord
+        </a>
+        <a class="btn btn-custom-green" href="{{ path('app_categories_new') }}">
+            Ajouter une catégorie
+        </a>
+    </div>
+
+    {% if allCategories is not empty %}
+        <table class="table table-striped vertical-align-middle mb-0 table-bordered table-hover text-center text-white mt-3">
+            <thead>
+                <tr>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 80px;">ID</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Nom de la catégorie</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 180px;">Nombre de produits</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Produits par catégories</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for uneCategorie in allCategories %}
+                    <tr>
+                        {# ID #}
+                        <td>{{ uneCategorie.id }}</td>
+                        
+                        {# Nom #}
+                        <td><strong>{{ uneCategorie.name|capitalize }}</strong></td>
+                        
+                        {# Nombre de produits avec gestion du pluriel #}
+                        <td>
+                            <span class="badge" style="background-color: var(--main-green);">
+                                {{ uneCategorie.products|length }} 
+                                {{ uneCategorie.products|length >= 2 ? 'produits' : 'produit' }}
+                            </span>
+                        </td>
+                        
+                        {# Liste des produits associés en forme de tags #}
+                        <td>
+                            {% if uneCategorie.products is not empty %}
+                                <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                    {% for produit in uneCategorie.products %}
+                                        <span class="badge bg-secondary bg-opacity-25 text-dark fw-normal">
+                                            {{ produit.title }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-muted small"><em>Aucun produit</em></span>
+                            {% endif %}
+                        </td>
+                        
+                        {# Boutons Actions :  des catégories #}
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                {# Fiche (utilise le slug ou l'id selon votre configuration de route) #}
+                                <a href="{{ path('app_categories_show', {'slug': uneCategorie.slug}) }}" class="text-decoration-none" title="Voir la fiche">
+                                    {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
+                                </a>
+
+                                {# Modifier #}
+                                <a href="{{ path('app_categories_edit', {'id': uneCategorie.id}) }}" class="text-decoration-none" title="Modifier">
+                                    {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
+                                </a>
+                                
+                                {# Supprimer avec Token CSRF lié à la catégorie #}
+                                <form method="post" action="{{ path('app_categories_delete', {'id': uneCategorie.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');" style="display: inline-block; margin: 0;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ uneCategorie.id) }}">
+                                    <button class="btn btn-link p-0 m-0 align-baseline text-decoration-none" type="submit" title="Supprimer">
+                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-info mt-3">
+            {{ ux_icon('lucide:info', {class: 'me-2'}) }} Aucune catégorie n'est disponible pour le moment.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
