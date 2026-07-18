@@ -105,7 +105,13 @@
                 {% if app.user %}
                     <li>
                         <span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span>
+                        <a class="nav-link" href="{{ path('app_commande_index') }}">Mes commandes</a>
+                        
                     </li>
+
+
+
+                    
                     <li><hr class="dropdown-divider"></li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li>

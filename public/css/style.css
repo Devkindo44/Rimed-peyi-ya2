@@ -214,10 +214,10 @@ h1, h2, .section-title {
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Écrans MOBILES UNIQUEMENT (max-width: 767.98px ou max-width: 47.99rem)
+    Écrans MOBILES UNIQUEMENT (max-width: 767.98px)
    Toutes les règles spécifiques aux smartphones se mettent ici.
    -------------------------------------------------------------------------- */
-@media screen and (max-width: 47.99rem) {
+@media screen and (max-width: 767.98px) {
     /* Évite que les 3 blocs (Description/Événement/News) ne s'écrasent */
     .row.bg-custom-brown {
         display: flex;
@@ -243,7 +243,7 @@ h1, h2, .section-title {
     }
 
     /* Ajustement de la barre latérale Admin (Sidebar) sur mobile :
-       Elle passe d'une colonne fixe à une bannière horizontale au-dessus du contenu */
+        Elle passe d'une colonne fixe à une bannière horizontale au-dessus du contenu */
     .admin-container {
         flex-direction: column;
     }
@@ -257,10 +257,10 @@ h1, h2, .section-title {
 }
 
 /* --------------------------------------------------------------------------
-   2. Écrans TABLETTES & ORDINATEURS (min-width: 768px ou min-width: 48rem)
+   2. Écrans TABLETTES & ORDINATEURS (min-width: 768px)
    Le design s'élargit et se structure sur plusieurs colonnes.
    -------------------------------------------------------------------------- */
-@media screen and (min-width: 48rem) {
+@media screen and (min-width: 768px) {
     /* Le logo et son titre reprennent leur taille d'origine */
     .navbar-brand img {
         width: 100px;

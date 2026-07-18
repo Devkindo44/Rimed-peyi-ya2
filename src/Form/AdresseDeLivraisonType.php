@@ -70,6 +70,23 @@ class AdresseDeLivraisonType extends AbstractType
                 ]
             ])
            
+            ->add('telephone', TextType::class, [
+                'label' => 'Numéro de téléphone <span class="text-danger">*</span>',
+                'label_html' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Ex: 0612345678'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Le numéro de téléphone est obligatoire pour la livraison."
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?:(?:\+|00)33|0)[1-9](?:[\s.-]*\d{2}){4}$/',
+                        'message' => "Le format du numéro de téléphone n'est pas valide."
+                    ])
+                ]
+            ])
         ;
     }
 

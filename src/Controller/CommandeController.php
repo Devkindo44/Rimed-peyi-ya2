@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Commande;
 use App\Entity\LigneDeCommande;
+use App\Form\CommandeType;
+use App\Repository\CommandeRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,9 +17,28 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class CommandeController extends AbstractController
 {
-    #[Route('/commande/creer', name: 'app_commande_creer')]
+    /**
+     * AJOUT : Permet de visualiser toutes les commandes passées
+     */
+    #[Route('/commandes', name: 'app_commande_index')]
+    #[IsGranted('ROLE_USER')]
+    public function index(CommandeRepository $commandeRepository): Response
+    {
+        // On récupère toutes les commandes de l'utilisateur connecté
+        $commandes = $commandeRepository->findBy(
+            ['utilisateur' => $this->getUser()],
+            ['date' => 'DESC'] // Les plus récentes en premier
+        );
+
+        return $this->render('commande/index.html.twig', [
+            'commandes' => $commandes,
+        ]);
+    }
+
+    #[Route('/commande/creer', name: 'app_commande_creer', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_USER')]
     public function creer(
+        Request $request,
         SessionInterface $session, 
         ProductRepository $productRepository, 
         EntityManagerInterface $em
@@ -31,74 +53,66 @@ final class CommandeController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // --- RÉCUPÉRATION ET VÉRIFICATION DE L'ADRESSE ---
-        $adresse = $user->getAdresseDeLivraisons()->first();
-
-        if (!$adresse) {
-            $this->addFlash('danger', 'Veuillez configurer une adresse de livraison dans votre profil avant de commander.');
-            return $this->redirectToRoute('app_adresse_de_livraison_new'); // Ou redirige vers ta page profil / formulaire adresse
-        }
-        // -------------------------------------------------
-
+        // 1. Initialisation de la commande avec les valeurs par défaut
         $commande = new Commande();
         $commande->setUtilisateur($user);
-        $commande->setAdressedeLivraison($adresse); // Assigne l'adresse de livraison obligatoire !
         $commande->setDate(new \DateTime());
-        
-        $commande->setFraisPort(0.0);
+        $commande->setFraisPort(0.0); 
         $commande->setTransporteurNom('Livraison Standard (Gratuite)');
 
+        // Calcul du montant total à l'avance
         $sousTotal = 0;
-
         foreach ($cart as $id => $cartValue) {
             $product = $productRepository->find($id);
-
             if ($product) {
-                $quantity = 1;
-
-                if (is_array($cartValue)) {
-                    if (isset($cartValue['quantity'])) {
-                        $quantity = $cartValue['quantity'];
-                    } elseif (isset($cartValue['quantite'])) {
-                        $quantity = $cartValue['quantite'];
-                    }
-                } 
-                elseif (is_numeric($cartValue) || is_string($cartValue)) {
-                    $quantity = $cartValue;
-                }
-
-                $finalQuantity = (int)$quantity;
-                if ($finalQuantity < 1) {
-                    $finalQuantity = 1;
-                }
-
-                $ligne = new LigneDeCommande();
-                $ligne->setCommande($commande);
-                $ligne->setProduct($product);
-                $ligne->setQuantity($finalQuantity); 
-                $ligne->setPrixUnitaire($product->getPrice());
-
-                $sousTotal += $product->getPrice() * $finalQuantity;
-
-                if ($product->getStock()) {
-                    $currentStock = $product->getStock()->getQuantity();
-                    $product->getStock()->setQuantity($currentStock - $finalQuantity);
-                }
-
-                $em->persist($ligne);
+                $quantity = is_array($cartValue) ? ($cartValue['quantity'] ?? $cartValue['quantite'] ?? 1) : $cartValue;
+                $sousTotal += $product->getPrice() * (int)$quantity;
             }
         }
-
         $commande->setMontantTotal($sousTotal + $commande->getFraisPort());
 
-        $em->persist($commande);
-        $em->flush();
+        // 2. Création du formulaire
+        $form = $this->createForm(CommandeType::class, $commande);
+        $form->handleRequest($request);
 
-        $session->set('cart', []);
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            // 3. Génération des lignes de commande et mise à jour des stocks
+            foreach ($cart as $id => $cartValue) {
+                $product = $productRepository->find($id);
 
-        $this->addFlash('success', 'Votre commande a été validée avec succès !');
+                if ($product) {
+                    $quantity = is_array($cartValue) ? ($cartValue['quantity'] ?? $cartValue['quantite'] ?? 1) : $cartValue;
+                    $finalQuantity = max(1, (int)$quantity);
 
-        return $this->redirectToRoute('app_commande_recap', ['id' => $commande->getId()]);
+                    $ligne = new LigneDeCommande();
+                    $ligne->setCommande($commande);
+                    $ligne->setProduct($product);
+                    $ligne->setQuantity($finalQuantity); 
+                    $ligne->setPrixUnitaire($product->getPrice());
+
+                    if ($product->getStock()) {
+                        $currentStock = $product->getStock()->getQuantity();
+                        $product->getStock()->setQuantity($currentStock - $finalQuantity);
+                    }
+
+                    $em->persist($ligne);
+                }
+            }
+
+            $em->persist($commande);
+            $em->flush();
+
+            $session->set('cart', []);
+
+            $this->addFlash('success', 'Votre commande a été validée avec succès !');
+            return $this->redirectToRoute('app_commande_recap', ['id' => $commande->getId()]);
+        }
+
+        return $this->render('commande/creer.html.twig', [
+            'form' => $form->createView(),
+            'cart' => $cart
+        ]);
     }
 
     #[Route('/commande/recap/{id}', name: 'app_commande_recap')]

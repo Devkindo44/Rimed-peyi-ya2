@@ -1,30 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}AdresseDeLivraison{% endblock %}
+{% block title %}Détails de l'Adresse{% endblock %}
 
 {% block body %}
-    <h1>AdresseDeLivraison</h1>
+<div class="container mt-4">
+    <h1>Adresse de Livraison</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ adresse_de_livraison.id }}</td>
-            </tr>
-            <tr>
-                <th>Adresse_postale</th>
-                <td>{{ adresse_de_livraison.adressePostale }}</td>
-            </tr>
-            <tr>
-                <th>Code_postale</th>
-                <td>{{ adresse_de_livraison.codePostale }}</td>
-            </tr>
-        </tbody>
-    </table>
+    {# Bouton retour au tableau de bord #}
+    <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green my-3">
+        ← Tableau de bord
+    </a>
 
-    <a href="{{ path('app_adresse_de_livraison_index') }}">back to list</a>
+    {# Conteneur pour reduire  la largeur à 600px maximum (ajustable) #}
+    <div class="card shadow-sm mt-2" style="max-width: 600px;">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+                <tbody>
+                    <tr>
+                        {#  largeur fixe des th à 150px pour éviter que "Adresse_postale" ne passe à la ligne #}
+                        <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Id</th>
+                        <td><strong>#{{ adresse_de_livraison.id }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Adresse postale</th>
+                        <td>{{ adresse_de_livraison.adressePostale }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Code postal</th>
+                        <td>{{ adresse_de_livraison.codePostale }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Ville</th>
+                        <td>{{ adresse_de_livraison.ville|upper }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Téléphone</th>
+                        <td>
+                            {% if adresse_de_livraison.telephone %}
+                                <span class="badge bg-light text-dark">📞 {{ adresse_de_livraison.telephone }}</span>
+                            {% else %}
+                                <span class="text-muted small">Non renseigné</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse_de_livraison.id}) }}">edit</a>
-
-    {{ include('adresse_de_livraison/_delete_form.html.twig') }}
+    {# Groupe de boutons d'action sous le tableau #}
+    <div class="mt-4 d-flex gap-2 align-items-center">
+        <a href="{{ path('app_adresse_de_livraison_index') }}" class="btn btn-custom-green">
+            Retour à la liste
+        </a>
+        <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse_de_livraison.id}) }}" class="btn btn-custom-green">
+            Modifier
+        </a>
+        <div class="ms-auto">
+            {{ include('adresse_de_livraison/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
 {% endblock %}

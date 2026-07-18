@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Commandes (Admin){% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1> Dashboard Admin : Commandes</h1>
+        <span class="badge bg-custom-brown fs-5">
+            {{ commandes|length }} 
+            {% if commandes|length <= 1 %} 
+                commande
+            {% else %}
+                commandes
+            {% endif %}
+        </span> 
+    </div>
+
+    {% if commandes is empty %}
+        <div class="alert alert-info text-center">Aucune commande enregistrée pour le moment.</div>
+    {% else %}
+        <div class="card shadow-sm">
+            <div class="table-responsive ">
+                <table class="table table-bordered table-hover align-vertical align-middle mb-0">
+                    <thead class="table-dark border-white text-center">
+                        <tr>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">N°</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Client (Email)</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Date</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Transporteur</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Montant Total</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commande in commandes %}
+                            <tr>
+                                <td><strong>#{{ commande.id }}</strong></td>
+                                <td>{{ commande.utilisateur ? commande.utilisateur.email : 'Utilisateur inconnu' }}</td>
+                                <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+                                <td>{{ commande.transporteurNom }}</td>
+                                <td class="fw-bold text-success">{{ commande.montantTotal|number_format(2, ',', ' ') }} €</td>
+                                <td>
+                                    {# Utilise la route recap du CommandeController de base pour voir le détail #}
+                                    <a class="btn btn-custom-green"  href="{{ path('app_commande_recap', {'id': commande.id}) }}">
+                                         Détails
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -7,21 +7,29 @@
     <h2>Récapitulatif de votre commande</h2>
 
 
-    {# --- BLOC ADRESSE DE LIVRAISON AJOUTÉ --- #}
+    {# --- BLOC ADRESSE DE LIVRAISON MIS À JOUR (SANS ERREUR) --- #}
     <div class="card my-4 border-success">
         <div class="card-header text-white" style="background-color: var(--main-green) !important;">
             <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Adresse de livraison</h5>
         </div>
-        <div class="card-body bg-light">
+        <div class="card-body bg-light text-dark">
             <p class="mb-1 fw-bold">{{ commande.utilisateur.firstName }} {{ commande.utilisateur.lastName }}</p>
             <p class="mb-1">{{ commande.adressedeLivraison.adressePostale }}</p>
-            <p class="mb-0">{{ commande.adressedeLivraison.codePostale }}</p>
+            {# Affichage combiné "Code Postal + Ville" #}
+            <p class="mb-1">{{ commande.adressedeLivraison.codePostale }} {{ commande.adressedeLivraison.ville|upper }}</p>
+            
+            {# --- RÉCUPÉRATION DU TÉLÉPHONE DEPUIS L'UTILISATEUR --- #}
+            {% if commande.utilisateur.numeroDeTelephone %}
+                <p class="mb-0 mt-2 text-muted small">
+                    <i class="fas fa-phone-alt me-1"></i> Téléphone : {{ commande.utilisateur.numeroDeTelephone }}
+                </p>
+            {% endif %}
         </div>
     </div>
     {# ---------------------------------------- #}
 
     {# --- AJOUT DE LA DIV RESPONSIVE --- #}
-    <div class="table-responsive mt-4">
+    <div class="table-responsive mt-4 border border-success">
         <table class="table table-bordered mt-4 align-middle table align-middle mb-0 table-bordered table-hover text-center text-white bg-success">
             <thead class="border border-success">
                 <tr>
@@ -59,13 +67,39 @@
                 </tr>
             {% endfor %}
             
-            {# --- LIGNE DU MONTANT TOTAL --- #}
-            <tr class="table-light fw-bold" style="border-top: 2px solid #dee2e6;">
-                <td colspan="3" class="text-end">Montant Total :</td>
-                <td colspan="2" class="text-end text-custom-brown" style="font-size: 1.1rem;">
-                    {{ commande.montantTotal }} €
+            {# --- DÉTAIL DES TOTAUX COMPLÈTS --- #}
+            
+            {# 1. SOUS-TOTAL (Produits uniquement) #}
+            <tr class="table-light fw-semibold text-dark">
+                <td colspan="4" class="text-end py-2">Sous-total articles :</td>
+                <td class="text-end py-2">
+                    {# Calcul dynamique : Total général - Frais de port #}
+                    {{ (commande.montantTotal - commande.fraisPort)|number_format(2, ',', ' ') }} €
                 </td>
             </tr>
+
+            {# 2. FRAIS DE PORT & TRANSPORTEUR #}
+            <tr class="table-light text-muted small text-dark">
+                <td colspan="4" class="text-end py-2">
+                    Livraison : <span class="fst-italic">({{ commande.transporteurNom }})</span>
+                </td>
+                <td class="text-end py-2">
+                    {% if commande.fraisPort == 0 %}
+                        <span class="text-success fw-bold">Gratuit</span>
+                    {% else %}
+                        {{ commande.fraisPort|number_format(2, ',', ' ') }} €
+                    {% endif %}
+                </td>
+            </tr>
+            
+            {# 3. MONTANT TOTAL FINAL #}
+            <tr class="table-light fw-bold text-dark" style="border-top: 2px solid var(--main-green);">
+                <td colspan="4" class="text-end py-3 fs-5">Montant Total :</td>
+                <td class="text-end py-3 text-custom-brown fs-5">
+                    {{ commande.montantTotal|number_format(2, ',', ' ') }} €
+                </td>
+            </tr>
+
             </tbody>
         </table>
     </div>

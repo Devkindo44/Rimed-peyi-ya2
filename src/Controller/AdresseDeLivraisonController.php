@@ -13,13 +13,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/adresse/de/livraison')]
-#[IsGranted('ROLE_USER')] // Sécurise tout le contrôleur pour les utilisateurs connectés
+#[IsGranted('ROLE_USER')] // Sécurise le contrôleur pour tous les utilisateurs connectés
 final class AdresseDeLivraisonController extends AbstractController
 {
     #[Route(name: 'app_adresse_de_livraison_index', methods: ['GET'])]
     public function index(AdresseDeLivraisonRepository $adresseDeLivraisonRepository): Response
     {
-        // Optionnel :Afficher que les adresses de l'utilisateur connecté
         return $this->render('adresse_de_livraison/index.html.twig', [
             'adresse_de_livraisons' => $adresseDeLivraisonRepository->findBy(['user' => $this->getUser()]),
         ]);
@@ -31,30 +30,28 @@ final class AdresseDeLivraisonController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // Verfification si l'utilisateur possède déjà une adresse
         $adresseDeLivraison = $user->getAdresseDeLivraisons()->first();
 
-        // 2. S'il n'en a aucune, ALORS on instancie un nouvel objet et on lui associe le User
         if (!$adresseDeLivraison) {
             $adresseDeLivraison = new AdresseDeLivraison();
-            $adresseDeLivraison->setUser($user); // Lie l'utilisateur à son adrresse
+            $adresseDeLivraison->setUser($user);
         }
 
-        // 3. Si l'adresse existe, remplissage automatique du formulaire avec les infos
         $form = $this->createForm(AdresseDeLivraisonType::class, $adresseDeLivraison);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // On utilise persist dans l'entité uniquement si l'adresse est nouvelle en BDD
             if (!$entityManager->contains($adresseDeLivraison)) {
                 $entityManager->persist($adresseDeLivraison);
             }
             
             $entityManager->flush();
+            $this->addFlash('success', 'L\'adresse de livraison a bien été mise à jour.');
 
-            $this->addFlash('success', 'Votre adresse de livraison a bien été mise à jour.');
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_admin_adresse_de_livraison_index');
+            }
 
-            // Redirection logique vers la finalisation de la commande !
             return $this->redirectToRoute('app_commande_creer');
         }
 
@@ -67,7 +64,7 @@ final class AdresseDeLivraisonController extends AbstractController
     #[Route('/{id}', name: 'app_adresse_de_livraison_show', methods: ['GET'])]
     public function show(AdresseDeLivraison $adresseDeLivraison): Response
     {
-        if ($adresseDeLivraison->getUser() !== $this->getUser()) {
+        if ($adresseDeLivraison->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException("Cette adresse ne vous appartient pas.");
         }
 
@@ -79,7 +76,7 @@ final class AdresseDeLivraisonController extends AbstractController
     #[Route('/{id}/edit', name: 'app_adresse_de_livraison_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, AdresseDeLivraison $adresseDeLivraison, EntityManagerInterface $entityManager): Response
     {
-        if ($adresseDeLivraison->getUser() !== $this->getUser()) {
+        if ($adresseDeLivraison->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException("Vous ne pouvez pas modifier cette adresse.");
         }
 
@@ -88,6 +85,11 @@ final class AdresseDeLivraisonController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'L\'adresse a été modifiée avec succès.');
+
+            if ($this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_admin_adresse_de_livraison_index');
+            }
 
             return $this->redirectToRoute('app_commande_creer');
         }
@@ -98,18 +100,29 @@ final class AdresseDeLivraisonController extends AbstractController
         ]);
     }
 
+    /**
+     * ROUTE UNIQUE DE SUPPRESSION (Sécurisée par méthode POST + Jeton CSRF)
+     */
     #[Route('/{id}', name: 'app_adresse_de_livraison_delete', methods: ['POST'])]
     public function delete(Request $request, AdresseDeLivraison $adresseDeLivraison, EntityManagerInterface $entityManager): Response
     {
-        if ($adresseDeLivraison->getUser() !== $this->getUser()) {
+        // Vérification des droits d'accès (Propriétaire OU Admin)
+        if ($adresseDeLivraison->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException("Vous ne pouvez pas supprimer cette adresse.");
         }
 
+        // Validation du token CSRF
         if ($this->isCsrfTokenValid('delete'.$adresseDeLivraison->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($adresseDeLivraison);
             $entityManager->flush();
+            $this->addFlash('danger', 'L\'adresse a été supprimée avec succès.');
         }
 
-        return $this->redirectToRoute('app_adresse_de_livraison_index', [], Response::HTTP_SEE_OTHER);
+        // Redirection contextuelle selon le rôle
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_adresse_de_livraison_index');
+        }
+
+        return $this->redirectToRoute('app_adresse_de_livraison_index');
     }
 }

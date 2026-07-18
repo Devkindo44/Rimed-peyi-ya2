@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Finaliser ma commande{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Finaliser votre commande</h1>
+    <p class="text-muted">Veuillez vérifier vos informations avant de valider.</p>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h3>Adresse de livraison</h3>
+                
+                {{ form_start(form) }}
+                    {# On affiche uniquement le sélecteur d'adresse #}
+                    <div class="mb-3">
+                        {{ form_label(form.adressedeLivraison, "Choisissez votre adresse :") }}
+                        {{ form_widget(form.adressedeLivraison, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    {# Les autres champs (date, totaux, etc.) sont cachés mais nécessaires pour Symfony #}
+                    {{ form_rest(form) }}
+
+                    <button type="submit" class="btn btn-success w-100 mt-3">
+                        💳 Valider et payer la commande
+                    </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-4 bg-light shadow-sm">
+                <h3>Résumé rapide</h3>
+                <p>Votre commande est prête à être générée. En cliquant sur le bouton vert, vos articles seront réservés et votre panier sera validé.</p>
+                <a href="{{ path('app_home_catalogue') }}" class="text-secondary">Retourner au catalogue</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

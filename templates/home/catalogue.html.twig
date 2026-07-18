@@ -8,9 +8,9 @@
 
 {% block body %}
 <div class="container my-5 px-4">
-    {# {% if is_granted('ROLE_ADMIN') %} #}
+    {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-custom-green mb-4" href="{{ path('app_admin_user_dashboard') }}">Retour tableau de bord</a>
-    {# {% endif %} #}
+    {% endif %}
 
     {# BARRE DE FILTRES DES CATÉGORIES #}
     <div class="text-center mb-5">
@@ -21,7 +21,7 @@
 
             <a href="{{ path('app_home_catalogue') }}" 
                class="btn rounded-pill fw-bold {{ current_slug is empty ? 'btn-warning text-dark shadow-sm' : 'btn-outline-success' }}">
-                 Tout le catalogue
+                  Tout le catalogue
             </a>
             
             {% for categorie in categories %}
@@ -60,12 +60,14 @@
                         {# Section basse : Prix & Boutons #}
                         <div class="mt-auto">
                             {% if app.user %}
+                                {% set stockDisponible = product.stock ? product.stock.quantity : 0 %}
+
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <span class="card-text text-warning fs-5 fw-semibold">
                                         {{ product.price }} €
                                     </span>
                                     {# Badge de contenance / conditionnement #}
-                                    {% if  product.stock.quantity > 0 %}
+                                    {% if stockDisponible > 0 %}
                                     <span class="badge bg-light text-dark opacity-90 text-xs py-1.5 px-2.5 rounded">
                                             {{ product.contenance }} 
                                     </span>
@@ -74,23 +76,52 @@
                                     {% endif %}
                                 </div>
 
-                             
-                                
                                 <div class="d-flex flex-column gap-2">
                                     {# Bouton Voir Plus #}
                                     <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-light btn-sm px-4 py-2 rounded-pill transition-all text-center">
                                         Voir plus
                                     </a>
                                     
-                                    {# Formulaire d'ajout avec Quantité #}
+                                    {# Formulaire d'ajout avec input type="number" ET boutons flèches physiques #}
                                     <form action="{{ path('app_cart_new', {'id': product.id}) }}" method="POST" class="mt-1">
                                         <div class="input-group input-group-sm mb-2">
                                             <span class="input-group-text bg-light text-dark">Qté</span>
-                                            <input type="number" name="quantity" class="form-control text-center" placeholder="Qté" >
+                                            
+                                            {# Champ de saisie de type "number" classique avec flèches natives #}
+                                            <input type="number" 
+                                                   name="quantity" 
+                                                   class="form-control text-center" 
+                                                   value="{{ stockDisponible > 0 ? 1 : 0 }}" 
+                                                   min="{{ stockDisponible > 0 ? 1 : 0 }}" 
+                                                   max="{{ min(stockDisponible, 10) }}"
+                                                   {% if stockDisponible == 0 %}disabled{% endif %}>
+
+                                            {# Bouton de décrémentation (Flèche Bas) #}
+                                            <button class="btn btn-outline-light text-dark bg-light border px-2.5" 
+                                                    type="button" 
+                                                    {% if stockDisponible == 0 %}disabled{% endif %}
+                                                    onclick="let input = this.parentNode.querySelector('input[name=\'quantity\']'); if(parseInt(input.value) > 1) { input.value = parseInt(input.value) - 1; }">
+                                                ▼
+                                            </button>
+
+                                            {# Bouton d'incrémentation (Flèche Haut) #}
+                                            <button class="btn btn-outline-light text-dark bg-light border px-2.5" 
+                                                    type="button" 
+                                                    {% if stockDisponible == 0 %}disabled{% endif %}
+                                                    onclick="let input = this.parentNode.querySelector('input[name=\'quantity\']'); let max = parseInt(input.getAttribute('max')); if(parseInt(input.value) < max) { input.value = parseInt(input.value) + 1; }">
+                                                ▲
+                                            </button>
                                         </div>
-                                        <button type="submit" class="btn btn-custom-brown btn-sm w-100 py-2">
-                                            Ajouter au panier
-                                        </button>
+
+                                        {% if stockDisponible > 0 %}
+                                            <button type="submit" class="btn btn-custom-brown btn-sm w-100 py-2">
+                                                Ajouter au panier
+                                            </button>
+                                        {% else %}
+                                            <button type="button" class="btn btn-secondary btn-sm w-100 py-2" disabled>
+                                                Indisponible
+                                            </button>
+                                        {% endif %}
                                     </form>
                                 </div>
                             {% else %}
