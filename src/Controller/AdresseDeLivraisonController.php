@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface; // 👈 Import de la Session
+use Symfony\Component\HttpFoundation\Session\SessionInterface; // Import de la Session
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -29,7 +29,7 @@ final class AdresseDeLivraisonController extends AbstractController
     public function new(
         Request $request, 
         EntityManagerInterface $entityManager,
-        SessionInterface $session // 👈 Injection de la session
+        SessionInterface $session // Injection de la session
     ): Response {
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
@@ -50,7 +50,7 @@ final class AdresseDeLivraisonController extends AbstractController
                 return $this->redirectToRoute('app_admin_adresse_de_livraison_index');
             }
 
-            // 💡 VERIFICATION DU PANIER :
+            //  VERIFICATION DU PANIER :
             // Si le panier n'est pas vide, le client est dans le tunnel d'achat
             $cart = $session->get('cart', []);
             if (!empty($cart)) {
