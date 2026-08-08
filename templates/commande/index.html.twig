@@ -1,20 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CommandeController!{% endblock %}
+{% block title %}Mon historique de commandes{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-5">
+    <h1 class="mb-4">Mon historique de commandes</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/ksema/Mes projetweb/rimedpeyiya/src/Controller/CommandeController.php</code></li>
-        <li>Your template at <code>C:/Users/ksema/Mes projetweb/rimedpeyiya/templates/commande/index.html.twig</code></li>
-    </ul>
+    {# CONDITION : Si le tableau des commandes est vide #}
+    {% if commandes is empty %}
+        <div class="alert alert-warning p-4 shadow-sm text-center">
+            <h4 class="alert-heading">Aucune commande pour le moment !</h4>
+            <p>Il semblerait que vous n'ayez pas encore validé de commande sur notre site.</p>
+            <hr>
+            <a href="{{ path('app_home_catalogue') }}" class="btn btn-primary">
+                🛒 Découvrir notre catalogue
+            </a>
+        </div>
+    
+    {# SINON : Si l'utilisateur a des commandes, on affiche le tableau #}
+    {% else %}
+        <div class="card shadow-sm">
+            <div class="table-responsive ">
+                <table class="table table-bordered table-hover align-vertical align-middle mb-0">
+                    <thead class="table-dark border-white">
+                        <tr>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">N° Commande</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Date</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Transporteur</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Adresse de livraison</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Montant Total</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {# Correction de la syntaxe : 'for' à la place de 'foreach' #}
+                        {% for commande in commandes %}
+                            <tr>
+                                <td><strong>#{{ commande.id }}</strong></td>
+                                <td>{{ commande.date|date('d/m/Y H:i') }}</td>
+                                <td>{{ commande.transporteurNom }}</td>
+                                <td>
+                                    {% if commande.adressedeLivraison %}
+                                        {{ commande.adressedeLivraison.adressePostale }}, 
+                                        {{ commande.adressedeLivraison.codePostale }} {{ commande.adressedeLivraison.ville }}
+                                    {% else %}
+                                        <span class="text-muted">Non spécifiée</span>
+                                    {% endif %}
+                                </td>
+                                <td><strong>{{ commande.montantTotal|number_format(2, ',', ' ') }} €</strong></td>
+                                <td>
+                                    <a href="{{ path('app_commande_recap', {'id': commande.id}) }}" class="btn btn-sm btn-outline-primary">
+                                        🔍 Voir le détail
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

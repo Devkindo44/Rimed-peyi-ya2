@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\AdresseDeLivraison;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -69,7 +70,23 @@ class AdresseDeLivraisonType extends AbstractType
                     ])
                 ]
             ])
-           
+            ->add('telephone', TelType::class, [ // 💡 Utilisation de TelType ici
+                'label' => 'Numéro de téléphone <span class="text-danger">*</span>',
+                'label_html' => true,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Ex: 0612345678'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => "Le numéro de téléphone est obligatoire pour la livraison."
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?:(?:\+|00)33|0)[1-9](?:[\s.-]*\d{2}){4}$/',
+                        'message' => "Le format du numéro de téléphone n'est pas valide."
+                    ])
+                ]
+            ])
         ;
     }
 

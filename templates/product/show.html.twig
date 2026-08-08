@@ -14,7 +14,7 @@
         {# BOUTON RETOUR #}
         <div class="mb-4">
         {% if is_granted('ROLE_ADMIN') %}
-            <a class="btn btn-outline-success btn-sm rounded-pill px-3" href="{{ path('app_product_index') }}">
+            <a class="btn btn-custom-green mb-4" href="{{ path('app_product_index') }}">
                 {{ ux_icon('lucide:arrow-left', {class: 'me-1 icon20'}) }}
                 Gestion des produits
             </a>
@@ -22,13 +22,16 @@
         </div>
 
         {# CARTE PRINCIPALE PRODUIT #}
-        <div class="row g-4 bg-white p-4 p-md-5 rounded-4 shadow-sm border-brown">
+        <div class="row g-4 bg-custom-cream p-4 p-md-5 rounded-4 shadow-lg ">
 
             {# COLONNE GAUCHE : L'IMAGE #}
-            <div class="col-md-5 col-lg-4 text-center">
-                <div class="d-flex align-items-center justify-content-center bg-light rounded-3 p-3 border-brown h-100" style="min-height: 300px;">
+            <div class="col-md-5 col-lg-4 text-center bg-white ">
+             
+                <div class="d-flex  flex-column align-items-center justify-content-center card product-card  rounded-3 p-3 shadow-sm  h-100" style="min-height: 300px;">
+                     <h2 class="section-title text-custom-brown mb-5  fs-1">{{ product.title }}</h2>
+                
                     {% if product.illustration %}
-                        <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded-3 shadow-sm mx-auto d-block" style="max-height: 350px; object-fit: contain;">
+                        <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded-3 shadow-lg mx-auto d-block my-3" style="max-height: 350px; object-fit: contain;">
                     {% else %}
                         <div class="text-muted py-5">
                             {{ ux_icon('lucide:image-off', {class: 'icon40 mb-2 text-custom-brown'}) }}
@@ -39,14 +42,16 @@
             </div>
 
             {# COLONNE DROITE : LES INFORMATIONS #}
-            <div class="col-md-7 col-lg-8 d-flex flex-column justify-content-between">
+            <div class="col-md-7 col-lg-8 d-flex flex-column justify-content-between ">
                 <div>
                     {# Titre & Badge ID optionnel #}
                     <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-2">
-                        <h2 class="section-title text-custom-green-l mb-0 fs-2">{{ product.title }}</h2>
+                        <h2 class="section-title text-custom-green-l text-center mb-2 fs-2">
+                           Retrouvez vitalité & équilibre en un clic
+                        </h2>
 
                         {% if is_granted('ROLE_ADMIN') %}
-                            <span class="badge bg-secondary font-monospace opacity-75 py-2 px-3 rounded-pill">
+                            <span class="badge bg-custom-brown font-monospace opacity-75 py-2 px-3 rounded-pill">
                                 ID: #{{ product.id }}
                             </span>
                         {% endif %}
@@ -70,10 +75,15 @@
                     {# ----------------------------------------- #}
 
                     {# Bloc Description #}
-                    <div class="mb-4">
+                    <div class="mb-4 ">
                         <h6 class="text-uppercase fw-bold text-muted small tracking-wider mb-2">Description / Bienfaits</h6>
-                        <div class="p-3 bg-light rounded-3 border-start border-success border-3 text-dark fs-6" style="line-height: 1.6;">
-                            {{ product.description|nl2br }}
+                        
+                        <div class="p-3 bg-white rounded-3 border-start border-success border-3 text-dark fs-6" 
+                            style="line-height: 1.6; max-height: 150px; overflow-y: auto; word-break: break-word;">
+                            
+                            {{ product.description }}
+                            Le curcuma (Curcuma longa) est une plante herbacée aux multiples vertus médicinales et culinaires, reconnue pour ses propriétés anti-inflammatoires, antioxydantes et digestives. Le curcuma (Curcuma longa) est une plante herbacée aux multiples vertus médicinales et culinaires, reconnue pour ses propriétés anti-inflammatoires, antioxydantes et digestives. Le curcuma (Curcuma longa) est une plante herbacée aux multiples vertus médicinales et culinaires, reconnue pour ses propriétés anti-inflammatoires, antioxydantes et digestives. Le curcuma (Curcuma longa) est une plante herbacée aux multiples vertus médicinales et culinaires, reconnue pour ses propriétés anti-inflammatoires, antioxydantes et digestives. 
+
                         </div>
                     </div>
 
@@ -83,7 +93,7 @@
 
                         {# On vérifie d'abord si le stock existe, puis on accède à sa propriété numérique #}
                         {% if product.stock and product.stock.quantity > 0 %}
-                            <span class="badge bg-success-custom px-3 py-2 rounded-pill fw-medium">
+                            <span class="badge bg-custom-green px-3 py-2 rounded-pill fw-medium">
                                 {{ ux_icon('lucide:check-circle', {class: 'me-1 icon20'}) }}
                                 En stock ({{ product.stock.quantity }})
                             </span>

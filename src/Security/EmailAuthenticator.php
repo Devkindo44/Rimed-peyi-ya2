@@ -33,11 +33,16 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
         return new Passport(
+            //recuperation de l'email saisi
             new UserBadge($email),
+            //recuperation du mot de passe saisi
             new PasswordCredentials($request->getPayload()->getString('password')),
             [
+                //Verifcation du token CSRF
                 new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
+                //Activation de l'option "se souvenir de moi"
                 new RememberMeBadge(),
+                
             ]
         );
     }
@@ -48,7 +53,7 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
+        // methode onAuthenticationSuccess Redirige le user après connexion page d'accueil).
          return new RedirectResponse($this->urlGenerator->generate('app_home'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }

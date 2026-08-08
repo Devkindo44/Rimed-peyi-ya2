@@ -76,21 +76,19 @@ class RegistrationFormType extends AbstractType
                     ],
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez saisir un mot de passe',
-                    ]),
+                   
                     new Length([
-                        'min' => 8,
+                        'min' => 12,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères.',
                         'max' => 4096,
                     ]),
                     new Regex([
-                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/',
                         'message' => 'Le mot de passe doit inclure au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
                     ]),
                 ],
             ])
-        ; // Le point-virgule manquant a été replacé ici pour fermer le $builder
+        ; // fermeture du $builder
     }
 
     public function configureOptions(OptionsResolver $resolver): void

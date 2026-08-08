@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Adresses (Admin){% endblock %}
+
+{% block stylesheets %}
+<style>
+    /* Ajoute une bordure droite blanche sur chaque cellule de l'en-tête, sauf la dernière */
+    .custom-thead th:not(:last-child) {
+        border-right: 2px solid #ffffff !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    {# Affichage de tous les messages flash (success et danger) #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    {# Boutons de navigation et d'action #}
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
+                ← Tableau de bord
+            </a>
+            <a class="btn btn-custom-green" href="{{ path('app_adresse_de_livraison_new') }}">
+                Créer une adresse
+            </a>
+        </div>
+        <span class="badge bg-custom-brown fs-5">
+            {{ adresses|length }} 
+            {% if adresses|length <= 1 %}
+                adresse enregistrée
+            {% else %}
+                adresses enregistrées
+            {% endif %}
+        </span>
+    </div>
+
+    {% if adresses is empty %}
+        <div class="alert alert-info mt-3">
+            {{ ux_icon('lucide:info', {class: 'me-2'}) }} Aucune adresse enregistrée sur le site pour le moment.
+        </div>
+    {% else %}
+        <div class="card shadow-sm mt-3">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-vertical align-middle mb-0">
+                    <thead class="table-dark border-white">
+                        <tr>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">ID</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Propriétaire (Email)</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Adresse Postale</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Code Postal</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Ville</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Téléphone de Livraison</th>
+                            <th class="text-white py-3" style="background-color: var(--main-green) !important;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for adresse in adresses %}
+                            <tr>
+                                <td><strong>#{{ adresse.id }}</strong></td>
+                                <td>
+                                    {% if adresse.user %}
+                                        {{ adresse.user.email }}
+                                        <br><small class="text-muted">({{ adresse.user.firstName|capitalize }} {{ adresse.user.lastName|upper }})</small>
+                                    {% else %}
+                                        <span class="text-danger">Utilisateur supprimé</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ adresse.adressePostale }}</td>
+                                <td>{{ adresse.codePostale }}</td>
+                                <td>{{ adresse.ville|upper }}</td>
+                                
+                                <td>
+                                    {% if adresse.telephone %}
+                                        <span class="badge bg-light text-dark">📞 {{ adresse.telephone }}</span>
+                                    {% else %}
+                                        <span class="text-muted small">Non renseigné</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {# Icône Voir #}
+                                    <a href="{{ path('app_adresse_de_livraison_show', {'id': adresse.id}) }}" class="text-decoration-none me-2" title="Voir la fiche">
+                                        {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
+                                    </a>
+
+                                    {# Icône Modifier #}
+                                    <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse.id}) }}" class="text-decoration-none me-2" title="Modifier">
+                                        {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
+                                    </a>
+                                    
+                                    {# Formulaire de suppression sécurisé avec CSRF #}
+                                    <form method="post" action="{{ path('app_adresse_de_livraison_delete', {'id': adresse.id}) }}" style="display: inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette adresse ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ adresse.id) }}">
+                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline" title="Supprimer" style="border: none; background: none; line-height: inherit;">
+                                            {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                                        </button>
+                                    </form>  
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

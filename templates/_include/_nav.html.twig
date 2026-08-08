@@ -14,7 +14,7 @@
 
     {# Le drapeau est sorti du lien <a> pour éviter les conflits d'alignement, mais reste à côté #}
     <div class="d-flex align-items-center">
-        <img src="{{ asset('images/gwada-f.jpg') }}" alt="Drapeau Guadeloupe" width="28" height="21" class="rounded shadow-sm">
+        <img src="{{ asset('images/gwada-f.jpg') }}" alt="Drapeau Guadeloupe" width="28" height="21" class="title-animated-pop rounded shadow-sm">
     </div>
 </div>
 
@@ -105,7 +105,13 @@
                 {% if app.user %}
                     <li>
                         <span class="dropdown-item-text text-muted fw-bold">Bonjour {{ app.user.firstname|capitalize }}</span>
+                        <a class="nav-link" href="{{ path('app_profile') }}">Mon profil</a>
+                        <a class="nav-link" href="{{ path('app_commande_index') }}">Mes commandes</a>  
                     </li>
+
+
+
+                    
                     <li><hr class="dropdown-divider"></li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li>

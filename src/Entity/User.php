@@ -164,13 +164,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // CORRECTION ICI : Le type de retour est désormais une chaîne (?string)
+    //  Le type de retour est une chaîne (?string)
     public function getNumeroDeTelephone(): ?string
     {
         return $this->numero_de_telephone;
     }
 
-    // CORRECTION ICI : L'argument attendu est désormais une chaîne (?string)
+    //  L'argument attendu est une chaîne (?string)
     public function setNumeroDeTelephone(?string $numero_de_telephone): static
     {
         $this->numero_de_telephone = $numero_de_telephone;

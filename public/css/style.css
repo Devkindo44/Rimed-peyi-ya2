@@ -8,6 +8,7 @@
     --bg-cream1: #f5f5dc;    /* Secondaire */
     --t-brown: #6D4C41;      /* Marron terre */
     --bg-white: #ffffff;
+    --main-oj:#fbc02d;     /* Jaune-Orange */
 }
 
 /* Base & Footer sticky */
@@ -22,7 +23,11 @@ body {
     display: flex;
     flex-direction: column;
     color: var(--t-brown);
+    
+    margin: 0 !important;
+    padding: 0 !important;
 }
+
 
 main {
     flex: 1 0 auto;
@@ -33,7 +38,7 @@ footer {
 }
 
 /* Typographie de Titrage */
-h1, h2, .section-title {
+h1, h2, h3, h4, h5, h6 .section-title {
     font-family: 'Playfair Display', serif; /* Police élégante pour les titres */
     font-weight: 600;
 }
@@ -64,7 +69,7 @@ h1, h2, .section-title {
 
 .btn-custom-brown {background-color: var(--t-brown);color:white;}
 .btn-custom-green {background-color: var(--main-green);color:white;}
-
+.btn-custom-oj {background-color: var(--main-oj);color:white;}
 /* 1. Styles par défaut pour Mobile */
 .navbar-brand img {
   width: 60px; /* Plus petit sur mobile */
@@ -136,7 +141,7 @@ h1, h2, .section-title {
     background-size: 50%; /* Réduit un peu la taille des flèches */
 }
 
-/* Formulaires & Autres (Gardé de ton code) */
+/* Formulaires & Autres  */
 .form-bg-image {
     background-image: url('images/plantes-jardin-creole.webp');
     background-size: cover;
@@ -214,10 +219,10 @@ h1, h2, .section-title {
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Écrans MOBILES UNIQUEMENT (max-width: 767.98px ou max-width: 47.99rem)
+    Écrans MOBILES UNIQUEMENT (max-width: 767.98px)
    Toutes les règles spécifiques aux smartphones se mettent ici.
    -------------------------------------------------------------------------- */
-@media screen and (max-width: 47.99rem) {
+@media screen and (max-width: 767.98px) {
     /* Évite que les 3 blocs (Description/Événement/News) ne s'écrasent */
     .row.bg-custom-brown {
         display: flex;
@@ -243,24 +248,32 @@ h1, h2, .section-title {
     }
 
     /* Ajustement de la barre latérale Admin (Sidebar) sur mobile :
-       Elle passe d'une colonne fixe à une bannière horizontale au-dessus du contenu */
+        Elle passe d'une colonne fixe à une bannière horizontale au-dessus du contenu */
     .admin-container {
         flex-direction: column;
     }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-width: 1.5mm; /* Bordure plus fine */
-    }
+    /* Annule les marges du conteneur parent UNIQUEMENT sur la page admin */
+.admin-layout-wrapper {
+    margin-left: calc(-1 * var(--bs-gutter-x, 0.75rem)) !important;
+    margin-top: calc(-1 * var(--bs-gutter-y, 0) - 1.5rem) !important;
+    width: calc(100% + (2 * var(--bs-gutter-x, 0.75rem))) !important;
+}
+
+.sidebar {
+    width: 280px;
+    min-height: 100vh;
+    border-radius: 0 !important; /* Enlève les bords arrrondis */
+    margin: 0 !important;
+}
+    
 }
 
 /* --------------------------------------------------------------------------
-   2. Écrans TABLETTES & ORDINATEURS (min-width: 768px ou min-width: 48rem)
+    Écrans TABLETTES & ORDINATEURS (min-width: 768px)
    Le design s'élargit et se structure sur plusieurs colonnes.
    -------------------------------------------------------------------------- */
-@media screen and (min-width: 48rem) {
+@media screen and (min-width: 768px) {
     /* Le logo et son titre reprennent leur taille d'origine */
     .navbar-brand img {
         width: 100px;
@@ -287,5 +300,56 @@ h1, h2, .section-title {
     .hero-image {
         height: 50vh;
         border-radius: 20px; /* Bords ronds élégants uniquement sur grand écran */
+    }
+}
+
+
+/* Sidebar Fixe à gauche sur Ordinateur */
+@media screen and (min-width: 768px) {
+    .sidebar {
+        width: 260px; /* Largeur fixe */
+        min-height: 100vh; /* Prend toute la hauteur de la page */
+        position: sticky;
+        top: 0;
+        padding: 20px 10px;
+        background-color: var(--bg-cream1); /* Ou ta couleur de fond */
+        border-right: 2px solid var(--main-green); /* Bordure de séparation propre */
+    }
+}
+
+/* En affichage mobile : devient une bannière en haut */
+@media screen and (max-width: 767.98px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+    }
+}
+
+/* *********************************Animation********************************* */
+.btn-glow {
+    animation: glow 1.8s infinite;
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 0px rgba(255, 0, 0, 0.4); }
+    50% { box-shadow: 0 0 12px rgba(252, 239, 0, 0.84); }
+    100% { box-shadow: 0 0 0px rgba(0, 255, 150, 0.4); }
+}
+
+
+
+
+.title-animated-pop {
+    animation: pulse 2.5s ease-in-out infinite;
+    display: inline-block; /* Nécessaire pour les transformations sur les titres */
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05); /* Le titre grossit légèrement */
     }
 }

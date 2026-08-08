@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Finaliser ma commande{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <h1>Finaliser votre commande</h1>
+    <p class="text-muted">Veuillez choisir votre adresse de livraison avant de valider.</p>
+
+    <hr>
+
+    <div class="row g-4">
+        {# COLONNE GAUCHE : Choix de l'adresse et validation #}
+        <div class="col-md-7">
+            <div class="card p-4 shadow-sm border-0">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h4 mb-0">Adresse de livraison</h3>
+                    
+                    {# Lien pratique pour ajouter une adresse sans quitter le tunnel #}
+                    <a href="{{ path('app_adresse_de_livraison_new') }}" class="btn btn-sm btn-outline-success">
+                        ➕ Ajouter une adresse
+                    </a>
+                </div>
+                
+                {{ form_start(form) }}
+                
+                    <div class="mb-4">
+                        <label class="form-label fw-bold mb-3">Sélectionnez votre adresse :</label>
+                        
+                        {# Rendu propre des boutons radio pour les adresses avec Bootstrap #}
+                        <div class="d-flex flex-column gap-3">
+                            {% for child in form.adressedeLivraison %}
+                                <div class="card p-3 border rounded shadow-sm bg-light">
+                                    <div class="form-check">
+                                        {{ form_widget(child, {'attr': {'class': 'form-check-input'}}) }}
+                                        {{ form_label(child, null, {'label_attr': {'class': 'form-check-label fw-semibold ms-2'}}) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {# Affichage des erreurs éventuelles sur les adresses #}
+                        {{ form_errors(form.adressedeLivraison) }}
+                    </div>
+
+                    {# Rendu des champs masqués (date, montant_total, frais_port, transporteur_nom, _token CSRF) #}
+                    {{ form_rest(form) }}
+
+                    <button type="submit" class="btn btn-success btn-lg w-100 mt-2">
+                        💳 Valider et payer la commande
+                    </button>
+                    
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        {# COLONNE DROITE : Résumé de la commande #}
+        <div class="col-md-5">
+            <div class="card p-4 bg-light shadow-sm border-0">
+                <h3 class="h4 mb-3">Résumé rapide</h3>
+                <p class="text-muted small">
+                    Votre commande est prête à être générée. En cliquant sur le bouton de validation, vos articles seront réservés et les stocks mis à jour.
+                </p>
+                <hr>
+                <div class="d-flex justify-content-between mb-3 fw-bold">
+                    <span>Livraison :</span>
+                    <span class="text-success">Gratuite</span>
+                </div>
+                <hr>
+                <a href="{{ path('app_home_catalogue') }}" class="btn btn-link text-secondary p-0">
+                    ← Retourner au catalogue
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

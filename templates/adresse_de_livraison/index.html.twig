@@ -36,6 +36,7 @@
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Adresse postale</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Code postal</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Ville</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 180px;">Téléphone</th> {# 🌟 Ajout de l'en-tête Téléphone #}
                     <th class="text-white py-3" style="background-color: var(--main-green) !important; width: 150px;">Actions</th>
                 </tr>
             </thead>
@@ -57,6 +58,15 @@
                         
                         {# Ville #}
                         <td><strong>{{ adresse.ville|upper }}</strong></td>
+                        
+                        {# 🌟 Téléphone #}
+                        <td>
+                            {% if adresse.telephone %}
+                                <span class="badge bg-light text-dark">📞 {{ adresse.telephone }}</span>
+                            {% else %}
+                                <span class="text-muted small">Non renseigné</span>
+                            {% endif %}
+                        </td>
                         
                         {# Actions #}
                         <td>
