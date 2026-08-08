@@ -7,11 +7,11 @@
 {% block h1 %}Categories{% endblock %}
 
 {% block body %}
-{% if is_granted('ROLE_ADMIN') %}
-  <a class="btn btn-custom-green"href="{{ path('app_admin_user_dashboard')}}">Retour au tableau de bord</a>
-{% endif %}
+
+ 
+
     {# 1. Bannière de la page (unique, hors de la boucle) #}
-    <div class="position-relative w-100 m-0 p-0 y-0 border border-danger">
+    <div class="position-relative w-100 m-0 p-0 y-0 ">
         <img src="{{ asset('images/page image Categorie.jpg') }}" 
              class="img-fluid w-100" 
              style="height: 251px; object-fit: cover;" 
@@ -22,7 +22,10 @@
     <div class="container my-5">
 
         <h2 class="text-center mb-5">Nos catégories</h2>
-        
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-custom-green my-2 "href="{{ path('app_admin_user_dashboard')}}">← Tableau de bord</a>
+            <a class="btn btn-custom-green my-2 "href="{{ path('app_categories_new')}}">Ajouter une catégorie</a>
+        {% endif %}    
         {# Grille Bootstrap : 1 colonne sur mobile, 2 sur tablette, 4 sur grand écran #}
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 justify-content-center">
 

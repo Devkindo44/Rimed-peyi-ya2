@@ -9,7 +9,8 @@
 {% block body %}
 <div class="container my-5 px-4">
     {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-custom-green mb-4" href="{{ path('app_admin_user_dashboard') }}">Retour tableau de bord</a>
+        <a class="btn btn-custom-green mb-4" href="{{ path('app_admin_user_dashboard') }}">← Tableau de bord</a>
+        <a class="btn btn-custom-green mb-4" href="{{ path('app_product_new') }}">Ajouter un produit</a>
     {% endif %}
 
     {# BARRE DE FILTRES DES CATÉGORIES #}

@@ -1,144 +1,210 @@
 {% extends 'base.html.twig' %}
 
+{% block main_class %}container-fluid p-0 m-0{% endblock %}
+
 {% block nav %}{% endblock %}
 {% block footer %}{% endblock %}
 
-{% block title %}Back office{% endblock %}
-{% block h1 %}Back office{% endblock %}
+{% block title %}Back Office - Administration{% endblock %}
+{% block h1 %}{% endblock %}
 
 {% block body %}
 <div class="d-flex flex-column flex-md-row min-vh-100 w-100 m-0 p-0">
 
-    {# --- BLOC 1 : L'ASIDE (Barre latérale de navigation) --- #}
-    <aside class="sidebar">
-        <div class="logo text-custom-brown text-center">
-            <h2>AdminPanel</h2>
-            <img src="{{ asset('images/logo_Projet.png') }}" alt="logo" style="max-width: 120px;">
+    {# --- SIDEBAR BARRE DE NAVIGATION --- #}
+    <aside class="sidebar flex-shrink-0 p-3 d-flex flex-column" style="width: 280px;">
+        <div class="logo text-custom-brown text-center mb-4">
+            <h2 class="h4 fw-bold">AdminPanel</h2>
+            <img src="{{ asset('images/logo_Projet.png') }}" alt="logo" class="img-fluid my-2" style="max-width: 100px;">
         </div>
-        <br><br>
-        <nav class="nav-links d-grid gap-2 px-3">
-            <a href="{{ path('app_home') }}" target="_blank" class="list-group-item list-group-item-action bg-custom-green-admin">
-                Voir le site public
+
+        <nav class="nav-links d-flex flex-column gap-2 flex-grow-1">
+            <a href="{{ path('app_home') }}" target="_blank" class="btn bg-custom-green-admin text-start shadow-sm fw-semibold">
+                🌐 Voir le site public
             </a>
 
             <hr class="text-muted my-2">
 
-            <a href="{{ path('app_admin_user') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-                Utilisateurs
+            <a href="{{ path('app_admin_user') }}" class="btn bg-custom-green-admin text-start">
+                👥 Utilisateurs
             </a>
             
-            <a href="{{ path('app_product_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-                Produits
+            <a href="{{ path('app_product_index') }}" class="btn bg-custom-green-admin text-start">
+                🌿 Produits
             </a>
             
-            <a href="{{ path('app_admin_categories_dashboard') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-               Catégories
+            <a href="{{ path('app_admin_categories_dashboard') }}" class="btn bg-custom-green-admin text-start">
+                📁 Catégories
             </a>
 
-            {# MAJ : Lien direct vers le Dashboard des commandes #}
-            <a href="{{ path('app_admin_commande_dashboard') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-               Commandes
+            <a href="{{ path('app_admin_commande_dashboard') }}" class="btn bg-custom-green-admin text-start">
+                📦 Commandes
             </a>
 
-            {# MAJ : Lien direct vers la liste des adresses de livraison #}
-            <a href="{{ path('app_admin_adresse_de_livraison_index') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-               Adresses
+            <a href="{{ path('app_admin_adresse_de_livraison_index') }}" class="btn bg-custom-green-admin text-start">
+                📍 Adresses
             </a>
             
-            <a href="{{ path('app_cart') }}" class="list-group-item list-group-item-action bg-custom-green-admin">
-                Accès panier
+            <a href="{{ path('app_cart') }}" class="btn bg-custom-green-admin text-start">
+                🛒 Accès panier
             </a>
             
-            <a href="{{ path('app_logout') }}" class="btn btn-danger text-start mt-3">
-                Déconnexion
+            <a href="{{ path('app_logout') }}" class="btn btn-danger text-start mt-auto fw-bold">
+                🚪 Déconnexion
             </a>
         </nav>
     </aside>
 
-    {# --- BLOC 2 : LE CONTENU PRINCIPAL --- #}
+    {# --- CONTENU PRINCIPAL DE L'ADMINISTRATION --- #}
     {% if app.user %}
-        <div class="flex-grow-1 w-100 p-3 px-md-5 py-md-4">
+        <main class="flex-grow-1 bg-light p-4">
             
-            <div class="text-center mb-5">
-                <h2 class="fw-bold text-custom-green-l">Tableau de bord Administration</h2>
-                <p class="text-muted text-dark">Bienvenue, {{ app.user.firstname|capitalize }}.</p>
+            {# En-tête de bienvenue #}
+            <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+                <div>
+                    <h1 class="h3 fw-bold text-custom-green-l m-0">Tableau de bord</h1>
+                    <small class="text-muted">Ravi de vous revoir, {{ app.user.firstname|capitalize }} !</small>
+                </div>
+                <div class="badge bg-custom-green px-3 py-2 fs-6 rounded-pill">
+                    Connecté en tant qu'Administrateur
+                </div>
             </div>
 
-            {# Grid principale #}
-            <div class="row g-4 w-100 m-0">
+            {# --- SECTION 1 : STATISTIQUES RAPIDES (KPIs) --- #}
+            <div class="row g-3 mb-4">
+                {# Membres #}
+                <div class="col-xl-4 col-md-6">
+                    <div class="card border-0 shadow-sm border-start border-4 border-primary h-100">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted fw-semibold text-uppercase fs-7">Utilisateurs</span>
+                                <h2 class="fw-bold my-1 text-dark">{{ totalUsers }}</h2>
+                                <a href="{{ path('app_admin_user') }}" class="small text-primary text-decoration-none">Voir la liste →</a>
+                            </div>
+                            <div class="fs-1 text-primary opacity-50">👥</div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Catégories #}
+                <div class="col-xl-4 col-md-6">
+                    <div class="card border-0 shadow-sm border-start border-4 border-success h-100">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted fw-semibold text-uppercase fs-7">Catégories</span>
+                                <h2 class="fw-bold my-1 text-dark">{{ totalCategories }}</h2>
+                                <a href="{{ path('app_admin_categories_dashboard') }}" class="small text-success text-decoration-none">Gérer les catégories →</a>
+                            </div>
+                            <div class="fs-1 text-success opacity-50">📁</div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Produits #}
+                <div class="col-xl-4 col-md-6">
+                    <div class="card border-0 shadow-sm border-start border-4 border-warning h-100">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted fw-semibold text-uppercase fs-7">Produits en vente</span>
+                                <h2 class="fw-bold my-1 text-dark">{{ totalProducts }}</h2>
+                                <a href="{{ path('app_product_index') }}" class="small text-warning text-decoration-none">Voir l'inventaire →</a>
+                            </div>
+                            <div class="fs-1 text-warning opacity-50">🌿</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# --- SECTION 2 : ACCÈS RAPIDES AUX ACTIONS --- #}
+            <h2 class="h5 fw-bold mb-3 text-secondary">Actions rapides</h2>
+            
+            <div class="row g-4 mb-4">
                 
-                {# SECTION GESTION DES UTILISATEURS #}
-                <div class="col-xl-3 col-md-6 p-0 px-md-2">
+                {# Gestion Utilisateurs #}
+                <div class="col-xl-4 col-md-6">
                     <div class="card h-100 shadow-sm border-green">
                         <div class="card-header bg-custom-green text-white fw-bold py-3">
-                            Gestion des Utilisateurs
-                            <span class="badge bg-white text-custom-brown rounded-pill">({{ totalUsers }} membres)</span>
+                            👥 Gestion des Utilisateurs
                         </div>
-                        <div class="list-group list-group-flush">
-                            <a href="{{ path('app_admin_user') }}" class="list-group-item list-group-item-action">Liste des membres</a>
-                            <a href="{{ path('app_user_new') }}" class="list-group-item list-group-item-action">Ajouter un membre</a>
+                        <div class="card-body d-flex flex-column gap-2">
+                            <a href="{{ path('app_admin_user') }}" class="btn btn-outline-dark text-start">
+                                📋 Liste des membres
+                            </a>
+                            <a href="{{ path('app_user_new') }}" class="btn btn-sm btn-success text-start">
+                                ➕ Ajouter un membre
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {# SECTION GESTION DES CATÉGORIES #}
-                <div class="col-xl-3 col-md-6 p-0 px-md-2">
+                {# Gestion Catégories #}
+                <div class="col-xl-4 col-md-6">
                     <div class="card h-100 shadow-sm border-green">
                         <div class="card-header bg-custom-green text-white fw-bold py-3">
-                            Gestion des catégories
-                            <span class="badge bg-white text-custom-brown rounded-pill">({{ totalCategories }} catégories)</span>
+                            📁 Gestion des Catégories
                         </div>
-                        <div class="list-group list-group-flush">
-                            <a href="{{ path('app_admin_categories_dashboard') }}" class="list-group-item list-group-item-action">Liste des catégories</a>
-                            <a href="{{ path('app_categories_new') }}" class="list-group-item list-group-item-action">Ajouter une catégorie</a>
+                        <div class="card-body d-flex flex-column gap-2">
+                            <a href="{{ path('app_admin_categories_dashboard') }}" class="btn btn-outline-dark text-start">
+                                📋 Liste des catégories
+                            </a>
+                            <a href="{{ path('app_categories_new') }}" class="btn btn-sm btn-success text-start">
+                                ➕ Ajouter une catégorie
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                {# SECTION GESTION DES PRODUITS #}
-                <div class="col-xl-3 col-md-6 p-0 px-md-2">
+                {# Gestion Produits #}
+                <div class="col-xl-4 col-md-6">
                     <div class="card h-100 shadow-sm border-green">
-                        <div class="card-header bg-custom-green text-white py-3 fw-bold">
-                            🌿 Gestion des produits
-                            <span class="badge bg-white text-custom-brown rounded-pill">{{ totalProducts }} produits</span>
+                        <div class="card-header bg-custom-green text-white fw-bold py-3">
+                            🌿 Gestion des Produits
                         </div>
-                        <div class="list-group list-group-flush">
-                            <a href="{{ path('app_product_index') }}" class="list-group-item list-group-item-action">Liste des produits</a>
-                            <a href="{{ path('app_product_new') }}" class="list-group-item list-group-item-action">Ajouter un produit</a>
+                        <div class="card-body d-flex flex-column gap-2">
+                            <a href="{{ path('app_product_index') }}" class="btn btn-outline-dark text-start">
+                                📋 Liste des produits
+                            </a>
+                            <a href="{{ path('app_product_new') }}" class="btn btn-sm btn-success text-start">
+                                ➕ Ajouter un produit
+                            </a>
                         </div> 
                     </div>
                 </div>
 
-                {# SECTION GESTION DES COMMANDES (CORRIGÉE) #}
-                <div class="col-xl-3 col-md-6 p-0 px-md-2">
+                {# Gestion Commandes #}
+                <div class="col-xl-6 col-md-6">
                     <div class="card h-100 shadow-sm border-green">
                         <div class="card-header bg-custom-green text-white py-3 fw-bold">
-                             Gestion des commandes
-                            <span class="badge bg-white text-custom-brown rounded-pill">Commandes</span>
+                            📦 Gestion des Commandes
                         </div>
-                        <div class="list-group list-group-flush">
-                            {# MAJ : Lien vers ton tout nouveau tableau de bord global des commandes #}
-                            <a href="{{ path('app_admin_commande_dashboard') }}" class="list-group-item list-group-item-action">Liste de toutes les commandes</a>
+                        <div class="card-body">
+                            <p class="text-muted small">Consultez l'historique global des achats et l'état des livraisons.</p>
+                            <a href="{{ path('app_admin_commande_dashboard') }}" class="btn btn-primary w-100">
+                                Voir toutes les commandes
+                            </a>
                         </div> 
                     </div>
                 </div>
 
-                {# SECTION GESTION DES ADRESSES #}
-                <div class="col-xl-3 col-md-6 p-0 px-md-2">
+                {# Gestion Adresses #}
+                <div class="col-xl-6 col-md-6">
                     <div class="card h-100 shadow-sm border-green">
                         <div class="card-header bg-custom-green text-white py-3 fw-bold">
-                             Gestion des adresses
-                            <span class="badge bg-white text-custom-brown rounded-pill">Adresses</span>
+                            📍 Gestion des Adresses
                         </div>
-                        <div class="list-group list-group-flush">
-                            <a href="{{ path('app_admin_adresse_de_livraison_index') }}" class="list-group-item list-group-item-action">Liste des adresses</a>
-                            <a href="{{ path('app_adresse_de_livraison_new') }}" class="list-group-item list-group-item-action">Créer une adresse</a>
+                        <div class="card-body d-flex flex-column gap-2">
+                            <a href="{{ path('app_admin_adresse_de_livraison_index') }}" class="btn btn-outline-dark text-start">
+                                📋 Liste des adresses de livraison
+                            </a>
+                            <a href="{{ path('app_adresse_de_livraison_new') }}" class="btn btn-sm btn-success text-start">
+                                ➕ Créer une nouvelle adresse
+                            </a>
                         </div> 
                     </div>
                 </div>
-                
-            </div> {# Fin de la div row #}
-        </div>
+
+            </div>
+        </main>
     {% else %}
         <div class="flex-grow-1 my-5 text-center">
             <div class="alert alert-danger d-inline-block px-5 py-3 rounded-3" role="alert">

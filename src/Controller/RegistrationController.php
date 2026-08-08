@@ -34,13 +34,13 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // encode the plain password
+            // encryptage du mot de passe par UserPasswordHasherInterface
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
+            // Génération d'une URL signée et l'envoie par e-mail à l'utilisateur.
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@rimedpeyiya.com', 'No reply RimedPeyiYa'))
@@ -49,7 +49,10 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            // do anything else you need here, like send an email
+            // Après confirmation du mail le user devient verifié (isVerified=>true)
+            //le lien a une durée de validité, si expiré refaire le process
+
+          
 
             return $this->redirectToRoute('app_login');
         }
@@ -77,15 +80,17 @@ class RegistrationController extends AbstractController
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
+            //gestion des erreurs : si le lien est expiré user redirigé vers le lien d'inscription
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        // le user est informé de la validation de son email par message flash
+        $this->addFlash('success', 'Votre email est validée, vous pouvez vous connecter.');
 
+        //Redirection vers la page de connexion pouse connecter
         return $this->redirectToRoute('app_login');
     }
 }

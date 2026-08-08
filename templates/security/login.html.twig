@@ -7,15 +7,20 @@
 {% block body %}
     {# Conteneur principal en position-relative et en mode Flexbox pour centrer le formulaire #}
     <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5 " style="min-height: 100vh; overflow: hidden;">
-        
+         <!--Le bouton-->
+             <button id="monBoutonLogin" class=" btn-lg btn-custom-green  px-4 btn-glow  text-white fw-semibold  " style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.5); z-index: 10;"> Je me connecte </button>
         {# L'image en arrière-plan absolu, prenant 100% de la largeur et de la hauteur #}
         <img src="{{ asset('images/p-connexion.jpg') }}" 
              class="position-absolute top-0 start-0 w-100 h-100" 
              alt="page de connexion" 
              style="object-fit: cover; z-index: 2; filter: brightness(0.3);">
+
+            
+             
+             <!--Le formulaire (caché au début)-->
         
         {# Le formulaire positionné au-dessus de l'image (grâce au z-index) #}
-        <form method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="z-index: 2; backdrop-filter: blur(5px);">
+        <form id="monFormulaireLogin"  method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="display:none; z-index: 2; backdrop-filter: blur(5px);">
             
             {% if error %}
                 {% if error.line == 265 or error.line == 67 %}
@@ -68,4 +73,10 @@
             </button>
         </form>
     </div>
+
 {% endblock %}
+
+  {% block javascripts %}
+<script src="{{ asset('js/script.js') }}"></script>
+{% endblock %}
+ 

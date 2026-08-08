@@ -1,115 +1,207 @@
 {% extends 'base.html.twig' %}
 
-{# bloc pour les metadonnées seo #}
+{# Bloc pour les métadonnées SEO #}
 {% block title %}
 	{{ parent() }}
 	| Page d'Accueil
 {% endblock %}
 {% block description %}
 	{{ parent() }}
-	| Page d'Accueil
+	| Page d’Accueil
 {% endblock %}
 {% block keywords %}
 	{{ parent() }}
-	| Page d'Accueil
+	| Page d’Accueil
 {% endblock %}
-{# 
-{% block h1 %}Rimed Péyi ya
-{% endblock %} #}
 
 {% block body %}
 	<main>
-
 		<div class="container-fluid px-0">
-		<div>
-			<h1 class="text-center my-3">Rimed peyi ya</h1>
-			<h4 class="text-custom-green-l text-center my-2 ">"Remède du pays"</h4>
-		</div>
+
+			<div class="text-center mb-4 py-3">
+				<h1 class="text-center my-3">Rimed peyi ya</h1>
+				<h4 class="text-custom-green-l text-center my-2 title-animated-pop">"Remède du pays"</h4>
+			</div>
+			{% if is_granted('ROLE_ADMIN') %}
+					<a class="btn btn-custom-green mb-4" href="{{ path('app_admin_user_dashboard') }}">← Tableau de bord</a>
+			{% endif %}
 			<div class="row m-0">
-			
-				<div class="col-12 p-0 position-relative ">
-					<img src="{{ asset('/images/ForetArbreVoyageur.jpg') }}" class="hero-image shadow-sm" alt="Forêt avec un arbre du voyageur">
-					
-		<div class="container py-5">
-			<div class="text-center mb-5">
-				<h2 class="section-title text-custom-green-l">Liste de nos produits</h2>
-				<div class="title-underline mx-auto"></div>
+				<div class="col-12 p-0 position-relative">
+					<img src="{{ asset('/images/ForetArbreVoyageur.jpg') }}" class="hero-image shadow-sm w-100" alt="Forêt avec un arbre du voyageur" style="object-fit: cover; max-height: 450px;">
+				</div>
 			</div>
 
-			<div id="myCarousel" class="carousel slide pb-5" data-bs-ride="carousel">
-				<div class="carousel-inner">
-					{% for product in products %}
-						<div class="carousel-item {% if loop.first %}active{% endif %}">
-							<div class="row justify-content-center">
-								<div class="col-10 col-sm-8 col-md-6 col-lg-4">
-									<div class="card product-card shadow-sm h-100 border-brown">
+			<section class="py-5 bg-custom-cream shadow-sm my-4">
+				<div class="container">
+					<div class="row align-items-center g-4">
+						<div class="col-lg-7 text-center text-lg-start">
+							<span class="badge bg-custom-green text-white fw-semibold px-3 py-2 rounded-pill mb-3 fs-5">
+								 Bien-être naturel
+							</span>
+							<h2 class="fw-bold text-custom-brown display-6 mb-3">
+								La Puissance des Remèdes Naturels
+							</h2>
+							<p class="lead text-dark mb-4" style="line-height: 1.8;">
+								Redécouvrez les trésors de notre terre. Nos plantes médicinales et remèdes traditionnels sont soigneusement sélectionnés pour booster votre vitalité, renforcer vos défenses naturelles et vous offrir une harmonie au quotidien, 100% naturelle.
+							</p>
+							<div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
+								<span class="d-flex align-items-center gap-2 text-custom-brown fw-semibold">
+									<i class="bi bi-check-circle-fill text-custom-green-l fs-5"></i>
+									100% Naturel & Bio
+								</span>
+								<span class="d-flex align-items-center gap-2 text-custom-brown fw-semibold">
+									<i class="bi bi-check-circle-fill text-custom-green-l fs-5"></i>
+									Savoir-faire Traditionnel
+								</span>
+							</div>
+						</div>
+						<div class="col-lg-5 text-center">
+							<div class="p-4 bg-white rounded-4 shadow-sm border-brown d-inline-block">
+								<i class="bi bi-flower1 display-1 text-custom-green-l mb-2"></i>
+								<h4 class="fw-bold text-custom-brown">Une santé préservée</h4>
+								<p class="text-muted mb-0 small">Soignez vos maux du quotidien grâce à la richesse des plantes locales.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 
-										<div class="card-img-wrapper p-3 bg-white" style="border-radius: 10px 10px 0 0;">
-											<img src="{{ product.illustration ? asset('images/' ~ product.illustration) : asset('images/gombo.webp') }}" class="card-img-top mx-auto d-block" alt="{{ product.title }}" style="height: 250px; object-fit: contain;">
+			<div class="container py-4">
+				<div class="text-center mb-5">
+					<h2 class="section-title text-custom-green-l">Liste de nos produits</h2>
+					<div class="title-underline mx-auto"></div>
+				</div>
+
+				<div id="myCarousel" class="carousel slide pb-5" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						{% for product in products %}
+							<div class="carousel-item {% if loop.first %}active{% endif %}">
+								<div class="row justify-content-center">
+									<div class="col-10 col-sm-8 col-md-6 col-lg-4">
+										<div class="card product-card shadow-sm h-100 border-brown">
+
+											<div class="card-img-wrapper p-3 bg-white" style="border-radius: 10px 10px 0 0;">
+												<img src="{{ product.illustration ? asset('images/' ~ product.illustration) : asset('images/gombo.webp') }}" class="card-img-top mx-auto d-block" alt="{{ product.title }}" style="height: 250px; object-fit: contain;">
+											</div>
+
+											<div class="card-body text-center bg-custom-green text-white" style="border-radius: 0 0 8px 8px;">
+												<h5 class="card-title fw-bold mb-3">{{ product.title }}</h5>
+
+												{% if app.user %}
+													<p class="card-text text-warning fs-5 fw-semibold mb-4">{{ product.price }}
+														€</p>
+													<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-light btn-sm px-4 py-2 rounded-pill transition-all">
+														Voir le produit
+													</a>
+												{% else %}
+													<p class="small text-light opacity-75 mb-0">Connectez-vous pour plus de détails</p>
+												{% endif %}
+											</div>
+
 										</div>
-
-										<div class="card-body text-center bg-custom-green text-white" style="border-radius: 0 0 8px 8px;">
-											<h5 class="card-title fw-bold mb-3">{{ product.title }}</h5>
-
-											{% if app.user %}
-												<p class="card-text text-warning fs-5 fw-semibold mb-4">{{ product.price }}
-													€</p>
-												<a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-outline-light btn-sm px-4 py-2 rounded-pill transition-all">
-													Voir le produit
-												</a>
-											{% else %}
-												<p class="small text-light opacity-75">Connectez-vous pour plus de details</p>
-											{% endif %}
-										</div>
-
 									</div>
 								</div>
 							</div>
+						{% else %}
+							<div class="carousel-item active py-5 text-center">
+								<p class="text-muted fs-5">Aucun remède disponible pour le moment.</p>
+							</div>
+						{% endfor %}
+					</div>
+
+					{% if products|length > 1 %}
+						<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon bg-custom-brown rounded-circle p-3" aria-hidden="true"></span>
+							<span class="visually-hidden">Précédent</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+							<span class="carousel-control-next-icon bg-custom-brown rounded-circle p-3" aria-hidden="true"></span>
+							<span class="visually-hidden">Suivant</span>
+						</button>
+					{% endif %}
+				</div>
+
+				<div class="text-center mb-4">
+					<h4 class="text-center mb-4 ">L'esprit RIMED PEYI YA vous fait don</h4>
+					<h5 class="text-center mb-4 title-animated-pop text-custom-green-l  ">Testez et venez témoigner</h5>
+				</div>
+
+
+				<div class="row g-3 p-4 bg-custom-cream shadow-sm my-4">
+
+
+					<div class="col-12 col-md-3 text-center d-flex align-items-stretch shadow p-3">
+						<div class=" card product-card  p-4 bg-white rounded-4 shadow-sm border-brown d-flex flex-column w-100" style="height: 420px;">
+							<div>
+								<i class="bi bi-flower1 display-1 text-custom-green-l mb-2"></i>
+								<h5 class="fw-bold text-custom-brown">Beauté</h5>
+								<h6 class="fw-semibold fst-italic text-custom-green-l">Huile de roucou</h6>
+							</div>
+							<div class="overflow-auto text-muted small pe-1  ">L'huile de roucou maison est une excellente préparation de santé et de beauté. Très riche en bixine (un puissant antioxydant 100 fois plus actif que la vitamine E) et en bêta-carotène, elle protège la peau du vieillissement cutané, prépare au bronzage et apaise l'épiderme.
+							Ingrédients50 g de graines de roucou entières250 ml d'huile végétale neutre (tournesol, coco ou olive)Un bocal ou une bouteille en verre propre et sec.
+							Préparation:
+							Torréfaction douce : Chauffez légèrement les graines à sec dans une poêle pendant 2 à 3 minutes pour libérer les pigments, sans les brûler.
+							Temps de repos : 
+							Laissez infuser le mélange au soleil ou dans un endroit tempéré pendant 1 à 2 semaines en secouant le flacon régulièrement.
+							Filtration :
+							 Filtrez l'huile obtenue à l'aide d'un linge propre ou d'un tamis fin pour récupérer une huile rouge-orangée prête à l'emploi.
+							</div>
 						</div>
-					{% else %}
-						<div class="carousel-item active py-5 text-center">
-							<p class="text-muted fs-5">Aucun remède disponible pour le moment.</p>
+					</div>
+
+
+					<div class="col-12 col-md-3 text-center d-flex align-items-stretch shadow p-3">
+						<div class=" card product-card p-4 bg-white rounded-4 shadow-sm border-brown d-flex flex-column w-100" style="height: 420px;">
+							<div>
+								<i class="bi bi-flower1 display-1 text-custom-green-l mb-2"></i>
+								<h5 class="fw-bold text-custom-brown">Stress et Anxiété </h5>
+								<h6 class="fw-semibold fst-italic text-custom-green-l">Feuille de corossol</h6>
+							</div>
+							<div class="overflow-auto text-muted small pe-1">
+							L’infusion de feuilles de corossol est reconnue en médecine traditionnelle pour l'apaisement du stress, le soulagement des inflammations et le soutien du système immunitaire.
+							Effet relaxant : Aide à calmer l'anxiété, favorise un sommeil réparateur et réduit la nervosité.
+							Action anti-inflammatoire : Contribue à atténuer les douleurs liées aux rhumatismes et à l'arthrite.
+							Régulation potentielle : Utilisée traditionnellement pour aider à baisser la tension artérielle et stabiliser la glycémie.
+							Faites bouillir 5 à 7 feuilles séchées dans 500 ml d'eau pendant 10 à 15 minutes. Filtrez et buvez une tasse tiède, nature ou adoucie avec un peu de miel ou de citron, pour favoriser la détente et le sommeil.</div>
 						</div>
-					{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-3 text-center d-flex align-items-stretch shadow p-3">
+						<div class="card product-card p-4 bg-white rounded-4 shadow-sm border-brown d-flex flex-column w-100" style="height: 420px;">
+
+							<div class="flex-shrink-0 mb-3">
+								<i class="bi bi-flower1 display-1 text-custom-green-l mb-2 d-block"></i>
+								<h5 class="fw-bold text-custom-brown">Etats grippaux</h5>
+								<h6 class="fw-semibold fst-italic text-custom-green-l">Atoumo</h6>
+							</div>
+
+							<div class="overflow-auto text-muted small pe-1">
+								Une recette simple et traditionnelle est la tisane d'Atoumo, reconnue pour ses vertus apaisantes et antivirales.
+								            Lavez soigneusement les feuilles d'atoumo à l'eau claire. Faites bouillir l'eau dans une casserole. Plongez les feuilles lorsque l'eau bout. Coupez le feu, puis laissez infuser à couvert pendant 10 minutes. Filtrez la préparation dans votre tasse. Sucrez légèrement selon votre goût, de préférence avec un peu de miel.
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-12 col-md-3 text-center d-flex align-items-stretch shadow p-3 ">
+						<div class="card product-card p-4 bg-white rounded-4 shadow-sm border-brown d-flex flex-column w-100" style="height: 420px;">
+
+							<div class="flex-shrink-0 mb-3">
+								<i class="bi bi-flower1 display-1 text-custom-green-l mb-2 d-block"></i>
+								<h5 class="fw-bold text-custom-brown">Anti-inflammatoire</h5>
+								<h6 class="fw-semibold fst-italic text-custom-green-l">Cannelle, Curcuma, Gingembre</h6>
+							</div>
+
+							<div class="overflow-auto text-muted small pe-1">
+								Le « Lait d'or » est une excellente boisson de santé anti-inflammatoire. Chauffez une tasse de lait végétal avec une cuillère à café de curcuma, une pincée de poivre noir (essentiel pour l'assimilation), un peu de gingembre, de cannelle et une cuillère de miel.
+								Versez le lait végétal et l'eau dans une petite casserole.Ajoutez le curcuma, la cannelle, le gingembre et la pincée de poivre noir.Chauffez à feu doux pendant 5 à 10 minutes sans faire bouillir.Filtrez si besoin, puis ajoutez le miel hors du feu avant de déguster tiède.
+							</div>
+
+						</div>
+					</div>
+
 				</div>
 
-				{% if products|length > 1 %}
-					<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon bg-custom-brown rounded-circle p-3" aria-hidden="true"></span>
-						<span class="visually-hidden">Précédent</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-						<span class="carousel-control-next-icon bg-custom-brown rounded-circle p-3" aria-hidden="true"></span>
-						<span class="visually-hidden">Suivant</span>
-					</button>
-				{% endif %}
-
 			</div>
-			<h4 class="text-center">reperage</h4>
-			<div class="row bg-custom-brown gap-3 mx-auto">
-				
-				<div class="col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me-">
-				
-						<h4 >Description</h4>
-					<p class="ms-2 me-2"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea numquam aliquam accusantium tempora adipisci, nulla iure eum ad exercitationem. Fugit sed officia reprehenderit, quae vel in alias maxime repellat totam.</p>
-				</div>
-				<div class="col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me-"> 
-				<h4 >evenement</h4>
-					<p class="ms-3 me-3">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus vel a necessitatibus voluptates sed odit dolores natus iste deleniti accusantium, perspiciatis consequatur, ab ex vitae velit harum expedita ipsum ipsam!
-					Modi consequuntur amet natus delectus ipsum accusamus doloremque ex laborum fugit enim, exercitationem quod omnis voluptate? Minima commodi reiciendis mollitia dolor ab consequuntur non dolores sunt, ullam molestiae quae! Doloribus.</p>
-				</div>
-				<div class=" col-12 col-md-4 bg-custom-cream text-custom-brown rounded-5 shadow ms- me- ">
-					<h4 >News</h4>
-					<p class="ms-3 me-3"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium corporis, assumenda exercitationem ut amet similique nulla nemo molestias saepe impedit sed magnam! Eligendi iure explicabo recusandae amet vitae repellendus. 
-					<blockquote>Iste molestias illo magni itaque nihil vero, repellendus maiores esse. Quae, laboriosam? Dolorum libero consequatur sunt officia accusamus, odit ducimus corporis ut, maiores eaque reiciendis provident temporibus, cupiditate repellat iure!</blockquote>
-					Eveniet similique enim reprehenderit aperiam nam obcaecati nisi porro dolorem accusantium. Impedit corporis veniam dolor omnis, fugiat nulla est quibusdam vero vitae placeat fugit, asperiores molestiae amet inventore molestias! Ipsa?</p>
-					
-				</div>
-			</div>
-				</div>
-			</div>
-		</div>
-
-		</div>
-	</main>
-{% endblock %}
+		</main>
+	{% endblock %}

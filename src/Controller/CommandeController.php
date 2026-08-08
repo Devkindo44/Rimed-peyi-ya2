@@ -17,17 +17,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class CommandeController extends AbstractController
 {
-    /**
-     * AJOUT : Permet de visualiser toutes les commandes passées
-     */
     #[Route('/commandes', name: 'app_commande_index')]
     #[IsGranted('ROLE_USER')]
     public function index(CommandeRepository $commandeRepository): Response
     {
-        // On récupère toutes les commandes de l'utilisateur connecté
         $commandes = $commandeRepository->findBy(
             ['utilisateur' => $this->getUser()],
-            ['date' => 'DESC'] // Les plus récentes en premier
+            ['date' => 'DESC']
         );
 
         return $this->render('commande/index.html.twig', [
@@ -53,6 +49,12 @@ final class CommandeController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
+        // 💡 VÉRIFICATION : Si l'utilisateur n'a aucune adresse de livraison, on le redirige vers le formulaire d'ajout
+        if ($user->getAdresseDeLivraisons()->isEmpty()) {
+            $this->addFlash('warning', 'Veuillez ajouter au moins une adresse de livraison avant de valider votre commande.');
+            return $this->redirectToRoute('app_adresse_de_livraison_new');
+        }
+
         // 1. Initialisation de la commande avec les valeurs par défaut
         $commande = new Commande();
         $commande->setUtilisateur($user);
@@ -60,7 +62,7 @@ final class CommandeController extends AbstractController
         $commande->setFraisPort(0.0); 
         $commande->setTransporteurNom('Livraison Standard (Gratuite)');
 
-        // Calcul du montant total à l'avance
+        // Calcul du montant total
         $sousTotal = 0;
         foreach ($cart as $id => $cartValue) {
             $product = $productRepository->find($id);
@@ -71,8 +73,10 @@ final class CommandeController extends AbstractController
         }
         $commande->setMontantTotal($sousTotal + $commande->getFraisPort());
 
-        // 2. Création du formulaire
-        $form = $this->createForm(CommandeType::class, $commande);
+        // 2. Création du formulaire EN PASSANT L'UTILISATEUR DANS LES OPTIONS 👈
+        $form = $this->createForm(CommandeType::class, $commande, [
+            'user' => $user,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -119,7 +123,7 @@ final class CommandeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function recap(Commande $commande): Response
     {
-        if ($commande->getUtilisateur() !== $this->getUser()) {
+        if ($commande->getUtilisateur() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException('Vous n\'avez pas accès à cette commande.');
         }
 
