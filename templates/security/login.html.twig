@@ -5,26 +5,24 @@
 {% block h1 %}Connexion{% endblock %}
 
 {% block body %}
-    {# Conteneur principal en position-relative et en mode Flexbox pour centrer le formulaire #}
-    <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5 " style="min-height: 100vh; overflow: hidden;">
-         <!--Le bouton-->
-             <button id="monBoutonLogin" class=" btn-lg btn-custom-green  px-4 btn-glow  text-white fw-semibold  " style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.5); z-index: 10;"> Je me connecte </button>
-        {# L'image en arrière-plan absolu, prenant 100% de la largeur et de la hauteur #}
+    {# Conteneur principal #}
+    <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5" style="min-height: 100vh; overflow: hidden;">
+        
+        <button id="monBoutonLogin" class="btn-lg btn-custom-green px-4 btn-glow text-white fw-semibold" style="position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.5); z-index: 10;">
+            Je me connecte
+        </button>
+
+        {# L'image en arrière-plan absolu #}
         <img src="{{ asset('images/p-connexion.jpg') }}" 
              class="position-absolute top-0 start-0 w-100 h-100" 
              alt="page de connexion" 
-             style="object-fit: cover; z-index: 2; filter: brightness(0.3);">
+             style="object-fit: cover; z-index: 1; filter: brightness(0.3);">
 
-            
-             
-             <!--Le formulaire (caché au début)-->
-        
-        {# Le formulaire positionné au-dessus de l'image (grâce au z-index) #}
-        <form id="monFormulaireLogin"  method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="display:none; z-index: 2; backdrop-filter: blur(5px);">
+        <form id="monFormulaireLogin" method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="display:none; z-index: 10; backdrop-filter: blur(5px);">
             
             {% if error %}
-                {% if error.line == 265 or error.line == 67 %}
-                    <div class="alert alert-danger text-center">L'identifiant ou le mot de passe est incorrect</div>
+                {% if error.line is defined and (error.line == 265 or error.line == 67) %}
+                    <div class="alert alert-danger text-center">L'identifiant ou le mot de passe est incorrect.</div>
                 {% else %}
                     <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
@@ -32,51 +30,56 @@
 
             {% if app.user %}
                 <div class="mb-3 text-white text-center fw-bold">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="text-warning">Logout</a>
+                    Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="text-warning">Déconnexion</a>
                 </div>
             {% endif %}
             
             <h1 class="h3 mb-3 font-weight-normal text-center text-white">Connectez-vous</h1>
-            <div>
-            <p class="text-white ">
-            <a href="{{path('app_register')}}" class=" text-white m-4">Pas encore de compte, cliquez ici</a>
-            </p>
+            
+            <div class="text-center mb-3">
+                <a href="{{ path('app_register') }}" class="text-white text-decoration-underline small">
+                    Pas encore de compte ? Cliquez ici
+                </a>
             </div>
 
             {# Groupe Email #}
-            <div class="mb-3 text-center ">
-                <label for="inputEmail" class="form-label  text-center  text-white">Email</label>
+            <div class="mb-3 text-start">
+                <label for="inputEmail" class="form-label text-white">Email</label>
                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="votre@email.com" required autofocus>
             </div>
 
-            {# Champs Mot de passe #}
-            <div class="mb-3 text-center ">
-                <label for="inputPassword" class="form-label   text-white">Password</label>
+            {# Champ Mot de passe #}
+            <div class="mb-3 text-start">
+                <label for="inputPassword" class="form-label text-white">Mot de passe</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
             </div>
 
             {# Token CSRF #}
             <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-            {# Champs Se souvenir de moi #}
-            <div class="form-check mb-3 text-start ">
-                <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
-                <label class="form-check-label text-white" for="remember_me">
-                    Se souvenir de moi
-                </label>
-                <a href="#" class="link-cream small  m-4">mot de passe oublié</a>
+            {# Option Se souvenir de moi & Mot de passe oublié #}
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check mb-0">
+                    <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
+                    <label class="form-check-label text-white small" for="remember_me">
+                        Se souvenir de moi
+                    </label>
+                </div>
+                
+                {# 💡 Lien révisé vers la route de réinitialisation de mot de passe #}
+                <a href="{{ path('app_forgot_password_request') }}" class="text-white-50 small text-decoration-none hover-underline">
+                    Mot de passe oublié ?
+                </a>
             </div>
-               
+                
             {# Bouton de connexion #}
             <button class="btn btn-lg btn-custom-green w-100" type="submit">
                 Connexion
             </button>
         </form>
     </div>
-
 {% endblock %}
 
-  {% block javascripts %}
-<script src="{{ asset('js/script.js') }}"></script>
+{% block javascripts %}
+    <script src="{{ asset('js/script.js') }}"></script>
 {% endblock %}
- 
