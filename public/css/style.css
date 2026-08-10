@@ -210,9 +210,35 @@ h1, h2, h3, h4, h5, h6 .section-title {
     top: 0;
     height: 100vh;
 }
-/* *********************************************************************** */
+/* *************************Pagination********************************************** */
 
+/* Style des boutons de pagination normaux */
+.pagination .page-link {
+    color: var(--t-brown);                  /* Couleur du texte/icônes (ex: vert) */
+    background-color: #ffffff;       /* Couleur de fond */
+    border-color: var(--t-brown);           /* Couleur des bordures */
+}
 
+/*  Style au survol (Hover) */
+.pagination .page-link:hover {
+    color: #ffffff;                  /* Texte en blanc au survol */
+    background-color: #2c5e3b;       /* Fond vert au survol */
+    border-color: #2c5e3b;
+}
+
+/* 3. Style du bouton de la page ACTUELLE (Active) */
+.pagination .page-item.active .page-link {
+    color: #ffffff !important;       /* Texte du bouton actif */
+    background-color: #1e3f28 !important; /* Couleur de fond de la page active */
+    border-color: #1e3f28 !important;
+}
+
+/* 4. Style des boutons désactivés (Ex: Précédent sur la page 1) */
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
 
 /* ==========================================================================
    MÉDIAS QUERIES - RESPONSIVE DESIGN

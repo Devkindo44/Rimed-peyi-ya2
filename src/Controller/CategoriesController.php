@@ -6,6 +6,7 @@ use App\Entity\Categories;
 use App\Form\CategoriesType;
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +17,30 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class CategoriesController extends AbstractController
 {
     #[Route('/', name: 'app_categories', methods: ['GET'])]
-    public function index(CategoriesRepository $categoriesRepository): Response
+    public function index(
+        CategoriesRepository $categoriesRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response
     {
-        $categories = $categoriesRepository->findAll();
+        //Preparation de la requ^ete  Querybuilder
+        $query = $categoriesRepository->createQueryBuilder('c')
+        ->orderBy ('c.name', 'ASC')
+        ->getQuery();
+        //  Sécurisation de la page : toujours >= 1
+        $page = max(1, $request->query->getInt('page', 1));
+        //Pagination des categories 10 par pages
+        $categories = $paginator->paginate(
+            $query,
+            $page,
+           10
+            //Pour eviter l'erreur Invalid page number. Page: 0: $page must be positive non-zero integer
+            //U
+            //$request->query->getInt('page , 1'), 10 nombre defini par pages
+
+        );
+        // $categories = $categoriesRepository->findAll(); si on veut tout afficher sans pagination
+
         return $this->render('categories/index.html.twig', [
             'categories' => $categories,
         ]);
@@ -26,7 +48,7 @@ final class CategoriesController extends AbstractController
 
     // 1. La route statique "/new" est placée AVANT la route dynamique
     #[Route('/new', name: 'app_categories_new', methods: ['GET', 'POST'])]
-    // #[IsGranted('ROLE_ADMIN')] // 🔒 Seuls les admins peuvent entrer ici
+    // #[IsGranted('ROLE_ADMIN')] //  Seuls les admins peuvent entrer ici
     public function addCategories(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
         $category = new Categories();
