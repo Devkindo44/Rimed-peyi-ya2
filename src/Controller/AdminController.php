@@ -23,7 +23,8 @@ final class AdminController extends AbstractController
     public function index(
         UserRepository $userRepository, 
         ProductRepository $productRepository, 
-        CategoriesRepository $categoriesRepository
+        CategoriesRepository $categoriesRepository,
+        CommandeRepository $commandesRepository,
     ): Response {   
         $lesUtilisateurs = $userRepository->findAll();
 
@@ -31,7 +32,8 @@ final class AdminController extends AbstractController
             'users' => $lesUtilisateurs,
             'totalUsers' => $userRepository->count([]),
             'totalProducts' => $productRepository->count([]),
-            'totalCategories' => $categoriesRepository->count([])
+            'totalCategories' => $categoriesRepository->count([]),
+            'totalCommandes' => $commandesRepository->count([])
         ]);
     }
 

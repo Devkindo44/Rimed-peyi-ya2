@@ -120,6 +120,12 @@ h1, h2, h3, h4, h5, h6 .section-title {
     border-color: var(--t-brown);
     color: var(--bg-cream);
 }
+.btn-outline-brown{
+ border-color: var(--t-brown);
+
+ color: var(--t-brown);
+}
+
 /* icon lucid*/
 .icon25{
     color: #1a5d1a;
@@ -199,7 +205,7 @@ h1, h2, h3, h4, h5, h6 .section-title {
 /* Barre latérale (Sidebar) */
 .sidebar {
    width: 280px; /* Réduit à 280px pour laisser de la place au contenu */
-    border: 3mm ridge var(--main-green);
+    border: 3mm dotted var(--main-green);
     color: var(--t-brown);
     padding: 20px;
     display: flex;
@@ -333,21 +339,22 @@ h1, h2, h3, h4, h5, h6 .section-title {
 /* Sidebar Fixe à gauche sur Ordinateur */
 @media screen and (min-width: 768px) {
     .sidebar {
-        width: 260px; /* Largeur fixe */
-        min-height: 100vh; /* Prend toute la hauteur de la page */
+      width: 260px !important;
+        min-width: 260px !important;
+        min-height: 100vh;
         position: sticky;
         top: 0;
         padding: 20px 10px;
-        background-color: var(--bg-cream1); /* Ou ta couleur de fond */
-        border-right: 2px solid var(--main-green); /* Bordure de séparation propre */
+        background-color: var(--bg-cream1);
     }
 }
 
 /* En affichage mobile : devient une bannière en haut */
 @media screen and (max-width: 767.98px) {
     .sidebar {
-        width: 100%;
-        height: auto;
+       width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important; /* CORRECTION : Empêche la sidebar de prendre tout l'écran */
         padding: 15px;
     }
 }

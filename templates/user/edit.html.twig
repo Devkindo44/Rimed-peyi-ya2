@@ -1,16 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Modifier l'utilisateur{% endblock %}
 
 {% block body %}
- <a class="btn btn-custom-green" href="{{ path('app_admin_user') }}">Gestion des membres</a>
-    <h1>Edit User</h1>
-    
-  
-   <a> {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}</a>
-  
-    <br>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm border-green rounded-4 overflow-hidden bg-white">
+                
+                {# En-tête de la carte #}
+                <div class="card-header bg-custom-green text-white fw-bold py-3 border-0">
+                    <h1 class="h5 mb-0"><i class="bi bi-pencil-square me-2"></i>Modifier l'utilisateur</h1>
+                </div>
 
-    {{ include('user/_delete_form.html.twig') }}
-  
+                <div class="card-body p-4">
+                    {# Formulaire principal de modification #}
+                    {{ include('user/_form.html.twig', {
+                        'button_label': 'Mettre à jour'
+                    }) }}
+
+                    <hr class="my-4 opacity-25">
+
+                    {# Zone d'action : Suppression & Retour #}
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                        <a href="{{ path('app_admin_user') }}" class="btn btn-custom-brown rounded-3 w-100 w-sm-auto">
+                            ← Retour à la gestion des membres
+                        </a>
+
+                        {# Formulaire de suppression #}
+                        {{ include('user/_delete_form.html.twig') }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
