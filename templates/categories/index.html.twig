@@ -52,20 +52,20 @@
                                     Voir produits de la gamme {{ categorie.name }}
                                 </a>
 
-                                {# 👇 SECTION ADMIN : Invisible pour les simples utilisateurs #}
+                                {#  SECTION ADMIN : Invisible pour les simples utilisateurs #}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <div class="d-flex justify-content-between mt-2 gap-2">
                                         <a href="{{ path('app_categories_edit', {'id': categorie.id}) }}" class="btn btn-sm btn-outline-warning flex-grow-1">
-                                            ✏️ Modifier
+                                            <span><i class="bi bi-pencil-square"></i></span> Modifier
                                         </a>
 
                                         <form method="post" action="{{ path('app_categories_delete', {'id': categorie.id}) }}" class="flex-grow-1" onsubmit="return confirm('Supprimer la catégorie {{ categorie.name }} ?');">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.id) }}">
-                                            <button class="btn btn-sm btn-outline-danger w-100">🗑️ Supprimer</button>
+                                            <button class="btn btn-sm btn-outline-danger w-100"><span><i class="bi bi-trash-fill"></i></span> Supprimer</button>
                                         </form>
                                     </div>
                                 {% endif %}
-                                {# 👆 FIN DE LA SECTION ADMIN #}
+                                {#  FIN DE LA SECTION ADMIN #}
                             </div>
                         </div> {# Fermeture de card-body #}
                     </div> {# Fermeture de card #}
@@ -73,6 +73,10 @@
             {% endfor %}
 
         </div> {# Fermeture de row #}
+       
     </div> {# Fermeture de container #}
+     <div class="d-flex justify-content-center my-4">
+                {{ knp_pagination_render(categories) }}
+        </div>
         
 {% endblock %}

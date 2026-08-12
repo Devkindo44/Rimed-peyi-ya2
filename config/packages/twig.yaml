@@ -3,6 +3,8 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     globals:
         company: 'RIMED PEYI YA'
+        project_dir: '%kernel.project_dir%' # 👈 Ajoute cette ligne ici !
+
 when@test:
     twig:
         strict_variables: true

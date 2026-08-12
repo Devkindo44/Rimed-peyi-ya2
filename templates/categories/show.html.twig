@@ -13,7 +13,7 @@
     </nav>
 
     {# Personnalisation du bandeau ou de l'introduction selon le slug de la catégorie #}
-    <div class="p-5 mb-4 bg-light rounded-3  shadow-sm ">
+    <div class="p-5 mb-4  bg-light rounded-3 text-custom-green-l shadow-sm ">
         <div class="container-fluid py-3">
             <h1 class="display-5 fw-bold">{{ category.name }}</h1>
             
@@ -35,7 +35,7 @@
     <h2 class="mt-5 mb-4">Les produits de cette catégorie</h2>
     <div class="row g-4">
         {% for product in category.products %}
-            <div class="col-md-4">
+            <div class="col-md-4 card product-card mx-2 ">
                 <div class="card h-100 shadow-sm border-0">
                     <img src="{{ asset('images/' ~ product.illustration) }}" class="card-img-top" alt="{{ product.title }}" style="object-fit: cover; height: 200px;">
                     <div class="card-body">

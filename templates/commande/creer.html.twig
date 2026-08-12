@@ -14,23 +14,23 @@
         <div class="col-md-7">
             <div class="card p-4 shadow-sm border-0">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="h4 mb-0">Adresse de livraison</h3>
+                    <h3 class="h4 mb-0 text-custom-brown">Adresse de livraison</h3>
                     
                     {# Lien pratique pour ajouter une adresse sans quitter le tunnel #}
-                    <a href="{{ path('app_adresse_de_livraison_new') }}" class="btn btn-sm btn-outline-success">
-                        ➕ Ajouter une adresse
+                    <a href="{{ path('app_adresse_de_livraison_new') }}" class="btn btn-sm btn-outline-green2">
+                       <span><i class="bi bi-plus-circle me-2 "></i>Ajouter une adresse
                     </a>
                 </div>
                 
                 {{ form_start(form) }}
                 
                     <div class="mb-4">
-                        <label class="form-label fw-bold mb-3">Sélectionnez votre adresse :</label>
+                        <label class="form-label fw-semibold mb-3 text-custom-brown">Sélectionnez votre adresse :</label>
                         
                         {# Rendu propre des boutons radio pour les adresses avec Bootstrap #}
                         <div class="d-flex flex-column gap-3">
                             {% for child in form.adressedeLivraison %}
-                                <div class="card p-3 border rounded shadow-sm bg-light">
+                                <div class="card p-3 border rounded shadow-sm bg-custom-cream">
                                     <div class="form-check">
                                         {{ form_widget(child, {'attr': {'class': 'form-check-input'}}) }}
                                         {{ form_label(child, null, {'label_attr': {'class': 'form-check-label fw-semibold ms-2'}}) }}
@@ -46,8 +46,8 @@
                     {# Rendu des champs masqués (date, montant_total, frais_port, transporteur_nom, _token CSRF) #}
                     {{ form_rest(form) }}
 
-                    <button type="submit" class="btn btn-success btn-lg w-100 mt-2">
-                        💳 Valider et payer la commande
+                    <button type="submit" class="btn btn-custom-green2 btn-lg w-100 mt-2">
+                    <i class="bi bi-credit-card-fill"></i> Valider et payer la commande
                     </button>
                     
                 {{ form_end(form) }}
@@ -64,7 +64,7 @@
                 <hr>
                 <div class="d-flex justify-content-between mb-3 fw-bold">
                     <span>Livraison :</span>
-                    <span class="text-success">Gratuite</span>
+                    <span class="text-custom-green2">Gratuite</span>
                 </div>
                 <hr>
                 <a href="{{ path('app_home_catalogue') }}" class="btn btn-link text-secondary p-0">

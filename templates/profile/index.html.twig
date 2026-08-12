@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | Mon espace client{% endblock %}
 {% block description %}{{ parent() }} | Mon espace client{% endblock %}
 {% block keywords %}{{ parent() }} | Mon espace client{% endblock %}
-{% block h1 %}Mon espace client{% endblock %}
+{% block h1 %}Mon compte{% endblock %}
 
 {% block body %}
 <div class="container mt-4 mb-5">
@@ -68,7 +68,7 @@
                     
                     {# Bouton Ajouter Une Adresse (CRUD new) #}
                     <a href="{{ path('app_adresse_de_livraison_new') }}" class="btn btn-sm btn-light fw-semibold text-success shadow-sm">
-                        ➕ Ajouter
+                      <span><i class="bi bi-plus-circle me-2"></i></span> Nouvelle adresse
                     </a>
                 </div>
                 
@@ -83,13 +83,13 @@
                                 {# Boutons d'action CRUD (Edit / Delete) #}
                                 <div class="d-flex gap-2">
                                     <a href="{{ path('app_adresse_de_livraison_edit', {'id': adresse.id}) }}" class="btn btn-sm btn-outline-primary" title="Modifier">
-                                        ✏️ Modifier
+                                        <span><i class="bi bi-pencil-square"></i></span> Modifier
                                     </a>
                                     
                                     <form method="post" action="{{ path('app_adresse_de_livraison_delete', {'id': adresse.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette adresse ?');" class="d-inline">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ adresse.id) }}">
                                         <button class="btn btn-sm btn-outline-danger" title="Supprimer">
-                                            🗑️
+                                            <span><i class="bi bi-trash"></i> Supprimer</span>
                                         </button>
                                     </form>
                                 </div>
@@ -98,7 +98,7 @@
                             <p class="mb-1 text-dark">{{ adresse.adressePostale }}</p>
                             <p class="mb-1 text-dark">{{ adresse.codePostale }} {{ adresse.ville }}</p>
                             {% if adresse.telephone %}
-                                <p class="mb-0 text-muted small">📞 {{ adresse.telephone }}</p>
+                                <p class="mb-0 text-muted small"><span><i class="bi bi-telephone-fill"></i></span> {{ adresse.telephone }}</p>
                             {% endif %}
                         </div>
                     {% else %}
@@ -120,11 +120,11 @@
         <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h5 class="card-title text-danger mb-1">Supprimer mon compte</h5>
-                <p class="card-text text-muted small mb-0">Cette action est définitive et effacera l'ensemble de vos données.</p>
+                <p class="card-text text-muted small mb-0">Cette action est irrévrsible, l'ensemble de vos données sera supprimé.</p>
             </div>
             
             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
-                🗑️ Supprimer mon compte
+                 <span><i class="bi bi-trash"></i> Supprimer</span>
             </button>
         </div>
     </div>
