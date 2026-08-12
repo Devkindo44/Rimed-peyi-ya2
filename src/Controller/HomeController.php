@@ -12,8 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class HomeController extends AbstractController
 {
@@ -26,6 +27,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function contact(Request $request, MailerInterface $mailer): Response
     {
         // Construction du formulaire de contact
@@ -82,7 +84,7 @@ final class HomeController extends AbstractController
             // Notification de succès pour l'utilisateur
             $this->addFlash('success', 'Votre message a bien été envoyé ! Merci pour votre contribution.');
 
-            return $this->redirectToRoute('app_contact');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('home/contact.html.twig', [

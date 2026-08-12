@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} | Inscription{% endblock %}
-{% block description %}{{parent()}} |  Inscription{% endblock %}
-{% block keywords %}{{parent()}} | Inscription{% endblock %}
+{% block title %}{{ parent() }} | Inscription{% endblock %}
+{% block description %}{{ parent() }} | Inscription{% endblock %}
+{% block keywords %}{{ parent() }} | Inscription{% endblock %}
 {% block h1 %}Inscription{% endblock %}
 
 {% block body %}
@@ -10,56 +10,57 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-
-     <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5 " style="min-height: 100vh; overflow: hidden;">
+    {# Conteneur principal #}
+    <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5" style="min-height: 100vh; overflow: hidden;">
         
-    {# L'image en arrière-plan absolu, prenant 100% de la largeur et de la hauteur #}
+        {# L'image en arrière-plan (z-index: 1 pour rester derrière) #}
         <img src="{{ asset('images/p-connexion.jpg') }}" 
              class="position-absolute top-0 start-0 w-100 h-100" 
-             alt="page de connexion" 
-             style="object-fit: cover; z-index: 2; filter: brightness(0.3);">
-        
-        {# Le formulaire positionné au-dessus de l'image (grâce au z-index) #}
-                <form method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="z-index: 2; backdrop-filter: blur(5px);">
+             alt="page d'inscription" 
+             style="object-fit: cover; z-index: 1; filter: brightness(0.3);">
 
-                <h1 class="h3 mb-2 font-weight-normal text-white">Creer un compte</h1>
-                <div>
-            <p class="text-white ">
-                <a href="{{path('app_login')}}" class=" text-white m-4">Vous avez deja un compte, cliquez ici</a>
-            </p>
+        {# Le formulaire Twig (z-index: 10 pour être bien au-dessus) #}
+        {{ form_start(registrationForm, {'attr': {'class': 'col-md-4 p-4 shadow rounded btn-custom-cream', 'style': 'z-index: 10; backdrop-filter: blur(5px);'}}) }}
+
+            <h1 class="h3 mb-2 font-weight-normal text-white text-center">Créer un compte</h1>
+            
+            <div class="text-center mb-3">
+                <a href="{{ path('app_login') }}" class="text-white text-decoration-underline small">
+                    Vous avez déjà un compte ? Cliquez ici
+                </a>
             </div>
-                {{ form_start(registrationForm) }}
-                    
-                    <div class="mb-3">
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
-                    </div>
 
-                    <div class="mb-3">
-                        {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
-                    </div>
-                
-                    <div class="form-check mb-3 text-white">
-                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input '}}) }}
-                        <label class="form-check-label " for="{{ registrationForm.agreeTerms.vars.id }}">
-                            {# J'accepte les conditions d'utilisation #}
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-lg btn-custom-green w-100">S'inscrire</button>
-
-             
-                {{ form_end(registrationForm) }}
+            <div class="mb-3">
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                {{ form_errors(registrationForm.email) }}
             </div>
-        </form>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
         
-</div>
-    
-   {% endblock %}
+            <div class="form-check mb-3 text-white">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">
+                    J'accepte les conditions d'utilisation
+                </label>
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-custom-green w-100">S'inscrire</button>
+
+        {{ form_end(registrationForm) }}
+
+    </div>
+{% endblock %}

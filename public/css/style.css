@@ -58,6 +58,7 @@ h1, h2, h3, h4, h5, h6 .section-title {
 /* Couleurs de textes */
 .text-custom-brown { color: var(--t-brown); }
 .text-custom-green-l { color: var(--main-green); }
+.text-custom-green2 { color: var(--main-green2); }
 .text-muted{color:white;}
 
 /* Arrières-plans */
@@ -65,9 +66,10 @@ h1, h2, h3, h4, h5, h6 .section-title {
 .bg-custom-green-admin {background-color: var(--main-green);color:white;}
 .bg-custom-cream { background-color: var(--bg-cream); }
 .bg-custom-brown { background-color: var(--t-brown); }
-
+.bg-custom-green2 { background-color: var(--main-green2); }
 
 .btn-custom-brown {background-color: var(--t-brown);color:white;}
+.btn-custom-green2 {background-color: var( --main-green2);color:white;}
 .btn-custom-green {background-color: var(--main-green);color:white;}
 .btn-custom-oj {background-color: var(--main-oj);color:white;}
 /* 1. Styles par défaut pour Mobile */
@@ -122,8 +124,11 @@ h1, h2, h3, h4, h5, h6 .section-title {
 }
 .btn-outline-brown{
  border-color: var(--t-brown);
-
  color: var(--t-brown);
+}
+.btn-outline-green2{
+ border-color: var(--main-green2);
+ color: var(--main-green2);
 }
 
 /* icon lucid*/
