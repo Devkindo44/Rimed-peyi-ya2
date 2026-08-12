@@ -8,10 +8,12 @@ use App\Form\CommandeType;
 use App\Repository\CommandeRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -37,7 +39,8 @@ final class CommandeController extends AbstractController
         Request $request,
         SessionInterface $session, 
         ProductRepository $productRepository, 
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        MailerInterface $mailer
     ): Response {
         $cart = $session->get('cart', []);
 
@@ -49,13 +52,13 @@ final class CommandeController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // 💡 VÉRIFICATION : Si l'utilisateur n'a aucune adresse de livraison, on le redirige vers le formulaire d'ajout
+        // VÉRIFICATION : Si l'utilisateur n'a aucune adresse de livraison, on le redirige vers le formulaire d'ajout
         if ($user->getAdresseDeLivraisons()->isEmpty()) {
             $this->addFlash('warning', 'Veuillez ajouter au moins une adresse de livraison avant de valider votre commande.');
             return $this->redirectToRoute('app_adresse_de_livraison_new');
         }
 
-        // 1. Initialisation de la commande avec les valeurs par défaut
+        // Initialisation de la commande avec les valeurs par défaut
         $commande = new Commande();
         $commande->setUtilisateur($user);
         $commande->setDate(new \DateTime());
@@ -73,7 +76,7 @@ final class CommandeController extends AbstractController
         }
         $commande->setMontantTotal($sousTotal + $commande->getFraisPort());
 
-        // 2. Création du formulaire EN PASSANT L'UTILISATEUR DANS LES OPTIONS 👈
+        //  Création du formulaire EN PASSANT L'UTILISATEUR DANS LES OPTIONS user' => $user,
         $form = $this->createForm(CommandeType::class, $commande, [
             'user' => $user,
         ]);
@@ -81,7 +84,7 @@ final class CommandeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            // 3. Génération des lignes de commande et mise à jour des stocks
+            //  Génération des lignes de commande et mise à jour des stocks
             foreach ($cart as $id => $cartValue) {
                 $product = $productRepository->find($id);
 
@@ -107,6 +110,21 @@ final class CommandeController extends AbstractController
             $em->persist($commande);
             $em->flush();
 
+            // Process envoi d'email
+            $email = (new TemplatedEmail())
+            ->from('contact@rimedpéyiya.fr')
+            ->to($user->getEmail())
+            ->subject('confirmation de votre commande n°' . $commande->getId() . '-Rimed Peyi ya')
+            ->htmlTemplate('email/confirmation_commande.html.twig')
+            ->context([
+                'commande' => $commande,
+                'user' => $user
+            ]);
+
+            //Envoi de l'email
+            $mailer->send($email);
+
+            //Vidage du panier
             $session->set('cart', []);
 
             $this->addFlash('success', 'Votre commande a été validée avec succès !');
@@ -131,4 +149,16 @@ final class CommandeController extends AbstractController
             'commande' => $commande
         ]);
     }
+
+    #[Route('/test-email', name: 'app_test_email')]
+public function testEmail(CommandeRepository $commandeRepository): Response
+{
+    // Récupère la toute dernière commande enregistrée pour avoir de vraies données
+    $commande = $commandeRepository->findOneBy([], ['id' => 'DESC']);
+
+    return $this->render('email/confirmation_commande.html.twig', [
+        'commande' => $commande,
+        'user' => $this->getUser(),
+    ]);
+}
 }

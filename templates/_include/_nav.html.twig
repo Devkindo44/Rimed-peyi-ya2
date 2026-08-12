@@ -105,7 +105,7 @@
                 {% if app.user %}
                     <li>
                       <span class="dropdown-item-text text-muted fw-bold ">   <i class="bi bi-person-fill-check  text-success"></i> Bonjour {{ app.user.firstname|capitalize }}</span>
-                        <a class="dropdown-item d-flex align-items-center" href="{{ path('app_profile') }}"><span><i class="bi bi-person-badge"></i></span class=tex><span>Mon profil</span></a>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ path('app_profile') }}"><span><i class="bi bi-person-badge text-primary me-2"></i></span><span class="text-primary">Mon profil</span></a>
                         <a class="dropdown-item d-flex align-items-center " href="{{ path('app_commande_index') }}"><span><i class="bi bi-receipt text-success me-2"></i><span class="text-muted">Mes commandes</span></a></span>
                     </li>
 
@@ -115,7 +115,7 @@
                     <li><hr class="dropdown-divider"></li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li>
-                            <a class="dropdown-item" href="{{ path('app_admin_user') }}">Back office</a>
+                            <a class="dropdown-item" href="{{ path('app_admin_user') }}"><span><i class="bi bi-back me-2 text-primary"></i><span class="text-primary">Back office</span></a></span>
                         </li>
                     {% endif %}
                     <li>

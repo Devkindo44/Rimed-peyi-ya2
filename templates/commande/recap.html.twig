@@ -21,7 +21,7 @@
             {# --- RÉCUPÉRATION DU TÉLÉPHONE DEPUIS L'UTILISATEUR --- #}
             {% if commande.utilisateur.numeroDeTelephone %}
                 <p class="mb-0 mt-2 text-muted small">
-                    <i class="fas fa-phone-alt me-1"></i> Téléphone : {{ commande.utilisateur.numeroDeTelephone }}
+                  <span><i class="bi bi-telephone-fill"></i></span> {{ commande.utilisateur.numeroDeTelephone }}
                 </p>
             {% endif %}
         </div>

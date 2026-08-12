@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirmation de commande</title>
+        <style>
+            body {
+                font-family: 'Poppins', Arial, sans-serif;
+                color: #6D4C41;
+                background-color: #f4f4e4;
+                margin: 0;
+                padding: 20px;
+            }
+            .container {
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 10px;
+                border: 1px solid #1a5d1a;
+                max-width: 600px;
+                margin: 0 auto;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            }
+            
+            /* CSS de l'en-tête responsive */
+            .header-table {
+                width: 100%;
+                border-collapse: collapse;
+                border-bottom: 2px solid #f4e6e4;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+            }
+            .header-logo {
+                width: 25%;
+                text-align: left;
+                vertical-align: middle;
+            }
+            .header-title {
+                width: 75%;
+                text-align: center;
+                vertical-align: middle;
+            }
+            
+            .header-title h1 {
+                color: #1a5d1a;
+                font-family: 'Playfair Display', Georgia, serif;
+                margin: 0;
+                font-size: 22px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .subtitle {
+                margin: 5px 0 0 0;
+                font-size: 0.95rem;
+                color: #6D4C41;
+            }
+            
+            /* CSS du contenu */
+            .produits-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            .produits-table th, .produits-table td {
+                border-bottom: 1px solid #e0e0e0;
+                padding: 10px;
+                text-align: left;
+            }
+            .produits-table th {
+                background-color: #f5f5dc;
+                color: #1a5d1a;
+            }
+            .total {
+                text-align: right;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #1a5d1a;
+                margin-top: 15px;
+            }
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                font-size: 0.9rem;
+                color: #888888;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            
+            <table class="header-table">
+                <tr>
+                    <td class="header-logo">
+                        <img src="{{ asset('images/logo_Projet.png') }}" 
+                             alt="Logo RimedPeyiYa" 
+                             width="150" 
+                             style="display: block; border-radius: 6px;">
+                    </td>
+                    
+                    <td class="header-title">
+                        <div>
+                            <h1>Rimed Péyi Ya</h1>
+                            
+                            <img src="{{ asset('images/gwada-f.jpg') }}" 
+                                 alt="Drapeau Guadeloupe" 
+                                 width="40" 
+                                 height="28" 
+                                 style="vertical-align: middle; margin-left: 6px; border-radius: 3px; display: inline-block;">
+                        </div>
+                        <p class="subtitle">Confirmation de commande</p>
+                    </td>
+                </tr>
+            </table>
+
+            <p>Bonjour {{ user.firstName ?? 'Cher client' }},</p>
+            <p>Nous vous remercions pour votre achat ! Votre commande <strong>n°{{ commande.id }}</strong> du {{ commande.date|date('d/m/Y à H:i') }} a bien été enregistrée.</p>
+
+            <h3>Récapitulatif de vos articles :</h3>
+            <table class="produits-table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Qté</th>
+                        <th>Prix U.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ligne in commande.ligneDeCommandes %}
+                        <tr>
+                            <td>{{ ligne.product.title }}</td>
+                            <td>{{ ligne.quantity }}</td>
+                            <td>{{ ligne.prixUnitaire|number_format(2, ',', ' ') }} €</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="total">
+                Total réglé : {{ commande.montantTotal|number_format(2, ',', ' ') }} €
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #f4f4e4; margin: 25px 0;">
+
+            <p>Votre commande sera traitée dans les plus brefs délais.</p>
+
+            <div class="footer">
+                <p>À bientôt sur <strong>Rimed Péyi Ya</strong> !</p>
+            </div>
+
+        </div> 
+    </body>
+</html>

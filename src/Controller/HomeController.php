@@ -11,7 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Mime\Email;
 
 final class HomeController extends AbstractController
 {
@@ -24,7 +26,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/contact', name: 'app_contact', methods: ['GET', 'POST'])]
-    public function contact(Request $request): Response
+    public function contact(Request $request, MailerInterface $mailer): Response
     {
         // Construction du formulaire de contact
         $form = $this->createFormBuilder()
@@ -62,6 +64,21 @@ final class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+            //process d'envoi d'email
+            $email = (new Email())
+                ->from($data['email'])// adresse saisie par le user
+                ->to('contact@rimedpeyiya.fr') //adresse mail de reception
+                ->subject('Nouveau message de contact : ' . $data['subject'])
+                ->text(
+                    "Nouveau message de : " .$data['name'] . "(" . $data['email'] . ")\n\n" .
+                    "Sujet : " . $data['subject'] . "\n\n" .
+                    "Message :\n" . $data['message'] 
+                );
+
+                //Envoi effectif de l'email
+                $mailer->send($email);
+               
+             //Fin d'envoi 
             // Notification de succès pour l'utilisateur
             $this->addFlash('success', 'Votre message a bien été envoyé ! Merci pour votre contribution.');
 

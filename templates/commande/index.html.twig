@@ -13,7 +13,7 @@
             <p>Il semblerait que vous n'ayez pas encore validé de commande sur notre site.</p>
             <hr>
             <a href="{{ path('app_home_catalogue') }}" class="btn btn-primary">
-                🛒 Découvrir notre catalogue
+               <span><i class="bi bi-journal-richtext"></i></span> Découvrir notre catalogue
             </a>
         </div>
     
@@ -50,7 +50,7 @@
                                 <td><strong>{{ commande.montantTotal|number_format(2, ',', ' ') }} €</strong></td>
                                 <td>
                                     <a href="{{ path('app_commande_recap', {'id': commande.id}) }}" class="btn btn-sm btn-outline-primary">
-                                        🔍 Voir le détail
+                                        <span><i class="bi bi-search"></i></span> Voir le détail
                                     </a>
                                 </td>
                             </tr>
