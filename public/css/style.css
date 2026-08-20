@@ -59,6 +59,7 @@ h1, h2, h3, h4, h5, h6 .section-title {
 .text-custom-brown { color: var(--t-brown); }
 .text-custom-green-l { color: var(--main-green); }
 .text-custom-green2 { color: var(--main-green2); }
+.text-custom-main-oj { color: var(--main-oj); }
 .text-muted{color:white;}
 
 /* Arrières-plans */

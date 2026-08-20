@@ -149,19 +149,25 @@ final class ProductController extends AbstractController
     }
 
     // L'URL devient : /admin/produit/supprimer/{id}
-    #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
+    #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Product $product, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
-        if ($product->getStock()) {
-            $entityManager->remove($product->getStock());
+        //verification token CSRF transmis dans la requête POST
+        if($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))){
+            if ($product->getStock()) {
+                $entityManager->remove($product->getStock());
+            }
+
+            $entityManager->remove($product);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le produit a bien été supprimé.');
+        }else{
+            $this->addFlash('error', 'Jeton CSRF invalide.');
         }
+            
 
-        $entityManager->remove($product);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Le produit a bien été supprimé.');
-
-        return $this->redirectToRoute('app_product_index'); // <-- Redirection 
-    }
+            return $this->redirectToRoute('app_product_index'); // <- Redirection 
+        }
 }

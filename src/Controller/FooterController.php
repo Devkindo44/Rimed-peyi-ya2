@@ -23,18 +23,18 @@ final class FooterController extends AbstractController
     #[Route('/cgu', name: 'app_cgu', methods: ['GET'])]
     public function cgu(): Response
     {
-        // Correction ici : pointe maintenant vers cgu.html.twig
+        
         return $this->render('footer/cgu.html.twig');
     }
 
     #[Route('/apropos', name: 'app_a_propos', methods: ['GET'])]
     public function apropos(): Response
     {
-        // Correction ici : pointe maintenant vers cgu.html.twig
+        
         return $this->render('footer/a-propos.html.twig');
     }
 
-    // On garde 'POST' ici au cas où votre page "Nous rejoindre" contient un formulaire de candidature
+    // On garde 'POST' ici au cas où la page "Nous rejoindre" contient un formulaire de candidature
     #[Route('/nous-rejoindre', name: 'app_rejoindre', methods: ['GET', 'POST'])]
     public function rejoindre(): Response
     {

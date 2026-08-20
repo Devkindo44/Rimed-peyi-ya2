@@ -77,7 +77,7 @@ final class CartController extends AbstractController
         if ($availableStock === 0) {
             $this->addFlash('warning', 'Désolé, ce produit est en rupture de stock.');
         } elseif ($totalRequested > $availableStock) {
-            $this->addFlash('warning', sprintf('Désolé, il ne reste que %d exemplaire(s) en stock.', $availableStock));
+            $this->addFlash('warning', sprintf('Désolé, il ne reste que %d exemplaire(s) disponible. Votre panier a été ajouté', $availableStock));
             $cart[$id] = $availableStock;
             $session->set('cart', $cart);
         } else {
@@ -106,7 +106,7 @@ final class CartController extends AbstractController
                         $this->addFlash('warning', 'Désolé, ce produit est en rupture de stock.');
                         unset($cart[$id]); // Optionnel : supprime le produit du panier s'il n'y en a plus du tout en BDD
                     } else {
-                        $this->addFlash('warning', sprintf('Désolé, il ne reste que %d exemplaire(s) en stock.', $availableStock));
+                        $this->addFlash('warning', sprintf('Désolé, il ne reste que %d exemplaire(s) disponible(s).', $availableStock));
                         $cart[$id] = $availableStock; 
                     }
                 } else {
@@ -149,10 +149,16 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('app_cart');
     }
 
-    #[Route('/cart/remove', name: 'app_cart_remove', methods: ['GET'])]
-    public function remove(SessionInterface $session): Response
+    #[Route('/cart/remove', name: 'app_cart_remove', methods: ['POST'])]
+    public function remove(Request $request, SessionInterface $session): Response
     {
-        $session->set('cart', []);
-        return $this->redirectToRoute('app_cart');
+        if ($this->isCsrfTokenValid('clear_cart', $request->getPayload()->getString('_token'))){
+            $session->set('cart', []);
+            $this->addFlash('success', 'votre panier a été vidé avec succès.');
+        }else{
+            $this->addFlash('error', 'Jeton CSRF invalide.');
+        }
+        
+        return $this->redirectToRoute('app_cart', [], Response::HTTP_SEE_OTHER);
     }
 }

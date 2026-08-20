@@ -56,9 +56,10 @@
                                 </td>
                                 <td>{{ item.product.price * item.quantity }} €</td>
                                 <td>
-                                    <a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" class="text-danger text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip-danger" data-bs-title="Supprimer la ligne produit">
-                                        {{ ux_icon('lucide:trash-2', {class: 'text-danger icon25'}) }}
-                                    </a>
+                                    <form action="{{ path('app_cart_remove') }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment vider votre panier ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('clear_cart') }}">
+                                        <button type="submit" class="btn btn-outline-danger">Vider le panier</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -18,7 +18,7 @@
              alt="page de connexion" 
              style="object-fit: cover; z-index: 1; filter: brightness(0.3);">
 
-        <form id="monFormulaireLogin" method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="display:none; z-index: 10; backdrop-filter: blur(5px);">
+        <form id="monFormulaireLogin" method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="{% if not error %}display:none;{% endif %} z-index: 10; backdrop-filter: blur(5px);">
             
             {% if error %}
                 {% if error.line is defined and (error.line == 265 or error.line == 67) %}
@@ -45,13 +45,13 @@
             {# Groupe Email #}
             <div class="mb-3 text-start">
                 <label for="inputEmail" class="form-label text-white">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="votre@email.com" required autofocus>
+                <input type="email" value="{{ last_username }}" name="_username" id="inputEmail" class="form-control" autocomplete="email" placeholder="votre@email.com" required autofocus>
             </div>
 
             {# Champ Mot de passe #}
             <div class="mb-3 text-start">
                 <label for="inputPassword" class="form-label text-white">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
+                <input type="password" name="_password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Mot de passe" required>
             </div>
 
             {# Token CSRF #}
@@ -66,8 +66,8 @@
                     </label>
                 </div>
                 
-                {#  Lien révisé vers la route de réinitialisation de mot de passe #}
-                <a href="{{ path('app_forgot_password_request') }}" class="text-white-50 small text-decoration-none hover-underline">
+                {# Ajout de onclick="event.stopPropagation();" pour éviter le blocage par script.js #}
+                <a href="{{ path('app_forgot_password_request') }}" class="text-white-50 small text-decoration-none hover-underline" onclick="event.stopPropagation();">
                     Mot de passe oublié ?
                 </a>
             </div>

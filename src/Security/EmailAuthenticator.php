@@ -28,7 +28,7 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->getPayload()->getString('email');
+        $email = $request->getPayload()->getString('_username'); //email nouvel norme _username
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
@@ -36,7 +36,7 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
             //recuperation de l'email saisi
             new UserBadge($email),
             //recuperation du mot de passe saisi
-            new PasswordCredentials($request->getPayload()->getString('password')),
+            new PasswordCredentials($request->getPayload()->getString('_password')),
             [
                 //Verifcation du token CSRF
                 new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
@@ -49,13 +49,20 @@ class EmailAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $user = $token->getUser();
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
+            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                return new RedirectResponse($targetPath);
+            }
+            $this->removeTargetPath($request->getSession(), $firewallName);
         }
 
-        // methode onAuthenticationSuccess Redirige le user après connexion page d'accueil).
-         return new RedirectResponse($this->urlGenerator->generate('app_home'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     protected function getLoginUrl(Request $request): string
