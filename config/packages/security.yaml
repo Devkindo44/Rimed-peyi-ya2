@@ -35,7 +35,7 @@ security:
             #  Pages publiques (Connexion, Inscription, Mdp oublié)
             - { path: ^/connexion, roles: PUBLIC_ACCESS }
             - { path: ^/inscription, roles: PUBLIC_ACCESS } # 
-            - { path: ^/verify/email, roles: PUBLIC_ACCESS } # <-- Pour la confirmation d'email
+            - { path: ^/verify/email, roles: PUBLIC_ACCESS } #  Pour la confirmation d'email
             - { path: ^/forgot-password, roles: PUBLIC_ACCESS }
 
             # Page d'accueil accessible à tous

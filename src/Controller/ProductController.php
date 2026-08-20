@@ -12,14 +12,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-//  /admin/produit
-#[Route('/admin/produit')]
+
+// Definition des rôles admin au cas par cas
 final class ProductController extends AbstractController
 {
-    // L'URL exacte devient : /admin/produit
-    #[Route('', name: 'app_product_index')]
+    
+    #[Route('/admin/produit', name: 'app_product_index')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
@@ -31,6 +33,7 @@ final class ProductController extends AbstractController
 
     // /admin/produit/ajouter
     #[Route('/ajouter', name: 'app_product_new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, CategoriesRepository $categoriesRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {   
         $categories = $categoriesRepository->findAll();
@@ -82,8 +85,9 @@ final class ProductController extends AbstractController
         ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY)); 
     }
 
-    // L'URL devient : /admin/produit/fiche/{id}
+    // Accessible aux USERS connectés
     #[Route('/fiche/{id}', name: 'app_product_show')]
+     #[IsGranted('ROLE_USER')]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
@@ -93,6 +97,7 @@ final class ProductController extends AbstractController
 
     // L'URL devient : /admin/produit/modifier/{id}
     #[Route('/modifier/{id}', name: 'app_product_edit')] 
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -145,6 +150,7 @@ final class ProductController extends AbstractController
 
     // L'URL devient : /admin/produit/supprimer/{id}
     #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Product $product, EntityManagerInterface $entityManager): Response
     {
         if ($product->getStock()) {

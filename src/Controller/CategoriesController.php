@@ -121,6 +121,7 @@ final class CategoriesController extends AbstractController
 
         return $this->render('categories/show.html.twig', [
             'category' => $category,
+          
         ]);
     }
 }

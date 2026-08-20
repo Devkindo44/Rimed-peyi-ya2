@@ -114,9 +114,15 @@ final class AdresseDeLivraisonController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete'.$adresseDeLivraison->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($adresseDeLivraison);
-            $entityManager->flush();
-            $this->addFlash('success', 'L\'adresse a été supprimée avec succès.');
+           try{ $entityManager->remove($adresseDeLivraison);
+                $entityManager->flush();
+                $this->addFlash('success', 'L\'adresse a été supprimée avec succès.');
+            }catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e){
+                // pour Capturer /masquer l'erreur SQL catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e)
+                //sinon technique onDelete: #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL') pour mettre à nul au lieu de la suppression dans l'entité
+                $this->addflash('danger','Impossible de supprimer cette adresse car elle est deja lié à une commande!');
+                $this->addflash('info','Vous pouvez en créer une nouvelle pour vos futur achats.');
+            }
         }
 
         if ($this->isGranted('ROLE_ADMIN')) {

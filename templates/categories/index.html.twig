@@ -10,13 +10,37 @@
 
  
 
-    {# 1. Bannière de la page (unique, hors de la boucle) #}
+    {# Bannière de la page (unique, hors de la boucle) #}
     <div class="position-relative w-100 m-0 p-0 y-0 ">
         <img src="{{ asset('images/page image Categorie.jpg') }}" 
              class="img-fluid w-100" 
              style="height: 251px; object-fit: cover;" 
              alt="Bannière Catégories">
     </div>
+
+    {# Fil d'ariane #}
+    <nav aria-label="breadcrumb" class="mt-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ path('app_home') }}">Accueil</a>
+        </li>
+        {% set current_slug = app.request.attributes.get('slug') %}
+        
+        {% if current_slug is not empty %}
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_catégories') }}">Catégories</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {# Récupère le nom de la catégorie active s'il y en a une #}
+                {% for cat in categories %}
+                    {% if cat.slug == current_slug %}{{ cat.name }}{% endif %}
+                {% endfor %}
+            </li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Toutes les catégories</li>
+        {% endif %}
+    </ol>
+</nav>
     
     {# 2. Conteneur principal #}
     <div class="container my-5">

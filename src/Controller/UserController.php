@@ -38,7 +38,7 @@ final class UserController extends AbstractController
             $entityManager->flush();
 
             // Redirection vers  route de l'index (page admin)
-            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_user_dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
@@ -67,7 +67,7 @@ final class UserController extends AbstractController
             $entityManager->flush();
 
             // Redirection vers  route de l'index (page admin)
-            return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_user_dashboard', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -85,6 +85,6 @@ final class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_admin_user_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -123,8 +123,9 @@ h1, h2, h3, h4, h5, h6 .section-title {
     color: var(--bg-cream);
 }
 .btn-outline-brown{
+ background-color: var(--t-brown);
  border-color: var(--t-brown);
- color: var(--t-brown);
+ 
 }
 .btn-outline-green2{
  border-color: var(--main-green2);
@@ -237,19 +238,21 @@ h1, h2, h3, h4, h5, h6 .section-title {
     border-color: #2c5e3b;
 }
 
-/* 3. Style du bouton de la page ACTUELLE (Active) */
+/*  Style du bouton de la page ACTUELLE (Active) */
 .pagination .page-item.active .page-link {
     color: #ffffff !important;       /* Texte du bouton actif */
     background-color: #1e3f28 !important; /* Couleur de fond de la page active */
     border-color: #1e3f28 !important;
 }
 
-/* 4. Style des boutons désactivés (Ex: Précédent sur la page 1) */
+/*  Style des boutons désactivés (Ex: Précédent sur la page 1) */
 .pagination .page-item.disabled .page-link {
     color: #6c757d;
     background-color: #e9ecef;
     border-color: #dee2e6;
 }
+
+
 
 /* ==========================================================================
    MÉDIAS QUERIES - RESPONSIVE DESIGN
