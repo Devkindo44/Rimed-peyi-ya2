@@ -7,20 +7,18 @@
 
 {% block body %}
 
-<div class="container mt-4">
-    {# Affichage de tous les messages flash (success et danger pour Turbo) #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'danger' ? 'danger' : 'success' }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label == 'danger' or label == 'error' ? 'danger' : (label == 'success' ? 'success' : 'info') }} alert-dismissible fade show m-3" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     {% endfor %}
+{% endfor %}
 
+<div class="container mt-4">
     {# Boutons de navigation #}
     <div class="mb-3">
-        {# Correction : pointe vers le tableau de bord général plutôt que vers lui-même #}
         <a href="{{ path('app_admin_user_dashboard') }}" class="btn btn-custom-green">
             ← Tableau de bord
         </a>
@@ -47,19 +45,10 @@
             <tbody>
                 {% for user in users %}
                     <tr>
-                        {# ID #}
                         <td>{{ user.id }}</td>
-                        
-                        {# Prénom #}
                         <td>{{ user.firstName|capitalize }}</td>
-                        
-                        {# Nom #}
                         <td>{{ user.lastName|upper }}</td>
-                        
-                        {# Email #}
                         <td class="text-start px-3">{{ user.email }}</td>
-                        
-                        {# Statut #}
                         <td>
                             {% if user.isVerified %}
                                 <span class="badge bg-success">✓ Vérifié</span>
@@ -67,17 +56,13 @@
                                 <span class="badge bg-warning text-dark">⚠ En attente</span>
                             {% endif %}
                         </td>
-                        
-                        {# Rôles #}
                         <td>
                             {% if 'ROLE_ADMIN' in user.roles %}
-                                <span class="badge bg-danger">Admin</span>
+                                <span class="badge bg-oj text-danger">Admin</span>
                             {% else %}
-                                <span class="badge bg-secondary">Membre</span>
+                                <span class="badge bg-custom-brown">Membre</span>
                             {% endif %}
                         </td>
-                        
-                        {# Téléphone #}
                         <td>
                             {% if user.numeroDeTelephone %}
                                 {{ user.numeroDeTelephone }}
@@ -85,8 +70,6 @@
                                 <span class="text-muted small"><em>Aucun</em></span>
                             {% endif %}
                         </td>
-
-                        {# Date d'inscription #}
                         <td>
                             {% if user.createdAt %}
                                 {{ user.createdAt|date('d/m/Y à H:i') }}
@@ -94,21 +77,14 @@
                                 <span class="text-muted small"><em>Inconnue</em></span>
                             {% endif %}
                         </td>
-                        
-                        {# Actions #}
                         <td>
                             <div class="d-flex justify-content-center align-items-center gap-3">
-                                {# Fiche #}
                                 <a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-decoration-none" title="Voir la fiche">
                                     {{ ux_icon('lucide:eye', {class: 'text-info icon20'}) }}
                                 </a>
-
-                                {# Modifier #}
                                 <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="text-decoration-none" title="Modifier">
                                     {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
                                 </a>
-                                
-                                {# Supprimer #}
                                 <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce membre ?');" style="display: inline-block;">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
                                     <button class="btn btn-link p-0 m-0 align-baseline text-decoration-none" type="submit" title="Supprimer">

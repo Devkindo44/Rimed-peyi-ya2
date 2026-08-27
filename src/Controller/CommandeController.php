@@ -66,7 +66,7 @@ final class CommandeController extends AbstractController
         $commande->setUtilisateur($user);
         $commande->setDate(new \DateTime());
         $commande->setFraisPort(0.0); 
-        $commande->setTransporteurNom('Livraison Standard (Gratuite)');
+        $commande->setTransporteurNom('Livraison Standard (Gratuite) offre de lancement');
 
         // Calcul du montant total
         $sousTotal = 0;
@@ -86,6 +86,20 @@ final class CommandeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+        //Vérification ultilme des stocks avant validation
+        foreach($cart as $id => $cartValue){
+            $product = $productRepository->find($id);
+            if ($product && $product->getStock() !== null) {
+                $quantity = is_array($cartValue) ? ($cartValue['quantity'] ?? $cartValue['quantite']?? 1) : $cartValue;
+                $finalQuantity = max(1, (int)$quantity);
+
+                if ($product->getStock()->getQuantity() < $finalQuantity) {
+                    $this->addFlash('danger', sprintf('Stock insuffisant pour le produit "%s".', $product->getName()));
+                    return $this->redirectToRoute('app_cart');
+                }
+            }
+        }
             
             // Génération des lignes de commande et mise à jour des stocks
             foreach ($cart as $id => $cartValue) {
@@ -117,7 +131,7 @@ final class CommandeController extends AbstractController
             $em->persist($commande);
             $em->flush();
 
-            // Process envoi d'email
+            // Process de l'envoi d'email
             $email = (new TemplatedEmail())
                 ->from(new Address('contact@rimedpeyiya.fr', 'Rimed Péyi Ya'))
                 ->to((string) $user->getEmail())
@@ -161,6 +175,7 @@ final class CommandeController extends AbstractController
     }
 
     #[Route('/test-email', name: 'app_test_email')]
+    #[IsGranted('ROLE_ADMIN')]
     public function testEmail(CommandeRepository $commandeRepository): Response
     {
         // Récupère la toute dernière commande enregistrée

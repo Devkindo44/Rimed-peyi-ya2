@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/categories')]
@@ -48,7 +49,7 @@ final class CategoriesController extends AbstractController
 
     // 1. La route statique "/new" est placée AVANT la route dynamique
     #[Route('/new', name: 'app_categories_new', methods: ['GET', 'POST'])]
-    // #[IsGranted('ROLE_ADMIN')] //  Seuls les admins peuvent entrer ici
+    #[IsGranted('ROLE_ADMIN')] //  Seuls les admins peuvent entrer ici
     public function addCategories(EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
         $category = new Categories();
@@ -73,6 +74,7 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_categories_edit', methods: ['GET', 'POST'])]
+     #[IsGranted('ROLE_ADMIN')]
     public function edit(Categories $category, EntityManagerInterface $entityManager, Request $request, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CategoriesType::class, $category);
@@ -96,13 +98,23 @@ final class CategoriesController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_categories_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Categories $category, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->getPayload()->getString('_token'))) {
+         try  { 
             $entityManager->remove($category);
             $entityManager->flush();
             
+            //utilisation try catch pour eviter les erreurs de violation de contrintes
+            
             $this->addFlash('success', 'La catégorie a été supprimée avec succès !');
+        }catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e) {
+            $this->addFlash('danger', 'Impossible de supprimer cette catégorie, elle contient encore des produits');
+        }
+          
+        } else{
+            $this->addFlash('error', 'Jeton CSRF invalide');
         }
 
         return $this->redirectToRoute('app_categories', [], Response::HTTP_SEE_OTHER);
@@ -121,6 +133,7 @@ final class CategoriesController extends AbstractController
 
         return $this->render('categories/show.html.twig', [
             'category' => $category,
+          
         ]);
     }
 }

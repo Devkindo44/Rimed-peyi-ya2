@@ -2,7 +2,7 @@
 
 {% block title %}{{ parent() }} | Gestion des produits{% endblock %}
 {% block description %}{{ parent() }} | Gestion des produits{% endblock %}
-{% block keywords %}{{ parent() }} |  Gestion des produits{% endblock %}
+{% block keywords %}{{ parent() }} | Gestion des produits{% endblock %}
 {% block h1 %}Gestion des produits{% endblock %}
 
 {% block body %}
@@ -35,6 +35,7 @@
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">ID</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Titre</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Illustration</th>
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Contenance</th> {# 👈 1. NOUVELLE EN-TÊTE #}
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prix (€)</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Description</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Stock</th>
@@ -48,11 +49,19 @@
                         <td>{{ product.title|capitalize }}</td>
                         <td>
                             {% if product.illustration %}
-                                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-thumbnail">
+                                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-fluid">
                             {% else %}
                                 {{ ux_icon('lucide:image-off', {class: 'text-muted icon20'}) }}
                             {% endif %}
                         </td>
+                        
+                        {# Affiche la contenance (avec fallback si vide)
+                         L'instruction product.contenance ? product.contenance : '-' 
+                         permet d'éviter les cases vides si un produit n'a pas de contenance renseignée.#}
+                        <td>
+                            {{ product.contenance ? product.contenance : '-' }} 
+                        </td>
+
                         <td>{{ product.price }}</td>
                         <td>
                             {% if product.description|length > 20 %}
@@ -68,7 +77,6 @@
                             {% else %}
                                 <span class="badge bg-danger">Épuisé</span>
                             {% endif %}
-                            
                         </td>
                         <td>
                             {# Icône Voir #}

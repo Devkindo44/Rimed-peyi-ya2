@@ -36,18 +36,18 @@
     <div class="row g-4">
         {% for product in category.products %}
             <div class="col-md-4 card product-card mx-2 ">
-                <div class="card h-100 shadow-sm border-0">
+                <div class="card h-100 shadow-sm border-0 my-3">
                     <img src="{{ asset('images/' ~ product.illustration) }}" class="card-img-top" alt="{{ product.title }}" style="object-fit: cover; height: 200px;">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">{{ product.title }}</h5>
+                        <h3 class="card-title fw-bold">{{ product.title }}</h3>
                         <p class="card-text text-muted">{{ product.description|slice(0, 100) }}...</p>
                     </div>
                      {% if app.user %}
                     <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pb-3">
                     {# Formulaire d'ajout avec Quantité #}
                                     <form action="{{ path('app_cart_new', {'id': product.id}) }}" method="POST" class="mt-1">
-                                        <div class="input-group input-group-sm mb-2">
-                                            <span class="input-group-text bg-light text-dark">Qté</span>
+                                        <div class="input-group input-group-sm mb-2 border-brown rounded">
+                                            <span class="input-group-text bg-custom-brown text-white">Qté</span>
                                            <input type="number" name="quantity" class="form-control text-center" placeholder="Qté" min="1" max="100">
                                         </div>
                                         <button type="submit" class="btn btn-custom-brown btn-sm w-100 py-2">
@@ -55,7 +55,7 @@
                                         </button>
                                     </form>
                         <span class="text-success fw-bold fs-5">{{ product.price }} €</span>
-                        <a href="{{ path('app_product_show', {'id':product.id}) }}" class="btn btn-outline-dark btn-sm">Voir le produit</a>
+                        <a href="{{ path('app_product_show', {'id':product.id}) }}" class="btn btn-custom-brown btn-sm  py-2 btn-sm">Voir le produit</a>
                     </div>
                     {%  endif %}
                 </div>

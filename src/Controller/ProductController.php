@@ -12,14 +12,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-//  /admin/produit
-#[Route('/admin/produit')]
+
+// Definition des rôles admin au cas par cas
 final class ProductController extends AbstractController
 {
-    // L'URL exacte devient : /admin/produit
-    #[Route('', name: 'app_product_index')]
+    
+    #[Route('/admin/produit', name: 'app_product_index')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
@@ -31,6 +33,7 @@ final class ProductController extends AbstractController
 
     // /admin/produit/ajouter
     #[Route('/ajouter', name: 'app_product_new')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, CategoriesRepository $categoriesRepository, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {   
         $categories = $categoriesRepository->findAll();
@@ -54,9 +57,11 @@ final class ProductController extends AbstractController
                 $illustration = $form->get('illustration')->getData();
                 if ($illustration) {
                     $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
+                    //extrait le nom d'origine et le formate avec $slugger->slug()
                     $safeFileName = $slugger->slug($originalName);
+                    // attribution d'un id.unique pour eviter les conflits
                     $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
-
+                    // deplace ds public/images
                     $illustration->move(
                         $this->getParameter('kernel.project_dir') . '/public/images',
                         $newFileName
@@ -82,8 +87,9 @@ final class ProductController extends AbstractController
         ], new Response(null, Response::HTTP_UNPROCESSABLE_ENTITY)); 
     }
 
-    // L'URL devient : /admin/produit/fiche/{id}
+    // Accessible aux USERS connectés
     #[Route('/fiche/{id}', name: 'app_product_show')]
+     #[IsGranted('ROLE_USER')]
     public function show(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
@@ -93,6 +99,7 @@ final class ProductController extends AbstractController
 
     // L'URL devient : /admin/produit/modifier/{id}
     #[Route('/modifier/{id}', name: 'app_product_edit')] 
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Product $product, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -144,18 +151,25 @@ final class ProductController extends AbstractController
     }
 
     // L'URL devient : /admin/produit/supprimer/{id}
-    #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST', 'GET'])]
-    public function delete(Product $product, EntityManagerInterface $entityManager): Response
+    #[Route('/supprimer/{id}', name: 'app_product_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
-        if ($product->getStock()) {
-            $entityManager->remove($product->getStock());
+        //verification token CSRF transmis dans la requête POST
+        if($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))){
+            if ($product->getStock()) {
+                $entityManager->remove($product->getStock());
+            }
+
+            $entityManager->remove($product);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le produit a bien été supprimé.');
+        }else{
+            $this->addFlash('error', 'Jeton CSRF invalide.');
         }
+            
 
-        $entityManager->remove($product);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Le produit a bien été supprimé.');
-
-        return $this->redirectToRoute('app_product_index'); // <-- Redirection 
-    }
+            return $this->redirectToRoute('app_product_index'); // <- Redirection 
+        }
 }

@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface; // Import de la Session
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -28,9 +27,10 @@ final class AdresseDeLivraisonController extends AbstractController
     #[Route('/new', name: 'app_adresse_de_livraison_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request, 
-        EntityManagerInterface $entityManager,
-        SessionInterface $session // Injection de la session
+        EntityManagerInterface $entityManager
+        
     ): Response {
+        $session =$request->getSession();//recuperation de la session
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
@@ -112,17 +112,27 @@ final class AdresseDeLivraisonController extends AbstractController
         if ($adresseDeLivraison->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException("Vous ne pouvez pas supprimer cette adresse.");
         }
+            //Validation token csrf
+        if ($this->isCsrfTokenValid('delete' . $adresseDeLivraison->getId(), $request->getPayload()->getString('_token'))) {
+           try{ $entityManager->remove($adresseDeLivraison);
+                $entityManager->flush();
+                $this->addFlash('success', 'L\'adresse a été supprimée avec succès.');
+            }catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e){
 
-        if ($this->isCsrfTokenValid('delete'.$adresseDeLivraison->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($adresseDeLivraison);
-            $entityManager->flush();
-            $this->addFlash('success', 'L\'adresse a été supprimée avec succès.');
+                // pour Capturer /masquer l'erreur SQL catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e)
+                //sinon technique onDelete: #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL') 
+                //pour mettre à nul au lieu de la suppression dans l'entité
+                $this->addFlash('danger','Impossible de supprimer cette adresse car elle est deja lié à une commande!');
+                $this->addFlash('info','Vous pouvez en créer une nouvelle pour vos futur achats.');
+            }
+        } else {
+            $this->addFlash('error', 'Jeton CSRF invalide.');
         }
-
-        if ($this->isGranted('ROLE_ADMIN')) {
+            //Redirection selon le rôle
+            if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_admin_adresse_de_livraison_index');
         }
 
-        return $this->redirectToRoute('app_profile');
+        return $this->redirectToRoute('app_profile', [], Response::HTTP_SEE_OTHER);
     }
 }

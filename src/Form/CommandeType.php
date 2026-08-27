@@ -34,7 +34,7 @@ class CommandeType extends AbstractType
                 'class' => AdresseDeLivraison::class,
                 'label' => 'Choisissez votre adresse de livraison',
                 'query_builder' => function (EntityRepository $er) use ($user) {
-                    // ⚠️ Remplace 'a.user' par 'a.utilisateur' si la propriété s'appelle $utilisateur dans ton entité AdresseDeLivraison
+                
                     return $er->createQueryBuilder('a')
                         ->where('a.user = :user')
                         ->setParameter('user', $user);

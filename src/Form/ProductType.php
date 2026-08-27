@@ -164,7 +164,8 @@ class ProductType extends AbstractType
                     'Bouteille de 50 cl' => 'Bouteille de 50 cl',
                     'Bouteille de 75 cl' => 'Bouteille de 75 cl',
                     'Flacon de 10 ml'    => 'Flacon de 10 ml' ,
-                    'Flacon de 50 ml'    => 'Flacon de 50 ml'
+                    'Flacon de 50 ml'    => 'Flacon de 50 ml',
+                    'Pot de 20 cm'       => 'Pot de 20 cm' 
                 ],
                 'attr' => [
                     'class' => 'form-select bg-success-custom-brown-f shadow rounded' // form-select s'adapte mieux au dropdown

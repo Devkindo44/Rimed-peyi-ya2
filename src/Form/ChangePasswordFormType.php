@@ -22,30 +22,40 @@ class ChangePasswordFormType extends AbstractType
                 'options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
+                        'class' => 'form-contol',
                     ],
                 ],
                 'first_options' => [
                     'constraints' => [
                         new NotBlank(
-                            message: 'Please enter a password',
+                            message: 'Veuillez saisir un mot de passe',
                         ),
                         new Length(
                             min: 12,
-                            minMessage: 'Your password should be at least {{ limit }} characters',
+                            minMessage: 'Votre mot de passe doit contenir au moins  {{ limit }} caractères',
                             // max length allowed by Symfony for security reasons
                             max: 4096,
                         ),
-                        new PasswordStrength(),
+                        new PasswordStrength( message: 'Le mot de passe est trop faible. Veuillez utiliser mot de passe plus robuste.',),
+                           
                         new NotCompromisedPassword(),
                     ],
-                    'label' => 'New password',
+                    'label' =>'<span class="text-custom-green-l">Nouveau mot de passe</span>' . '<span class="text-danger m-1">*</span>',
+                    'label_html' => true,
+                    'label_attr' => ['class'=> 'form-label text-white'],
+                    'attr' => [
+                        'placeholder' => 'Votre nouveau mot de passe',
+                    ],
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' =>'<span class="text-custom-green-l">Confirmation du mot de passe</span>' . '<span class="text-danger m-1">*</span>',
+                    'label_html' => true,
+                    'label_attr' => ['class' => 'form-label text-white'],
+                    'attr' => [
+                        'placeholder' => 'Répétez le mot de passe',
+                    ],
                 ],
-                'invalid_message' => 'The password fields must match.',
-                // Instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'invalid_message' => 'Les deux mots de passes doivent être identiques.',
                 'mapped' => false,
             ])
         ;

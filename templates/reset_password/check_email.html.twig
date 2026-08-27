@@ -1,11 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Password Reset Email Sent{% endblock %}
+{% block title %}E-mail de réinitialisation envoyé{% endblock %}
+
+{% block h1 %}E-mail envoyé{% endblock %}
 
 {% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+    {# Conteneur principal #}
+    <div class="position-relative d-flex align-items-center justify-content-center shadow rounded-5" style="min-height: 100vh; overflow: hidden;">
+        
+        {# Image en arrière-plan #}
+        <img src="{{ asset('images/p-connexion.jpg') }}" 
+             class="position-absolute top-0 start-0 w-100 h-100" 
+             alt="E-mail de réinitialisation envoyé" 
+             style="object-fit: cover; z-index: 1; filter: brightness(0.3);">
+
+        {# Card d'information #}
+        <div class="col-md-5 p-4 shadow rounded btn-custom-cream text-center text-white" style="z-index: 10; backdrop-filter: blur(5px);">
+            
+            <h1 class="h3 mb-3 font-weight-normal">E-mail envoyé !</h1>
+            
+            <p class="mb-3">
+                Si un compte associé à votre adresse e-mail existe, un message vient de vous être envoyé avec un lien pour réinitialiser votre mot de passe.
+            </p>
+
+            <p class="small text-white-50 mb-4">
+                Ce lien expirera dans <strong>{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</strong>.
+            </p>
+
+            <div class="alert alert-info bg-transparent text-white border-light small mb-4">
+                Si vous ne recevez pas l'e-mail, pensez à vérifier vos courriers indésirables (spams) ou 
+                <a href="{{ path('app_forgot_password_request') }}" class="text-warning text-decoration-underline">réessayez</a>.
+            </div>
+
+            {# Bouton de retour à la connexion #}
+            <a href="{{ path('app_login') }}" class="btn btn-lg btn-custom-green w-100">
+                Retour à la connexion
+            </a>
+        </div>
+    </div>
 {% endblock %}

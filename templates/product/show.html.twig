@@ -31,7 +31,7 @@
                      <h2 class="section-title text-custom-brown mb-5  fs-1">{{ product.title }}</h2>
                 
                     {% if product.illustration %}
-                        <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded-3 shadow-lg mx-auto d-block my-3" style="max-height: 350px; object-fit: contain;">
+                        <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" class="img-fluid rounded-3 shadow-lg mx-auto d-block my-3 img-zoom" style="max-height: 350px; object-fit: contain;">
                     {% else %}
                         <div class="text-muted py-5">
                             {{ ux_icon('lucide:image-off', {class: 'icon40 mb-2 text-custom-brown'}) }}
@@ -44,20 +44,20 @@
             {# COLONNE DROITE : LES INFORMATIONS #}
             <div class="col-md-7 col-lg-8 d-flex flex-column justify-content-between ">
                 <div>
-                    {# Titre & Badge ID optionnel #}
+                    {# Titre et le  Badge ID de l'identifiant #}
                     <div class="d-flex flex-wrap align-items-start justify-content-between gap-2 mb-2">
                         <h2 class="section-title text-custom-green-l text-center mb-2 fs-2">
-                           Retrouvez vitalité & équilibre en un clic
+                           Retrouvez vitalité et équilibre en un clic
                         </h2>
 
                         {% if is_granted('ROLE_ADMIN') %}
-                            <span class="badge bg-custom-brown font-monospace opacity-75 py-2 px-3 rounded-pill">
+                            <span class="badge bg-oj text-dark font-monospace  py-2 px-3 rounded-pill">
                                 ID: #{{ product.id }}
                             </span>
                         {% endif %}
                     </div>
-                    <div class="title-underline mb-4" style="width: 60px;"></div>
-
+                    {# <div class="title-underline mb-4" style="width: 100%;"></div> #}
+                    <hr>
                     {# Prix #}
                     <div class="mb-2">
                         <span class="fs-2 fw-bold text-custom-brown">{{ product.price }} €</span>
@@ -118,8 +118,8 @@
                     {# Formulaire d'ajout au panier avec choix de la quantité #}
                     <form action="{{ path('app_cart_new', {'id': product.id}) }}" method="POST" class="d-flex align-items-center gap-2 m-0">
                         <div class="input-group" style="max-width: 110px;">
-                            <span class="input-group-text bg-light text-dark py-2">Qté</span>
-                            <input type="number" name="quantity" class="form-control text-center py-2" placeholder="Qté" min="1" max="100" value="1">
+                            <span class="input-group-text bg-custom-brown text-white py-2">Qté</span>
+                            <input type="number" name="quantity" class="form-control border-brown text-center py-2" placeholder="Qté" min="1" max="100" value="1">
                         </div>
                         
                         <button type="submit" class="btn btn-custom-brown px-4 py-2 rounded-pill fw-medium transition-all">

@@ -73,7 +73,8 @@
                 </div>
                 
                 <div class="card-body bg-light">
-                    {% for adresse in user.adresseDeLivraisons %}
+                    {#   Utilisation de app.user au lieu de user sinon les autres adresses ne s'afficheront passage direct dans le else #}
+                    {% for adresse in app.user.adresseDeLivraisons %}
                         <div class="border rounded p-3 mb-3 bg-white shadow-sm position-relative">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h3 class="h6 fw-bold m-0" style="color: var(--main-green);">

@@ -26,7 +26,7 @@ class AdresseDeLivraison
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
 
-    // 🌟 NOUVEAUTÉ : Propriété téléphone
+    //  Propriété téléphone
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $telephone = null;
 

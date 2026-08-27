@@ -59,6 +59,7 @@ h1, h2, h3, h4, h5, h6 .section-title {
 .text-custom-brown { color: var(--t-brown); }
 .text-custom-green-l { color: var(--main-green); }
 .text-custom-green2 { color: var(--main-green2); }
+.text-custom-main-oj { color: var(--main-oj); }
 .text-muted{color:white;}
 
 /* Arrières-plans */
@@ -66,7 +67,8 @@ h1, h2, h3, h4, h5, h6 .section-title {
 .bg-custom-green-admin {background-color: var(--main-green);color:white;}
 .bg-custom-cream { background-color: var(--bg-cream); }
 .bg-custom-brown { background-color: var(--t-brown); }
-.bg-custom-green2 { background-color: var(--main-green2); }
+.bg-custom-green2 { background-color: var(--main-green2); } 
+.bg-oj { background-color: var(--main-oj); }
 
 .btn-custom-brown {background-color: var(--t-brown);color:white;}
 .btn-custom-green2 {background-color: var( --main-green2);color:white;}
@@ -123,8 +125,9 @@ h1, h2, h3, h4, h5, h6 .section-title {
     color: var(--bg-cream);
 }
 .btn-outline-brown{
+ background-color: var(--t-brown);
  border-color: var(--t-brown);
- color: var(--t-brown);
+ 
 }
 .btn-outline-green2{
  border-color: var(--main-green2);
@@ -237,19 +240,21 @@ h1, h2, h3, h4, h5, h6 .section-title {
     border-color: #2c5e3b;
 }
 
-/* 3. Style du bouton de la page ACTUELLE (Active) */
+/*  Style du bouton de la page ACTUELLE (Active) */
 .pagination .page-item.active .page-link {
     color: #ffffff !important;       /* Texte du bouton actif */
     background-color: #1e3f28 !important; /* Couleur de fond de la page active */
     border-color: #1e3f28 !important;
 }
 
-/* 4. Style des boutons désactivés (Ex: Précédent sur la page 1) */
+/*  Style des boutons désactivés (Ex: Précédent sur la page 1) */
 .pagination .page-item.disabled .page-link {
     color: #6c757d;
     background-color: #e9ecef;
     border-color: #dee2e6;
 }
+
+
 
 /* ==========================================================================
    MÉDIAS QUERIES - RESPONSIVE DESIGN
@@ -362,6 +367,23 @@ h1, h2, h3, h4, h5, h6 .section-title {
         min-height: 0 !important; /* CORRECTION : Empêche la sidebar de prendre tout l'écran */
         padding: 15px;
     }
+}
+
+/* Test animation */
+
+/* Effet de transition fluide sur l'image */
+.img-zoom {
+    transition: transform 0.4s ease, z-index 0.4s ease, box-shadow 0.4s ease;
+    position: relative; /* Indispensable pour que le z-index fonctionne */
+}
+
+/* Effet au survol du curseur (Hover) */
+.img-zoom:hover {
+    transform: scale(1.5); /* Agrandit l'image de 2,5 fois sa taille initiale */
+    z-index: 100;          /* Fait passer l'image au-dessus des autres cartes */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Ajoute une ombre pour donner du relief */
+    border-radius: 8px;    /* Arrondit légèrement les angles */
+    cursor: pointer;
 }
 
 /* *********************************Animation********************************* */

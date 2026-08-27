@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
+use App\Security\EmailAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -40,6 +42,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            
             // Génération d'une URL signée et l'envoie par e-mail à l'utilisateur.
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
@@ -52,7 +55,7 @@ class RegistrationController extends AbstractController
             // Après confirmation du mail le user devient verifié (isVerified=>true)
             //le lien a une durée de validité, si expiré refaire le process
 
-          
+        $this->addFlash('success', 'Votre compte a été créé. Un e-mail de confirmation vous a été envoyé.');
 
             return $this->redirectToRoute('app_login');
         }
@@ -63,34 +66,42 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    public function verifyUserEmail(Security $security, Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
         $id = $request->query->get('id');
 
         if (null === $id) {
+             $this->addFlash('verify_email_error', 'Lien de confirmation invalide ou compte introuvable.');
             return $this->redirectToRoute('app_register');
+           
         }
 
         $user = $userRepository->find($id);
 
         if (null === $user) {
+            $this->addFlash('verify_email_error', 'Lien de confirmation invalide ou compte introuvable.');
             return $this->redirectToRoute('app_register');
+            
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // confirmer le lien de validation, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
+
             //gestion des erreurs : si le lien est expiré user redirigé vers le lien d'inscription
+
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('app_register');
+            return $this->redirectToRoute('app_login');
         }
 
-        // le user est informé de la validation de son email par message flash
-        $this->addFlash('success', 'Votre email est validée, vous pouvez vous connecter.');
+        // connexion du user automatique après validation du lien dans l'email
+        $security->login($user, EmailAuthenticator::class, 'main');
+      
+        $this->addFlash('success', 'Votre email est validée, vous êtes maintenant connecté !.');
 
         //Redirection vers la page de connexion pouse connecter
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_home');
     }
 }

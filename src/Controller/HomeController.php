@@ -68,7 +68,8 @@ final class HomeController extends AbstractController
 
             //process d'envoi d'email
             $email = (new Email())
-                ->from($data['email'])// adresse saisie par le user
+                ->from('contact@rrimedpeyiya.fr')// adresse du domaine
+                ->replyTo($data['email'])
                 ->to('contact@rimedpeyiya.fr') //adresse mail de reception
                 ->subject('Nouveau message de contact : ' . $data['subject'])
                 ->text(
@@ -116,9 +117,10 @@ final class HomeController extends AbstractController
         }
 
         // Gestion de la pagination KnpPaginator
+        $page = max(1, $request->query->getInt('page', 1));
         $products = $paginator->paginate(
             $query,                                 // Requête Doctrine
-            $request->query->getInt('page', 1),    // Numéro de la page courante
+           $page,                                   // Utilisation de la variable $page sécurisée
             8                                      // Nombre d'éléments par page
         );
 

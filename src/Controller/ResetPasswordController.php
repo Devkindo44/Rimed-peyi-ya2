@@ -23,6 +23,7 @@ use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {
+    // Trait fournissant des méthodes utilitaires pour gérer le jeton en session
     use ResetPasswordControllerTrait;
 
     public function __construct(
@@ -32,11 +33,12 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
+     * Formulaire de demande de réinitialisation
      */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
     {
+        //Creation et Traitement du form de demande d'email
         $form = $this->createForm(ResetPasswordRequestFormType::class);
         $form->handleRequest($request);
 
@@ -44,6 +46,7 @@ class ResetPasswordController extends AbstractController
             /** @var string $email */
             $email = $form->get('email')->getData();
 
+            //Declenche la methode envoie du mail
             return $this->processSendingPasswordResetEmail($email, $mailer, $translator);
         }
 
@@ -53,11 +56,13 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Confirmation page after a user has requested a password reset.
+     * Page de onfirmation après l'envoi de l'email.
      */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
     {
+        //Tente de récupérer le jeton en session ; s'il n'existe pas, en génère un faux 
+        // (Sécurité : évite d'indiquer si l'adresse email existe réellement en BDD)
         if (null === ($resetToken = $this->getTokenObjectFromSession())) {
             $resetToken = $this->resetPasswordHelper->generateFakeResetToken();
         }
@@ -68,17 +73,20 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
+     * traitement du lien cliqué par le user dans son mail.
      */
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, ?string $token = null): Response
     {
+        
+        // Si le token est présent dans l'URL, on le stocke en session puis on redirige 
+        // pour nettoyer l'URL (évite d'exposer le token directement dans l'historique)
         if ($token) {
             $this->storeTokenInSession($token);
 
             return $this->redirectToRoute('app_reset_password');
         }
-
+            // recuperation du jeton depuis la session
         $token = $this->getTokenFromSession();
         if (null === $token) {
             throw $this->createNotFoundException('No reset password token found in the URL or in the session.');
@@ -88,6 +96,8 @@ class ResetPasswordController extends AbstractController
             /** @var User $user */
             $user = $this->resetPasswordHelper->validateTokenAndFetchUser($token);
         } catch (ResetPasswordExceptionInterface $e) {
+
+            //flasjh pour message invalid ex lien expiré
             $this->addFlash('reset_password_error', sprintf(
                 '%s - %s',
                 $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
@@ -124,6 +134,9 @@ class ResetPasswordController extends AbstractController
         $user = $this->entityManager->getRepository(User::class)->findOneBy([
             'email' => $emailFormData,
         ]);
+        
+        // Si l'utilisateur n'existe pas, on redirige vers check_email sans lever d'erreur
+        // pour empêcher les attaques par énumération d'emails
 
         if (!$user) {
             return $this->redirectToRoute('app_check_email');
@@ -135,7 +148,7 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_check_email');
         }
 
-        // 💡 RECUPÉRATION DES PARAMÈTRES DE SERVICES.YAML
+        // RECUPÉRATION DES PARAMÈTRES DE SERVICES.YAML
         /** @var string $adminEmail */
         $adminEmail = $this->getParameter('admin_email');
         /** @var string $siteName */
@@ -143,7 +156,8 @@ class ResetPasswordController extends AbstractController
 
         $email = (new TemplatedEmail())
         //  Utilisation dynamique ici, la modif ADMIN_EMAIL ou SITE_NAME se fait uniquement .env.local
-        // la repercution sera appliqué partout
+        // la replication sera appliqué partout
+
             ->from(new Address($adminEmail, $siteName)) 
             ->to((string) $user->getEmail())
             ->subject('Réinitialisation de votre mot de passe')
@@ -154,7 +168,7 @@ class ResetPasswordController extends AbstractController
         ;
 
         $mailer->send($email);
-
+        // Sauvegarde de l'objet token en session pour l'afficher sur la page de confirmation
         $this->setTokenObjectInSession($resetToken);
 
         return $this->redirectToRoute('app_check_email');

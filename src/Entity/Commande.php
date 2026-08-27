@@ -21,13 +21,12 @@ class Commande
     #[ORM\Column]
     private ?float $montant_total = null;
 
-    // --- AJOUT DES PROPRIÉTÉS MANQUANTES ---
+    // Frais de port toujours gratuits par défaut (0.0)
     #[ORM\Column(type: 'float', options: ['default' => 0])]
-    private ?float $frais_port = 0.0;
+    private float $frais_port = 0.0;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $transporteur_nom = null;
-    // ---------------------------------------
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,11 +40,12 @@ class Commande
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?AdresseDeLivraison $adressedeLivraison = null;
+    private ?AdresseDeLivraison $adresseDeLivraison = null;
 
     public function __construct()
     {
         $this->ligneDeCommandes = new ArrayCollection();
+        $this->date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -77,8 +77,7 @@ class Commande
         return $this;
     }
 
-    // --- AJOUT DES GETTERS & SETTERS MANQUANTS ---
-    public function getFraisPort(): ?float
+    public function getFraisPort(): float
     {
         return $this->frais_port;
     }
@@ -101,7 +100,6 @@ class Commande
 
         return $this;
     }
-    // ----------------------------------------------
 
     public function getUtilisateur(): ?User
     {
@@ -135,23 +133,19 @@ class Commande
 
     public function removeLigneDeCommande(LigneDeCommande $ligneDeCommande): static
     {
-        if ($this->ligneDeCommandes->removeElement($ligneDeCommande)) {
-            if ($ligneDeCommande->getCommande() === $this) {
-                $ligneDeCommande->setCommande(null);
-            }
-        }
+        $this->ligneDeCommandes->removeElement($ligneDeCommande);
 
         return $this;
     }
 
-    public function getAdressedeLivraison(): ?AdresseDeLivraison
+    public function getAdresseDeLivraison(): ?AdresseDeLivraison
     {
-        return $this->adressedeLivraison;
+        return $this->adresseDeLivraison;
     }
 
-    public function setAdressedeLivraison(?AdresseDeLivraison $adressedeLivraison): static
+    public function setAdresseDeLivraison(?AdresseDeLivraison $adresseDeLivraison): static
     {
-        $this->adressedeLivraison = $adressedeLivraison;
+        $this->adresseDeLivraison = $adresseDeLivraison;
 
         return $this;
     }

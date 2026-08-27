@@ -6,7 +6,7 @@ use App\Repository\CategoriesRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
-use App\Repository\AdresseDeLivraisonRepository; // 👈 AJOUT de l'import pour les adresses
+use App\Repository\AdresseDeLivraisonRepository; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -37,6 +37,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
+
     // URL finale : /admin/categories
     // Nom final : app_admin_categories_dashboard
     #[Route('/categories', name: 'categories_dashboard')]
@@ -49,6 +50,8 @@ final class AdminController extends AbstractController
         ]);
     }
 
+    
+
     // URL finale : /admin/commandes
     // Nom final : app_admin_commande_dashboard
     #[Route('/commandes', name: 'commande_dashboard')]
@@ -59,7 +62,7 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    // 🌟 NOUVEAUTÉ 🌟
+    // NOUVEAUTÉ 
     // URL finale : /admin/adresses
     // Nom final : app_admin_adresse_de_livraison_index
     #[Route('/adresses', name: 'adresse_de_livraison_index')]

@@ -36,7 +36,7 @@
                         <tbody>
                             <tr>
                                 <th class="ps-4 w-25">ID</th>
-                                <td><span class="badge bg-light text-dark">#{{ user.id }}</span></td>
+                                <td><span class="badge bg-oj text-dark">#{{ user.id }}</span></td>
                             </tr>
                             <tr>
                                 <th class="ps-4">Prénom</th>
@@ -53,7 +53,7 @@
                                     {% if user.isVerified %}
                                         <span class="badge bg-success ms-2">✓ Vérifié</span>
                                     {% else %}
-                                        <span class="badge bg-warning text-dark ms-2"> Non vérifié</span>
+                                        <span class="badge bg-danger text-dark ms-2"> Non vérifié</span>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -61,9 +61,9 @@
                                 <th class="ps-4">Rôles</th>
                                 <td>
                                     {% if 'ROLE_ADMIN' in user.roles %}
-                                        <span class="badge bg-danger">Administrateur</span>
+                                        <span class="badge bg-oj text-danger">Administrateur</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">Utilisateur</span>
+                                        <span class="badge bg-custom-brown">Utilisateur</span>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -87,7 +87,7 @@
                     </a>
                 </div>
                 
-                {# Le formulaire de suppression est maintenant extrait proprement #}
+                {# Le formulaire de suppression  #}
                 <div>
                     {{ include('user/_delete_form.html.twig') }}
                 </div>

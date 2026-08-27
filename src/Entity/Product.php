@@ -37,7 +37,7 @@ class Product
 
   
     // LigneDeCommande qui portera le lien ManyToOne vers Product.
-
+    //relation unidirectionnelle L'entité Product n'a pas besoin de connaître la liste des lignes de commande associées
     //Contrainte non-nullable pour le OneToOne strict avec le Stock
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -46,6 +46,8 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contenance = null;
 
+    // (constructeur) __construct() : Instancie $categories en tant qu'ArrayCollection 
+    //pour éviter toute erreur PHP null lors de l'ajout de catégories.
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -111,7 +113,9 @@ class Product
     {
         return $this->categories;
     }
-
+    // addCategory() / removeCategory() : 
+    //Méthodes sécurisées pour ajouter ou retirer une catégorie de la collection 
+    //sans risquer de créer des doublons.
     public function addCategory(Categories $category): static
     {
         if (!$this->categories->contains($category)) {

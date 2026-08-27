@@ -58,7 +58,7 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne sont pas identiques.',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'first_options'  => [
                     'label' => 'Mot de passe<span class="text-danger">*</span>',
                     'label_html' => true,
@@ -76,6 +76,9 @@ class RegistrationFormType extends AbstractType
                     ],
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez saisir un mot de passe.',
+                    ]),
                    
                     new Length([
                         'min' => 12,

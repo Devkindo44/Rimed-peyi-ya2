@@ -8,14 +8,42 @@
 
 {% block body %}
 <div class="container my-5 px-4">
+
+        {# Fil d'ariane #}
+    <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ path('app_home') }}">Accueil</a>
+        </li>
+        {% set current_slug = app.request.attributes.get('slug') %}
+        
+        {% if current_slug is not empty %}
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_home_catalogue') }}">Catalogue</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {# Récupère le nom de la catégorie active s'il y en a une #}
+                {% for cat in categories %}
+                    {% if cat.slug == current_slug %}{{ cat.name }}{% endif %}
+                {% endfor %}
+            </li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Tout le catalogue</li>
+        {% endif %}
+    </ol>
+</nav>
+
+        {# Bouton admin #}
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-custom-green mb-4" href="{{ path('app_admin_user_dashboard') }}">← Tableau de bord</a>
         <a class="btn btn-custom-green mb-4" href="{{ path('app_product_new') }}">Ajouter un produit</a>
     {% endif %}
 
+    
+
     {# BARRE DE FILTRES DES CATÉGORIES #}
     <div class="text-center mb-5">
-        <h4 class="mb-3 text-muted">Rechercher par catégorie :</h4>
+        <h2 class="mb-3 text-muted">Rechercher par catégorie :</h2>
         <div class="d-flex flex-wrap justify-content-center gap-2">
             
             {% set current_slug = app.request.attributes.get('slug') %}
@@ -27,7 +55,7 @@
             
             {% for categorie in categories %}
                 <a href="{{ path('app_categories_show', {'slug': categorie.slug}) }}" 
-                   class="btn rounded-pill text-capitalize fw-bold {{ current_slug == categorie.slug ? 'btn-warning text-dark shadow-sm' : 'btn-outline-success' }}">
+                   class="btn rounded-pill text-capitalize fw-bold {{ current_slug == categorie.slug ? 'btn-warning text-dark shadow-sm' : 'btn-outline-success img-zoom' }}">
                     {{ categorie.name }}
                 </a>
             {% endfor %}
@@ -40,9 +68,9 @@
        {% for product in products %}
             <div class="col">
                 <div class="card product-card shadow-sm h-100 border-green">
-                    <h5 class="card-title fw-bold mb-2 text-custom-brown text-center py-3" title="{{ product.title }}">
+                    <h3 class="card-title fw-bold mb-2 text-custom-brown text-center py-3" title="{{ product.title }}">
                         {{ product.title }}
-                    </h5>
+                    </h3>
                     
                     <div class="card-img-wrapper p-3 bg-white" style="border-radius: 10px 10px 0 0;">
                         <img src="{{ product.illustration ? asset('images/' ~ product.illustration) : asset('images/gombo.webp') }}" 
@@ -86,31 +114,31 @@
                                     {# Formulaire d'ajout avec input type="number" ET boutons flèches physiques #}
                                     <form action="{{ path('app_cart_new', {'id': product.id}) }}" method="POST" class="mt-1">
                                         <div class="input-group input-group-sm mb-2">
-                                            <span class="input-group-text bg-light text-dark">Qté</span>
+                                            <span class="input-group-text bg-custom-brown text-white">Qté</span>
                                             
                                             {# Champ de saisie de type "number" classique avec flèches natives #}
                                             <input type="number" 
                                                    name="quantity" 
-                                                   class="form-control text-center" 
+                                                   class="form-control text-center " 
                                                    value="{{ stockDisponible > 0 ? 1 : 0 }}" 
                                                    min="{{ stockDisponible > 0 ? 1 : 0 }}" 
                                                    max="{{ min(stockDisponible, 10) }}"
                                                    {% if stockDisponible == 0 %}disabled{% endif %}>
 
                                             {# Bouton de décrémentation (Flèche Bas) #}
-                                            <button class="btn btn-outline-light text-dark bg-light border px-2.5" 
+                                            <button class="btn btn-outline-brown text-white bg-custom-brown border px-2.5" 
                                                     type="button" 
                                                     {% if stockDisponible == 0 %}disabled{% endif %}
                                                     onclick="let input = this.parentNode.querySelector('input[name=\'quantity\']'); if(parseInt(input.value) > 1) { input.value = parseInt(input.value) - 1; }">
-                                                ▼
+                                               <span><i class="bi bi-caret-down-fill"></i></span>
                                             </button>
 
                                             {# Bouton d'incrémentation (Flèche Haut) #}
-                                            <button class="btn btn-outline-light text-dark bg-light border px-2.5" 
+                                            <button class="btn btn-outline-brown text-white bg-custom-brown border px-2.5" 
                                                     type="button" 
                                                     {% if stockDisponible == 0 %}disabled{% endif %}
                                                     onclick="let input = this.parentNode.querySelector('input[name=\'quantity\']'); let max = parseInt(input.getAttribute('max')); if(parseInt(input.value) < max) { input.value = parseInt(input.value) + 1; }">
-                                                ▲
+                                               <i class="bi bi-caret-up-fill"></i>
                                             </button>
                                         </div>
 
