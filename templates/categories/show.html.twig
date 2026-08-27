@@ -36,10 +36,10 @@
     <div class="row g-4">
         {% for product in category.products %}
             <div class="col-md-4 card product-card mx-2 ">
-                <div class="card h-100 shadow-sm border-0">
+                <div class="card h-100 shadow-sm border-0 my-3">
                     <img src="{{ asset('images/' ~ product.illustration) }}" class="card-img-top" alt="{{ product.title }}" style="object-fit: cover; height: 200px;">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">{{ product.title }}</h5>
+                        <h3 class="card-title fw-bold">{{ product.title }}</h3>
                         <p class="card-text text-muted">{{ product.description|slice(0, 100) }}...</p>
                     </div>
                      {% if app.user %}

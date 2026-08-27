@@ -131,7 +131,7 @@ final class CommandeController extends AbstractController
             $em->persist($commande);
             $em->flush();
 
-            // Process envoi d'email
+            // Process de l'envoi d'email
             $email = (new TemplatedEmail())
                 ->from(new Address('contact@rimedpeyiya.fr', 'Rimed Péyi Ya'))
                 ->to((string) $user->getEmail())

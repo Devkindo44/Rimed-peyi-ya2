@@ -6,7 +6,7 @@ use App\Repository\CategoriesRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
-use App\Repository\AdresseDeLivraisonRepository; // 👈 AJOUT de l'import pour les adresses
+use App\Repository\AdresseDeLivraisonRepository; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

@@ -42,6 +42,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            
             // Génération d'une URL signée et l'envoie par e-mail à l'utilisateur.
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
@@ -86,7 +87,9 @@ class RegistrationController extends AbstractController
         // confirmer le lien de validation, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
+
             //gestion des erreurs : si le lien est expiré user redirigé vers le lien d'inscription
+
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 

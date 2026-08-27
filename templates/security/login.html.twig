@@ -19,8 +19,16 @@
              style="object-fit: cover; z-index: 1; filter: brightness(0.3);">
 
         <form id="monFormulaireLogin" method="post" class="col-md-4 p-4 shadow rounded btn-custom-cream" style="{% if not error %}display:none;{% endif %} z-index: 10; backdrop-filter: blur(5px);">
+           
             
             {% if error %}
+            {#  
+            error.line is defined and (error.line == 265 or error.line == 67) 
+            solution rapide pour remplacer le messge d'erreur symfony "invalid credential"
+            bonne pratique => configurer le fichier de traduction symfony (translation/security.fr.yaml)
+            
+            #}
+             {{ error.file }}
                 {% if error.line is defined and (error.line == 265 or error.line == 67) %}
                     <div class="alert alert-danger text-center">L'identifiant ou le mot de passe est incorrect.</div>
                 {% else %}
@@ -67,7 +75,7 @@
                 </div>
                 
                 {# Ajout de onclick="event.stopPropagation();" pour éviter le blocage par script.js #}
-                <a href="{{ path('app_forgot_password_request') }}" class="text-white-50 small text-decoration-none hover-underline" onclick="event.stopPropagation();">
+                <a href="{{ path('app_forgot_password_request') }}" class="text-white-50 small text-decoration-none hover-underline " onclick="event.stopPropagation();">
                     Mot de passe oublié ?
                 </a>
             </div>

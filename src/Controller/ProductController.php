@@ -57,9 +57,11 @@ final class ProductController extends AbstractController
                 $illustration = $form->get('illustration')->getData();
                 if ($illustration) {
                     $originalName = pathinfo($illustration->getClientOriginalName(), PATHINFO_FILENAME);
+                    //extrait le nom d'origine et le formate avec $slugger->slug()
                     $safeFileName = $slugger->slug($originalName);
+                    // attribution d'un id.unique pour eviter les conflits
                     $newFileName = $safeFileName . '-' . uniqid() . '.' . $illustration->guessExtension();
-
+                    // deplace ds public/images
                     $illustration->move(
                         $this->getParameter('kernel.project_dir') . '/public/images',
                         $newFileName

@@ -9,12 +9,20 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+
+    // meth:login charge le fichier twig et transmets les msges d'erreur d'authentification àla vue grace au service AuthenticationUtils
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+
+        //redirection de l'utilisateur vers la paged'accueil s'il est deja connecté
+
+         if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin_user_dashboard');
+        }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
 
         // affiche une erreur s'il y en a
         $error = $authenticationUtils->getLastAuthenticationError();

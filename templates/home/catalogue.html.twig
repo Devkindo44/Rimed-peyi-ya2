@@ -43,7 +43,7 @@
 
     {# BARRE DE FILTRES DES CATÉGORIES #}
     <div class="text-center mb-5">
-        <h4 class="mb-3 text-muted">Rechercher par catégorie :</h4>
+        <h2 class="mb-3 text-muted">Rechercher par catégorie :</h2>
         <div class="d-flex flex-wrap justify-content-center gap-2">
             
             {% set current_slug = app.request.attributes.get('slug') %}
@@ -55,7 +55,7 @@
             
             {% for categorie in categories %}
                 <a href="{{ path('app_categories_show', {'slug': categorie.slug}) }}" 
-                   class="btn rounded-pill text-capitalize fw-bold {{ current_slug == categorie.slug ? 'btn-warning text-dark shadow-sm' : 'btn-outline-success' }}">
+                   class="btn rounded-pill text-capitalize fw-bold {{ current_slug == categorie.slug ? 'btn-warning text-dark shadow-sm' : 'btn-outline-success img-zoom' }}">
                     {{ categorie.name }}
                 </a>
             {% endfor %}
@@ -68,9 +68,9 @@
        {% for product in products %}
             <div class="col">
                 <div class="card product-card shadow-sm h-100 border-green">
-                    <h5 class="card-title fw-bold mb-2 text-custom-brown text-center py-3" title="{{ product.title }}">
+                    <h3 class="card-title fw-bold mb-2 text-custom-brown text-center py-3" title="{{ product.title }}">
                         {{ product.title }}
-                    </h5>
+                    </h3>
                     
                     <div class="card-img-wrapper p-3 bg-white" style="border-radius: 10px 10px 0 0;">
                         <img src="{{ product.illustration ? asset('images/' ~ product.illustration) : asset('images/gombo.webp') }}" 

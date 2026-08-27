@@ -118,8 +118,10 @@ final class AdresseDeLivraisonController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('success', 'L\'adresse a été supprimée avec succès.');
             }catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e){
+
                 // pour Capturer /masquer l'erreur SQL catch(\Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException $e)
-                //sinon technique onDelete: #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL') pour mettre à nul au lieu de la suppression dans l'entité
+                //sinon technique onDelete: #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL') 
+                //pour mettre à nul au lieu de la suppression dans l'entité
                 $this->addFlash('danger','Impossible de supprimer cette adresse car elle est deja lié à une commande!');
                 $this->addFlash('info','Vous pouvez en créer une nouvelle pour vos futur achats.');
             }

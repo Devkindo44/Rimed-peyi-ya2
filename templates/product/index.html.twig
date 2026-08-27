@@ -49,7 +49,7 @@
                         <td>{{ product.title|capitalize }}</td>
                         <td>
                             {% if product.illustration %}
-                                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-thumbnail">
+                                <img src="{{ asset('images/' ~ product.illustration) }}" alt="{{ product.title }}" width="50" class="img-fluid">
                             {% else %}
                                 {{ ux_icon('lucide:image-off', {class: 'text-muted icon20'}) }}
                             {% endif %}
