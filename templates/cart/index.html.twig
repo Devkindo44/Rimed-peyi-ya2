@@ -56,10 +56,10 @@
                                 </td>
                                 <td>{{ item.product.price * item.quantity }} €</td>
                                 <td>
-                                    <form action="{{ path('app_cart_remove') }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment vider votre panier ?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('clear_cart') }}">
-                                        <button type="submit" class="btn btn-outline-danger">Vider le panier</button>
-                                    </form>
+                                    {# MODIFICATION : Suppression d'un seul produit #}
+                                    <a href="{{ path('app_cart_product_remove', {'id': item.product.id}) }}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Retirer ce produit du panier ?');">
+                                        Retirer
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -69,22 +69,25 @@
                 <div class="text-end my-4 pe-3">
                     <h3 class="fw-bold">Total : <span class="text-success">{{ total }} €</span></h3>
                 </div>
-            </div> {# <-- La balise fermante a été déplacée ici pour bien englober le tableau #}
+            </div>
 
             {# BARRE DE BOUTONS D'ACTION #}
-            <div class="row mx-auto justify-content-between mb-5 gap-2">
+            <div class="row mx-auto justify-content-between align-items-center mb-5 gap-2">
                 <a href="{{ path('app_home_catalogue') }}" class="btn btn-outline-success col-lg-3 mt-3 rounded-pill">
                     Continuer mes achats
                 </a>
                 
-                {# MODIFICATION ICI : Lien connecté au CommandeController #}
                 <a href="{{ path('app_commande_creer') }}" class="btn btn-success col-lg-3 mt-3 rounded-pill text-white fw-semibold">
                     Valider la commande
                 </a>
                 
-                <a href="{{ path('app_cart_remove') }}" class="btn btn-outline-danger col-lg-3 mt-3 rounded-pill">
-                    Supprimer le panier
-                </a>
+                {# MODIFICATION : Intégration du formulaire dans le layout de grilles Bootstrap #}
+                <form action="{{ path('app_cart_remove') }}" method="POST" class="col-lg-3 mt-3 p-0" onsubmit="return confirm('Voulez-vous vraiment vider votre panier ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('clear_cart') }}">
+                    <button type="submit" class="btn btn-outline-danger w-100 rounded-pill">
+                        Vider le panier
+                    </button>
+                </form>
             </div>
         {% endif %}
     </div>

@@ -68,7 +68,7 @@ final class HomeController extends AbstractController
 
             //process d'envoi d'email
             $email = (new Email())
-                ->from('contact@rrimedpeyiya.fr')// adresse du domaine
+                ->from('contact@rimedpeyiya.fr')// adresse du domaine
                 ->replyTo($data['email'])
                 ->to('contact@rimedpeyiya.fr') //adresse mail de reception
                 ->subject('Nouveau message de contact : ' . $data['subject'])
