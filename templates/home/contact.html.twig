@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contactez-nous - Rimed Peyi Ya{% endblock %}
+{% block title %}Contactez-nous | Rimed Péyi Ya{% endblock %}
 
 {% block body %}
 <main class="container my-5 text-custom-brown">
@@ -18,7 +18,7 @@
                 {# Affichage des messages flash de succès si tu en ajoutes #}
                 {% for label, messages in app.flashes %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ label }} text-center">
+                        <div class="alert alert-{{ label == 'error' ? 'danger' : label }} text-center">
                             {{ message }}
                         </div>
                     {% endfor %}

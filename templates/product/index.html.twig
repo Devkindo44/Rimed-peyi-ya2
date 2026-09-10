@@ -35,7 +35,7 @@
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">ID</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Titre</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Illustration</th>
-                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Contenance</th> {# 👈 1. NOUVELLE EN-TÊTE #}
+                    <th class="text-white py-3" style="background-color: var(--main-green) !important;">Contenance</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Prix (€)</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Description</th>
                     <th class="text-white py-3" style="background-color: var(--main-green) !important;">Stock</th>
@@ -55,9 +55,6 @@
                             {% endif %}
                         </td>
                         
-                        {# Affiche la contenance (avec fallback si vide)
-                         L'instruction product.contenance ? product.contenance : '-' 
-                         permet d'éviter les cases vides si un produit n'a pas de contenance renseignée.#}
                         <td>
                             {{ product.contenance ? product.contenance : '-' }} 
                         </td>
@@ -71,7 +68,6 @@
                             {% endif %}
                         </td>
                         <td>
-                            {# CORRECTION DU STOCK : On vérifie d'abord si l'objet existe, puis la quantité #}
                             {% if product.stock is not null and product.stock.quantity > 0 %}
                                 <span class="badge bg-success">{{ product.stock.quantity }}</span>
                             {% else %}
@@ -89,13 +85,23 @@
                                 {{ ux_icon('lucide:edit', {class: 'text-primary icon20'}) }}
                             </a>
                             
-                            {# Icône Supprimer avec confirmation native #}
-                            <a href="{{ path('app_product_delete', {'id': product.id}) }}" 
-                               class="text-decoration-none" 
-                               title="Supprimer"
-                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
-                                {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
-                            </a>  
+                            {#  FORMULAIRE DE SUPPRESSION AVEC CSRF #}
+                            <form method="POST" 
+                                  action="{{ path('app_product_delete', {'id': product.id}) }}" 
+                                  style="display: inline-block;">
+                                
+                                {# Token CSRF généré par Symfony #}
+                                <input type="hidden" 
+                                       name="_token" 
+                                       value="{{ csrf_token('delete' ~ product.id) }}">
+                                
+                                <button type="submit" 
+                                        class="btn btn-link text-danger p-0 border-0"
+                                        title="Supprimer"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                    {{ ux_icon('lucide:trash-2', {class: 'text-danger icon20'}) }}
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}

@@ -24,13 +24,14 @@ final class CartController extends AbstractController
         foreach ($cart as $id => $quantity) {
             $product = $this->productRepository->find($id);
             if ($product) {
+                // association du produit à sa quantité 
                 $cartWithData[] = [
                     'product' => $product,
                     'quantity' => $quantity
                 ];
             }
         }
-        
+            // calcule le total en une ligne  prix*quantité
         $total = array_sum(array_map(function ($item) {
             return $item['product']->getPrice() * $item['quantity'];
         }, $cartWithData));
@@ -50,13 +51,14 @@ final class CartController extends AbstractController
             $this->addFlash('danger', 'Produit introuvable.');
             return $this->redirectToRoute('app_home_catalogue');
         }
-
+            //recuperation du panier ou un tableau vide si pas d'article
         $cart = $session->get('cart', []);
-
+            // recuperation de la quantité demandé en get ou post
         $rawQuantity = $request->isMethod('POST') 
             ? $request->request->get('quantity') 
             : $request->query->get('quantity');
 
+            //Validation de la quantité
         if ($rawQuantity === null || $rawQuantity === '' || !is_numeric($rawQuantity)) {
             $quantityRequested = 1;
         } else {
@@ -66,11 +68,11 @@ final class CartController extends AbstractController
         if ($quantityRequested < 1) {
             $quantityRequested = 1;
         }
-
+            //calcul de la quantité total
         $currentQuantityInCart = !empty($cart[$id]) ? $cart[$id] : 0;
         $totalRequested = $currentQuantityInCart + $quantityRequested;
 
-        // Sécurisation du stock : empêche les nombres négatifs
+        // verifiaction et sécurisation du stock : empêche les nombres négatifs
         $rawStock = $product->getStock() ? $product->getStock()->getQuantity() : 0;
         $availableStock = max(0, $rawStock);
 
@@ -83,6 +85,8 @@ final class CartController extends AbstractController
         } else {
             $cart[$id] = $totalRequested;
             $session->set('cart', $cart);
+
+            $this->addFlash('success', 'Le produit a bien été ajouté à votre panier !');
         }
 
         return $this->redirectToRoute('app_home_catalogue');
